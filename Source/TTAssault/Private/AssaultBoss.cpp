@@ -2,12 +2,44 @@
 
 
 #include "AssaultBoss.h"
+#include <GameFramework/SpringArmComponent.h>
+#include <Camera/CameraComponent.h>
+#include <GameFramework/CharacterMovementComponent.h>
+#include <Engine/SkeletalMesh.h>
+#include <Kismet/KismetMathLibrary.h>
 
 // Sets default values
 AAssaultBoss::AAssaultBoss()
 {
+
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tmpclass(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Manny.SKM_Manny'"));
+
+	if (tmpclass.Succeeded())
+	{
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, 90, 0));
+		bUseControllerRotationYaw = false;
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
+		GetCharacterMovement()->GravityScale = 0;
+		GetCharacterMovement()->DefaultLandMovementMode = EMovementMode::MOVE_Flying;
+		GetCharacterMovement()->bUseSeparateBrakingFriction = true;
+		GetCharacterMovement()->BrakingFriction = 1.0f;
+
+		springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
+		cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
+		
+		springArmComp->SetupAttachment(RootComponent);
+		springArmComp->TargetArmLength = 1000;
+		springArmComp->bInheritPitch = false;
+		springArmComp->bInheritRoll = false;
+		springArmComp->bInheritYaw = false;
+
+		cameraComp->SetupAttachment(springArmComp);
+		
+	}
+
 
 }
 
@@ -30,5 +62,23 @@ void AAssaultBoss::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &AAssaultBoss::OnAxisVertical);
+	PlayerInputComponent->BindAxis(TEXT("Move Right / Left"), this, &AAssaultBoss::OnAxisHorizontal);
+	PlayerInputComponent->BindAxis(TEXT("Turn R/L"), this, &AAssaultBoss::OnAxisHorizontalView);
+}
+
+void AAssaultBoss::OnAxisVertical(float value)
+{
+	AddMovementInput(UKismetMathLibrary::GetUpVector(FRotator(0, 0, 0)), value);
+}
+
+void AAssaultBoss::OnAxisHorizontal(float value)
+{
+	AddMovementInput(UKismetMathLibrary::GetRightVector(FRotator(0, 0, 0)), value);
+}
+
+void AAssaultBoss::OnAxisHorizontalView(float value)
+{
+	SetActorRotation(FRotator(0, (-90) * value, 0));
 }
 
