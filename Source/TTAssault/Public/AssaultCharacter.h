@@ -26,4 +26,18 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere)
+		class USpringArmComponent* springArmComp;
+
+	UPROPERTY(EditAnywhere)
+		class UCameraComponent* cameraComp;
+
+	void OnAxisHorizontal(float value); 
+	void OnAxisVertical(float value);
+	void onAxisMouseX(float value);
+	void onAxisMouseY(float value);
+	virtual void onActionBoost();
+	virtual void onActionFire();
+
+	FVector direction;
 };
