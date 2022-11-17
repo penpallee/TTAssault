@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include <Kismet/GameplayStatics.h>
 #include "AssaultCharacter.generated.h"
+
 
 UCLASS()
 class TTASSAULT_API AAssaultCharacter : public ACharacter
@@ -41,8 +43,16 @@ public:
 
 	FVector direction;
 	FRotator rotation;
+
 	UPROPERTY(EditAnywhere)
 	float speed;
 	UPROPERTY(EditAnywhere)
 	float booster;
+	UPROPERTY(EditAnywhere)
+	int HP=100;
+
+	UPROPERTY(EditAnywhere)
+	class UPlayerFireComponent* weaponComponent;
+
+	void OnPlayerHit(int damage);
 };
