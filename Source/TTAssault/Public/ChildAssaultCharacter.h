@@ -21,12 +21,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to input
-	void onAxisMouse(float value);
 	void onActionBoost();
 	void onActionFire();
 	void OnAxisHorizontal(float value);
 	void OnAxisVertical(float value);
+	void OnAxisRotation(float value);
 	void Jump();
-	FVector direction;
-	FRotator rotation;
 };

@@ -40,4 +40,7 @@ public:
 	virtual void onActionFire();
 
 	FVector direction;
+	FRotator rotation;
+	float speed;
+	float rotRate;
 };

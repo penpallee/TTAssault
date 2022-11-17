@@ -15,7 +15,7 @@ AChildAssaultCharacter::AChildAssaultCharacter()
 	if (tempBody.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(tempBody.Object);
-		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(-90, 0, 0));
 	}
 
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
@@ -30,7 +30,7 @@ void AChildAssaultCharacter::BeginPlay()
 	InputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AChildAssaultCharacter::Jump);
 	InputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &AChildAssaultCharacter::OnAxisHorizontal);
 	InputComponent->BindAxis(TEXT("Move Right / Left"), this, &AChildAssaultCharacter::OnAxisVertical); 
-	InputComponent->BindAxis(TEXT("Look Up / Down Mouse"), this, &AChildAssaultCharacter::onAxisMouse);
+	InputComponent->BindAxis(TEXT("Turn R/L"), this, &AChildAssaultCharacter::OnAxisRotation);
 }
 
 // Called every frame
@@ -39,8 +39,9 @@ void AChildAssaultCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	cameraComp->SetRelativeLocation(FVector(GetOwner()->GetActorLocation().X, GetOwner()->GetActorLocation().Y, 1000));
 
-	//this->SetActorRotation(FRotator(0, 0, 0));
-	this->SetActorLocationAndRotation((GetActorLocation() + direction * 600 * DeltaTime),(GetActorRotation()+rotation*DeltaTime));
+	//this->SetActorLocationAndRotation((GetActorLocation() + direction * 600 * DeltaTime),(GetActorRotation() + rotation * 100 * DeltaTime));
+
+	this->SetActorLocation(GetActorLocation()+direction*60*DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -59,9 +60,9 @@ void AChildAssaultCharacter::OnAxisVertical(float value)
 	direction.Y = value;
 }
 
-void AChildAssaultCharacter::onAxisMouse(float value)
+void AChildAssaultCharacter::OnAxisRotation(float value)
 {
-	rotation.Roll = value;
+	rotation.Yaw = value;
 }
 
 void AChildAssaultCharacter::onActionBoost()
