@@ -32,15 +32,17 @@ public:
 	UPROPERTY(EditAnywhere)
 		class UCameraComponent* cameraComp;
 
-	void OnAxisHorizontal(float value); 
-	void OnAxisVertical(float value);
-	void onAxisMouseX(float value);
-	void onAxisMouseY(float value);
+	virtual void OnAxisHorizontal(float value); 
+	virtual void OnAxisVertical(float value);
+	virtual void onAxisMouseX(float value);
+	virtual void onAxisMouseY(float value);
 	virtual void onActionBoost();
 	virtual void onActionFire();
 
 	FVector direction;
 	FRotator rotation;
+	UPROPERTY(EditAnywhere)
 	float speed;
-	float rotRate;
+	UPROPERTY(EditAnywhere)
+	float booster;
 };

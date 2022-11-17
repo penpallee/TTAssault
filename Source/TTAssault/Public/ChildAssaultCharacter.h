@@ -25,6 +25,6 @@ public:
 	void onActionFire();
 	void OnAxisHorizontal(float value);
 	void OnAxisVertical(float value);
-	void OnAxisRotation(float value);
-	void Jump();
+	void onAxisMouseX(float value);
+	void onAxisMouseY(float value);
 };

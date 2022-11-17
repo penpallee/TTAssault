@@ -23,7 +23,7 @@ void AAssaultCharacter::Tick(float DeltaTime)
 	cameraComp->SetRelativeLocation(FVector(GetOwner()->GetActorLocation().X, GetOwner()->GetActorLocation().Y, 1000));
 	
 	//this->SetActorRotation(FRotator(0, 0, 0));
-	this->SetActorLocation(GetActorLocation() + direction * 600 + DeltaTime);
+	//this->SetActorLocation(GetActorLocation() + direction * speed + DeltaTime);
 }
 
 // Called to bind functionality to input
