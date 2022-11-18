@@ -41,18 +41,20 @@ void AChildAssaultCharacter::OnAxisVertical(float value)
 
 void AChildAssaultCharacter::onActionBoost()
 {
-	
+	Super::onActionBoost();
 }
 
 void AChildAssaultCharacter::onActionFire()
 {
-
+	Super::onActionFire();
 }
 
 void AChildAssaultCharacter::onAxisMouseX(float value)
 {
+	Super::onAxisMouseX(value);
 }
 
 void AChildAssaultCharacter::onAxisMouseY(float value)
 {
+	Super::onAxisMouseY(value);
 }
