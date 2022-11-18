@@ -5,6 +5,9 @@
 #include <GameFramework/SpringArmComponent.h>
 #include "PlayerFireComponent.h"
 #include <Camera/CameraComponent.h>
+#include <Kismet/GameplayStatics.h>
+#include <Blueprint/WidgetLayoutLibrary.h>
+#include <Kismet/KismetMathLibrary.h>
 
 // Sets default values
 AAssaultCharacter::AAssaultCharacter()
@@ -12,7 +15,7 @@ AAssaultCharacter::AAssaultCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBody(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn.SKM_Quinn'"));//½ºÄÌ·¹Å» ¸Þ½Ã °¡Á®¿È
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBody(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn'"));//½ºÄÌ·¹Å» ¸Þ½Ã °¡Á®¿È
 
 	if (tempBody.Succeeded())
 	{
@@ -27,6 +30,15 @@ AAssaultCharacter::AAssaultCharacter()
 	cameraComp->SetupAttachment(RootComponent);
 
 	weaponComponent = CreateDefaultSubobject <UPlayerFireComponent>("fireComp");//¸ðµâÈ­
+
+	gunMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("gunMeshComp"));
+	gunMeshComp->SetupAttachment(GetMesh());
+
+	sniperMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("sniperMeshComp"));
+	sniperMeshComp->SetupAttachment(GetMesh());
+
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempGun(TEXT("SkeletalMesh'/Game/TH/Resources/FPWeapon/Mesh/SK_FPGun.SK_FPGun'"));
+	ConstructorHelpers::FObjectFinder<UStaticMeshComponent> tempSniper(TEXT("StaticMesh'/Game/TH/Resources/SniperGun/sniper1.sniper1'"));
 }
 
 // Called when the game starts or when spawned
@@ -39,8 +51,12 @@ void AAssaultCharacter::BeginPlay()
 	InputComponent->BindAxis(TEXT("Move Right / Left"), this, &AAssaultCharacter::OnAxisVertical);
 	InputComponent->BindAxis("Look Up / Down Mouse", this, &AAssaultCharacter::onAxisMouseY);
 	InputComponent->BindAxis("Turn Right / Left Mouse", this, &AAssaultCharacter::onAxisMouseX);
+	InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &AAssaultCharacter::onSelPrimary);
+	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
+	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTeTertiary);
 	speed = 500;
-	booster = 1000;
+	booster = 10;
+	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 }
 
 // Called every frame
@@ -48,8 +64,12 @@ void AAssaultCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//cameraComp->SetRelativeLocation(FVector(GetOwner()->GetActorLocation().X, GetOwner()->GetActorLocation().Y, 1000));
-	
+	//booster -= 1;
 	this->SetActorLocation(GetActorLocation() + direction * speed * DeltaTime);
+
+	//nowWeapon->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), FVector(UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld()).X, UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld()).Y, GetActorLocation().Z)));
+	//gunMeshComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(),FVector(UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld()).X,			UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld()).Y,GetActorLocation().Z)));
+	//sniperMeshComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), FVector(UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld()).X, UWidgetLayoutLibrary::GetMousePositionOnViewport(GetWorld()).Y, GetActorLocation().Z)));
 }
 
 // Called to bind functionality to input
@@ -76,12 +96,20 @@ void AAssaultCharacter::onAxisMouseX(float value)
 
 void AAssaultCharacter::onAxisMouseY(float value)
 {
-	
+
 }
 
 void AAssaultCharacter::onActionBoost()
 {
-	this->LaunchCharacter(GetActorForwardVector() * booster, false, false);
+
+	if (!isBooster)
+	{
+		booster = 10;
+		//this->LaunchCharacter(direction * booster, false, false);
+		//GetWorldTimerManager().SetTimer(boostHandle, this, &AAssaultCharacter::isOnBooster, 0.1f, false);
+		//UCharacterMovementComponent::AddImpulse(direction,true);
+	}
+	isBooster = true;
 }
 
 void AAssaultCharacter::onActionFire()
@@ -92,4 +120,52 @@ void AAssaultCharacter::onActionFire()
 void AAssaultCharacter::OnPlayerHit(int damage)
 {
 	HP -= damage;
+	if (HP <= 0)
+	{
+		Destroy();
+	}
+}
+
+void AAssaultCharacter::isOnBooster()
+{
+	if (isBooster)
+		isBooster = false;
+
+	GetWorldTimerManager().ClearTimer(boostHandle);
+}
+
+void AAssaultCharacter::onSelPrimary()
+{
+	SetGun(1);
+}
+
+void AAssaultCharacter::onSelSecondary()
+{
+	SetGun(2);
+}
+
+void AAssaultCharacter::onSelTeTertiary()
+{
+	SetGun(3);
+}
+
+void AAssaultCharacter::SetGun(int num)
+{
+	switch (num)
+	{
+	case 1:
+		gunMeshComp->SetVisibility(true);
+		sniperMeshComp->SetVisibility(false);
+		//nowWeapon = Cast<UPrimitiveComponent>(gunMeshComp);
+		break;
+	case 2:
+		gunMeshComp->SetVisibility(false);
+		sniperMeshComp->SetVisibility(true);
+		//nowWeapon = Cast<UPrimitiveComponent>(sniperMeshComp);
+		break;
+	case 3:
+		gunMeshComp->SetVisibility(false);
+		sniperMeshComp->SetVisibility(false);
+		break;
+	}
 }
