@@ -20,14 +20,20 @@ AAssaultCharacter::AAssaultCharacter()
 	if (tempBody.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(tempBody.Object);
-		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
+		//GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, 0), FRotator(0, -90, 0));
 	}
-	this->SetActorRotation(FRotator(0, 90, -90));
+	//this->SetActorRotation(FRotator(0, 90, -90));
+
+	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
+	springArmComp->SetupAttachment((RootComponent));
+	springArmComp->SetRelativeLocation(FVector(0, -90, 0));
+	springArmComp->TargetArmLength = 1000;
+	//springArmComp->bUsePawnControlRotation = true;
 
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
-	cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
-	cameraComp->SetRelativeLocation(FVector(0, 1000, 0));
-	cameraComp->SetupAttachment(RootComponent);
+	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
+	//cameraComp->SetRelativeLocation(FVector(0, 1000, 0));
+	cameraComp->SetupAttachment(springArmComp);
 
 	weaponComponent = CreateDefaultSubobject <UPlayerFireComponent>("fireComp");//¸ðµâÈ­
 
@@ -38,7 +44,7 @@ AAssaultCharacter::AAssaultCharacter()
 	sniperMeshComp->SetupAttachment(GetMesh());
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempGun(TEXT("SkeletalMesh'/Game/TH/Resources/FPWeapon/Mesh/SK_FPGun.SK_FPGun'"));
-	ConstructorHelpers::FObjectFinder<UStaticMeshComponent> tempSniper(TEXT("StaticMesh'/Game/TH/Resources/SniperGun/sniper1.sniper1'"));
+	//ConstructorHelpers::FObjectFinder<UStaticMeshComponent> tempSniper(TEXT("StaticMesh'/Game/TH/Resources/SniperGun/Sniper.Sniper'"));
 }
 
 // Called when the game starts or when spawned

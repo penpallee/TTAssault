@@ -61,6 +61,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		class UStaticMeshComponent* sniperMeshComp;
 
+
 	void OnPlayerHit(int damage);
 	void isOnBooster();
 	void onSelPrimary();
