@@ -32,7 +32,7 @@ public:
 		class USpringArmComponent* springArmComp;
 
 	UPROPERTY(EditAnywhere)
-		class UCameraComponent* cameraComp;
+		class UCameraComponent* cameraComp;	
 
 	virtual void OnAxisHorizontal(float value);
 	virtual void OnAxisVertical(float value);
@@ -40,8 +40,8 @@ public:
 	virtual void onAxisMouseY(float value);
 	virtual void onActionBoost();
 	virtual void onActionFire();
-	FTimerHandle boostHandle;
 
+	FTimerHandle boostHandle;
 	FVector direction;
 	FRotator rotation;
 
@@ -53,14 +53,13 @@ public:
 		int HP = 100;
 	UPROPERTY(EditAnywhere)
 		bool isBooster = false;
+
 	UPROPERTY(EditAnywhere)
 		class UPlayerFireComponent* weaponComponent;
-
 	UPROPERTY(EditAnywhere)
 		class USkeletalMeshComponent* gunMeshComp;
 	UPROPERTY(EditAnywhere)
 		class UStaticMeshComponent* sniperMeshComp;
-
 
 	void OnPlayerHit(int damage);
 	void isOnBooster();
@@ -68,5 +67,4 @@ public:
 	void onSelSecondary();
 	void onSelTeTertiary();
 	void SetGun(int num);
-	//class UPrimitiveComponent* nowWeapon;
 };

@@ -28,8 +28,8 @@ public:
 	void SetupFire(UInputComponent* PlayerInputComponent);
 	void OnActionFire();
 
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* meshComp;
+	//UPROPERTY(EditAnywhere)
+	//class UStaticMeshComponent* meshComp;
 
 	//UPROPERTY(EditAnywhere)
 	//TSubclassOf<class ABulletActor> bulletFactory;

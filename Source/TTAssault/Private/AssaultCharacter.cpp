@@ -16,23 +16,20 @@ AAssaultCharacter::AAssaultCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBody(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn'"));//½ºÄÌ·¹Å» ¸Þ½Ã °¡Á®¿È
-
 	if (tempBody.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(tempBody.Object);
-		//GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, 0), FRotator(0, -90, 0));
+		GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
 	}
-	//this->SetActorRotation(FRotator(0, 90, -90));
+
+	this->SetActorRotation(FRotator(0, 0, -90));
 
 	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
 	springArmComp->SetupAttachment((RootComponent));
 	springArmComp->SetRelativeLocation(FVector(0, -90, 0));
 	springArmComp->TargetArmLength = 1000;
-	//springArmComp->bUsePawnControlRotation = true;
 
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
-	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
-	//cameraComp->SetRelativeLocation(FVector(0, 1000, 0));
 	cameraComp->SetupAttachment(springArmComp);
 
 	weaponComponent = CreateDefaultSubobject <UPlayerFireComponent>("fireComp");//¸ðµâÈ­
@@ -97,7 +94,7 @@ void AAssaultCharacter::OnAxisVertical(float value)
 
 void AAssaultCharacter::onAxisMouseX(float value)
 {
-
+	
 }
 
 void AAssaultCharacter::onAxisMouseY(float value)
@@ -107,7 +104,7 @@ void AAssaultCharacter::onAxisMouseY(float value)
 
 void AAssaultCharacter::onActionBoost()
 {
-
+	//GetMesh()->AddImpulse(GetActorForwardVector()*-100,TEXT("Mesh"), true);
 	if (!isBooster)
 	{
 		booster = 10;
@@ -115,12 +112,12 @@ void AAssaultCharacter::onActionBoost()
 		//GetWorldTimerManager().SetTimer(boostHandle, this, &AAssaultCharacter::isOnBooster, 0.1f, false);
 		//UCharacterMovementComponent::AddImpulse(direction,true);
 	}
-	isBooster = true;
+	isBooster = false;
 }
 
 void AAssaultCharacter::onActionFire()
 {
-
+	
 }
 
 void AAssaultCharacter::OnPlayerHit(int damage)
