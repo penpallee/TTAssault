@@ -19,13 +19,24 @@ protected:
 	virtual void BeginPlay() override;
 	
 public:
+	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaTime) override;
-	// Called to bind functionality to input
-	void onActionBoost();
-	void onActionFire();
-	void OnAxisHorizontal(float value);
-	void OnAxisVertical(float value);
-	void onAxisMouseX(float value);
-	void onAxisMouseY(float value);
+
+	virtual void OnAxisHorizontal(float value);
+	virtual void OnAxisVertical(float value);
+	virtual void onAxisMouseX(float value);
+	virtual void onAxisMouseY(float value);
+	virtual void onActionBoost();
+	virtual void onActionFire();
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* bulletImpactFactory;
+
+	void OnPlayerHit(int damage);
+	void Stop();
+	void onSelPrimary();
+	void onSelSecondary();
+	void onSelTeTertiary();
+	void SetGun(int num);
+	void Sniping();
 };

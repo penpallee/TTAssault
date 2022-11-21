@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
+enum {PRIMARY, SECONDARY, TERTIARY};
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include <Kismet/GameplayStatics.h>
@@ -29,10 +29,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere)
-		class USpringArmComponent* springArmComp;
-
+	class USpringArmComponent* springArmComp;
 	UPROPERTY(EditAnywhere)
-		class UCameraComponent* cameraComp;	
+	class UCameraComponent* cameraComp;	
 
 	virtual void OnAxisHorizontal(float value);
 	virtual void OnAxisVertical(float value);
@@ -41,28 +40,31 @@ public:
 	virtual void onActionBoost();
 	virtual void onActionFire();
 
-	FTimerHandle boostHandle;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector direction;
 	FRotator rotation;
+	int selWeapon;
 
 	UPROPERTY(EditAnywhere)
-		float speed;
+	float speed;
 	UPROPERTY(EditAnywhere)
-		float booster;
+	float booster;
 	UPROPERTY(EditAnywhere)
-		int HP = 100;
+	int HP = 100;
 	UPROPERTY(EditAnywhere)
-		bool isBooster = false;
+	bool isBooster = false;
+	UPROPERTY(EditAnywhere)
+	int Defense;
 
 	UPROPERTY(EditAnywhere)
-		class UPlayerFireComponent* weaponComponent;
+	class UPlayerFireComponent* weaponComponent;
 	UPROPERTY(EditAnywhere)
-		class USkeletalMeshComponent* gunMeshComp;
+	class USkeletalMeshComponent* gunMeshComp;
 	UPROPERTY(EditAnywhere)
-		class UStaticMeshComponent* sniperMeshComp;
+	class UStaticMeshComponent* sniperMeshComp;
 
 	void OnPlayerHit(int damage);
-	void isOnBooster();
+	void Stop();
 	void onSelPrimary();
 	void onSelSecondary();
 	void onSelTeTertiary();
