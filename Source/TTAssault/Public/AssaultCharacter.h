@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
-enum {PRIMARY, SECONDARY, TERTIARY};
+
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include <Kismet/GameplayStatics.h>
@@ -38,12 +37,10 @@ public:
 	virtual void onAxisMouseX(float value);
 	virtual void onAxisMouseY(float value);
 	virtual void onActionBoost();
-	virtual void onActionFire();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector direction;
 	FRotator rotation;
-	int selWeapon;
 
 	UPROPERTY(EditAnywhere)
 	float speed;
@@ -57,16 +54,11 @@ public:
 	int Defense;
 
 	UPROPERTY(EditAnywhere)
+	class USkeletalMeshComponent* bodyMeshComp;
+	UPROPERTY(EditAnywhere)
 	class UPlayerFireComponent* weaponComponent;
-	UPROPERTY(EditAnywhere)
-	class USkeletalMeshComponent* gunMeshComp;
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* sniperMeshComp;
+	
 
 	void OnPlayerHit(int damage);
 	void Stop();
-	void onSelPrimary();
-	void onSelSecondary();
-	void onSelTeTertiary();
-	void SetGun(int num);
 };
