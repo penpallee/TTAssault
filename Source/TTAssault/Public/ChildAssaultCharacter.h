@@ -28,15 +28,7 @@ public:
 	virtual void onAxisMouseX(float value);
 	virtual void onAxisMouseY(float value);
 	virtual void onActionBoost();
-	virtual void onActionFire();
-	UPROPERTY(EditAnywhere)
-	class UParticleSystem* bulletImpactFactory;
 
 	void OnPlayerHit(int damage);
 	void Stop();
-	void onSelPrimary();
-	void onSelSecondary();
-	void onSelTeTertiary();
-	void SetGun(int num);
-	void Sniping();
 };

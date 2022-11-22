@@ -43,21 +43,6 @@ void AChildAssaultCharacter::onActionBoost()
 	Super::onActionBoost();
 }
 
-void AChildAssaultCharacter::onActionFire()
-{
-	Super::onActionFire();
-	switch (selWeapon)
-	{
-		case PRIMARY:
-		break;
-		case SECONDARY:
-		Sniping();
-		break;
-		case TERTIARY:
-		break;
-	}
-}
-
 void AChildAssaultCharacter::OnPlayerHit(int damage)
 {
 	Super::OnPlayerHit(damage);
@@ -68,29 +53,6 @@ void AChildAssaultCharacter::Stop()
 	Super::Stop();
 }
 
-void AChildAssaultCharacter::onSelPrimary()
-{
-	Super::onSelPrimary();
-	selWeapon=PRIMARY;
-}
-
-void AChildAssaultCharacter::onSelSecondary()
-{
-	Super::onSelSecondary();
-	selWeapon = SECONDARY;
-}
-
-void AChildAssaultCharacter::onSelTeTertiary()
-{
-	Super::onSelTeTertiary();
-	selWeapon = TERTIARY;
-}
-
-void AChildAssaultCharacter::SetGun(int num)
-{
-	Super::SetGun(num);
-}
-
 void AChildAssaultCharacter::onAxisMouseX(float value)
 {
 	Super::onAxisMouseX(value);
@@ -99,27 +61,4 @@ void AChildAssaultCharacter::onAxisMouseX(float value)
 void AChildAssaultCharacter::onAxisMouseY(float value)
 {
 	Super::onAxisMouseY(value);
-}
-
-void AChildAssaultCharacter::Sniping()
-{
-	FVector start = sniperMeshComp->GetComponentLocation();
-	FVector end = start + sniperMeshComp->GetForwardVector() * 300000.0f;
-	FHitResult hitInfo;
-	FCollisionQueryParams params;
-	params.AddIgnoredActor(this);
-	if (GetWorld()->LineTraceSingleByChannel(hitInfo, start, end, ECollisionChannel::ECC_Visibility, params))
-	{
-		FTransform impactTransform(hitInfo.ImpactPoint);
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, impactTransform);
-
-		auto hitComp = hitInfo.GetComponent();
-		if (hitComp && hitComp->IsSimulatingPhysics())
-		{
-			FVector dir = (hitInfo.ImpactPoint - start).GetSafeNormal();
-			FVector force = dir * hitComp->GetMass() * 500000;
-
-			hitInfo.Component->AddForceAtLocation(force, dir);
-		}
-	}
 }
