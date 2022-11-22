@@ -58,6 +58,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UPlayerFireComponent* weaponComponent;
 	
+	/*UPROPERTY(EditAnywhere)
+		class UStaticMeshComponent* meleeMeshComp;
+	UPROPERTY(EditAnywhere)
+		class USkeletalMeshComponent* gunMeshComp;
+	UPROPERTY(EditAnywhere)
+		class UStaticMeshComponent* sniperMeshComp;*/
 
 	void OnPlayerHit(int damage);
 	void Stop();

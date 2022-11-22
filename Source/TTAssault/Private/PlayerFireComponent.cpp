@@ -18,7 +18,8 @@ UPlayerFireComponent::UPlayerFireComponent()
 	FirePosition->SetRelativeRotation(FRotator(90, 0, 0));
 
 	meleeMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meleeMeshComp"));
-	//meleeMeshComp->SetupAttachment(GetOwner()->scene);
+	//meleeMeshComp->AttachToComponent(GetOwner()->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform,("rHand"));
+	//meleeMeshComp->SetupAttachment(GetOwner()->GetRootComponent());
 
 	gunMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("gunMeshComp"));
 	//gunMeshComp->SetupAttachment(GetOwner()->GetRootComponent());
