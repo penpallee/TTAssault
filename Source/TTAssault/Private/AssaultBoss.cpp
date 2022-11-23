@@ -7,10 +7,13 @@
 #include <GameFramework/CharacterMovementComponent.h>
 #include <Engine/SkeletalMesh.h>
 #include <Kismet/KismetMathLibrary.h>
+#include "AIController.h"
 
 // Sets default values
 AAssaultBoss::AAssaultBoss()
 {
+	AIControllerClass = AAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
