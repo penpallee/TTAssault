@@ -13,7 +13,7 @@ enum { PRIMARY, SECONDARY, TERTIARY };
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UPlayerFireComponent : public UActorComponent
+class UPlayerFireComponent : public USceneComponent
 {
 	GENERATED_BODY()
 

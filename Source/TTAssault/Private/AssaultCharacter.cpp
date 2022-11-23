@@ -34,7 +34,7 @@ AAssaultCharacter::AAssaultCharacter()
 	cameraComp->SetupAttachment(springArmComp);
 
 	weaponComponent = CreateDefaultSubobject <UPlayerFireComponent>("fireComp");//¸ðµâÈ­
-
+	weaponComponent->SetupAttachment(GetRootComponent());
 	//FirePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition"));
 	//FirePosition->SetRelativeLocation(FVector(0, 0, 80), false, false, ETeleportType::None);
 	//FirePosition->SetRelativeRotation(FRotator(90, 0, 0));

@@ -20,16 +20,18 @@ UPlayerFireComponent::UPlayerFireComponent()
 	meleeMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meleeMeshComp"));
 	//meleeMeshComp->AttachToComponent(GetOwner()->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform,("rHand"));
 	//meleeMeshComp->SetupAttachment(GetOwner()->GetRootComponent());
+	meleeMeshComp->SetupAttachment(this);
 
 	gunMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("gunMeshComp"));
-	//gunMeshComp->SetupAttachment(GetOwner()->GetRootComponent());
+	gunMeshComp->SetupAttachment(this);
 
 	sniperMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("sniperMeshComp"));
-	//sniperMeshComp->SetupAttachment(GetOwner()->GetRootComponent());
+	sniperMeshComp->SetupAttachment(this);
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempGun(TEXT("SkeletalMesh'/Game/TH/Resources/FPWeapon/Mesh/SK_FPGun.SK_FPGun'"));
 	ConstructorHelpers::FObjectFinder<UStaticMesh> tempSniper(TEXT("StaticMesh'/Game/TH/Resources/SniperGun/Sniper.Sniper'"));
 	ConstructorHelpers::FObjectFinder<UStaticMesh> tempMelee(TEXT("StaticMesh'/Game/StarterContent/Props/SM_PillarFrame.SM_PillarFrame'"));
+
 
 
 	if (tempGun.Succeeded())
