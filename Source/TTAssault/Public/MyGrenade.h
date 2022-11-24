@@ -4,16 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Grenade.generated.h"
+#include <Particles/ParticleSystem.h>
+#include "MyGrenade.generated.h"
 
 UCLASS()
-class TTASSAULT_API AGrenade : public AActor
+class TTASSAULT_API AMyGrenade : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AGrenade();
+	AMyGrenade();
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,9 +31,14 @@ public:
 
 	float life;
 	float radius;
-	float speed = 100;
+	float speed = 1000;
 
 	void Expolosion();
 	/*void OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);*/
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+
+	UPROPERTY(EditAnywhere)
+	//class UNiagaraSystem* explosionNiagaraFactory;
+	class UParticleSystem* explosionVFXFactory;
 };

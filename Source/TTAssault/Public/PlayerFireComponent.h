@@ -1,11 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #pragma once
-enum { PRIMARY, SECONDARY, TERTIARY };
+enum class WeponSel { 
+	PRIMARY, SECONDARY, TERTIARY 
+};
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "AssaultCharacter.h"
-#include "Grenade.h"
+#include "MyGrenade.h"
 #include <Particles/ParticleSystem.h>
 #include <Components/StaticMeshComponent.h>
 #include <Components/SkeletalMeshComponent.h>
@@ -33,7 +35,7 @@ public:
 	void OnActionFire();
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AGrenade> bulletFactory;
+	TSubclassOf<class AMyGrenade> bulletFactory;
 
 	class AAssaultCharacter* myOwner;//전방선언, include what you use
 
@@ -52,11 +54,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* bulletImpactFactory;
 
-	int selWeapon;
+	WeponSel selWeapon;
+	//FTransform t;
 
 	void onSelPrimary();
 	void onSelSecondary();
 	void onSelTetertiary();
-	void SetGun(int num);
+	void SetGun(WeponSel num);
 	void Sniping();
 };
