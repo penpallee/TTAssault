@@ -16,7 +16,7 @@ class TTASSAULT_API AAIBossController : public AAIController
 
 public:
 	AAIBossController();
-	virtual void OnPossess(AIPawn* InPawn) override;
+	virtual void OnPossess(APawn* InPawn) override;
 
 	void RunAI();
 	void StopAI();

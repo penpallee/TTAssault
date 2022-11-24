@@ -3,6 +3,7 @@
 
 #include "AIBossController.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BlackboardData.h"
 
 AAIBossController::AAIBossController()
@@ -27,7 +28,7 @@ void AAIBossController::OnPossess(APawn* InPawn)
 
 void AAIBossController::RunAI()
 {
-	if (UseBlackboard(BBAsset, Blackboard))
+	if (UseBlackboard(BBAsset, static_cast<UBlackboardComponent*&>(Blackboard)))
 	{
 		RunBehaviorTree(BTAsset);
 	}
