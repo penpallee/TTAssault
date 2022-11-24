@@ -15,7 +15,11 @@ UPlayerFireComponent::UPlayerFireComponent()
 
 	FirePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition"));
 	FirePosition->SetRelativeLocation(FVector(0, 0, 80), false, false, ETeleportType::None);
-	FirePosition->SetRelativeRotation(FRotator(90, 0, 0));
+	//FirePosition->SetRelativeRotation(FRotator(90, 0, 0));
+	FirePosition->SetupAttachment(this);
+
+	this->SetRelativeLocation(FVector(14, 25, 90));
+	//this->SetRelativeRotation(FRotator(0,-90,0));
 
 	meleeMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meleeMeshComp"));
 	//meleeMeshComp->AttachToComponent(GetOwner()->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform,("rHand"));
@@ -37,21 +41,22 @@ UPlayerFireComponent::UPlayerFireComponent()
 	if (tempGun.Succeeded())
 	{
 		gunMeshComp->SetSkeletalMesh(tempGun.Object);
-		gunMeshComp->SetRelativeLocation(FVector(-14, 52, 120));
+		gunMeshComp->SetVisibility(false);
 	}
 
 	if (tempSniper.Succeeded())
 	{
 		sniperMeshComp->SetStaticMesh(tempSniper.Object);
 		sniperMeshComp->SetRelativeScale3D(FVector(.15f));
-		sniperMeshComp->SetRelativeLocation(FVector(-14, 52, 120));
+		sniperMeshComp->SetVisibility(false);
 	}
 
 	if (tempMelee.Succeeded())
 	{
 		meleeMeshComp->SetStaticMesh(tempMelee.Object);
+		meleeMeshComp->SetRelativeRotation(FRotator(90, 0, 0));
 		meleeMeshComp->SetRelativeScale3D(FVector(.15f));
-		meleeMeshComp->SetRelativeLocation(FVector(-170, 10, 100));
+
 	}
 }
 
@@ -81,49 +86,78 @@ void UPlayerFireComponent::SetupFire(UInputComponent* PlayerInputComponent)
 
 void UPlayerFireComponent::OnActionFire()
 {
-	GetWorld()->SpawnActor<AGrenade>(bulletFactory, FirePosition->GetComponentTransform());
+	FTransform	t;
+	switch (selWeapon)
+	{
+	case WeponSel::PRIMARY:
+		break;
+	case WeponSel::SECONDARY:
+		t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
+		GetWorld()->SpawnActor<AMyGrenade>(bulletFactory, t);
 
-	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+		UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+		break;
+	case WeponSel::TERTIARY:
+		Sniping();
+		break;
+	}
 }
 
 void UPlayerFireComponent::onSelPrimary()
 {
-	SetGun(PRIMARY);
-	selWeapon = PRIMARY;
+	SetGun(WeponSel::PRIMARY);
+	selWeapon = WeponSel::PRIMARY;
 }
 
 void UPlayerFireComponent::onSelSecondary()
 {
-	SetGun(SECONDARY);
-	selWeapon = SECONDARY;
+	SetGun(WeponSel::SECONDARY);
+	selWeapon = WeponSel::SECONDARY;
 }
 
 void UPlayerFireComponent::onSelTetertiary()
 {
-	SetGun(TERTIARY);
-	selWeapon = TERTIARY;
+	SetGun(WeponSel::TERTIARY);
+	selWeapon = WeponSel::TERTIARY;
 }
 
 
-void UPlayerFireComponent::SetGun(int num)
+void UPlayerFireComponent::SetGun(WeponSel num)
 {
 	switch (num)
 	{
-	case PRIMARY:
+	case WeponSel::PRIMARY:
 		meleeMeshComp->SetVisibility(true);
+		meleeMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
 		gunMeshComp->SetVisibility(false);
+		gunMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 		sniperMeshComp->SetVisibility(false);
+		sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		break;
-	case SECONDARY:
+
+	case WeponSel::SECONDARY:
 		meleeMeshComp->SetVisibility(false);
+		meleeMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 		gunMeshComp->SetVisibility(true);
+		gunMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
 		sniperMeshComp->SetVisibility(false);
-		//nowWeapon = Cast<UPrimitiveComponent>(gunMeshComp);
+		sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		break;
-	case TERTIARY:
+
+	case WeponSel::TERTIARY:
 		meleeMeshComp->SetVisibility(false);
+		meleeMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 		gunMeshComp->SetVisibility(false);
+		gunMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 		sniperMeshComp->SetVisibility(true);
+		sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
 		//nowWeapon = Cast<UPrimitiveComponent>(sniperMeshComp);
 		break;
 	}
@@ -131,8 +165,8 @@ void UPlayerFireComponent::SetGun(int num)
 
 void UPlayerFireComponent::Sniping()
 {
-	FVector start = sniperMeshComp->GetComponentLocation();
-	FVector end = start + sniperMeshComp->GetForwardVector() * 300000.0f;
+	FVector start = sniperMeshComp->GetSocketLocation(TEXT("FirePosition"));
+	FVector end = start + sniperMeshComp->GetSocketLocation(TEXT("FirePosition")) * 300000.0f;
 	FHitResult hitInfo;
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(GetOwner());
