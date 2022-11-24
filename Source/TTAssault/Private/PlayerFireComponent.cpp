@@ -54,7 +54,8 @@ UPlayerFireComponent::UPlayerFireComponent()
 	if (tempMelee.Succeeded())
 	{
 		meleeMeshComp->SetStaticMesh(tempMelee.Object);
-		meleeMeshComp->SetRelativeRotation(FRotator(90, 0, 0));
+		//meleeMeshComp->SetRelativeRotation(FRotator(90, 0, 0));
+		meleeMeshComp->SetRelativeLocation(FVector(-60,0,0));
 		meleeMeshComp->SetRelativeScale3D(FVector(.15f));
 
 	}
@@ -166,7 +167,7 @@ void UPlayerFireComponent::SetGun(WeponSel num)
 void UPlayerFireComponent::Sniping()
 {
 	FVector start = sniperMeshComp->GetSocketLocation(TEXT("FirePosition"));
-	FVector end = start + sniperMeshComp->GetSocketLocation(TEXT("FirePosition")) * 300000.0f;
+	FVector end = start + sniperMeshComp->GetRightVector() * 300000.0f;
 	FHitResult hitInfo;
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(GetOwner());

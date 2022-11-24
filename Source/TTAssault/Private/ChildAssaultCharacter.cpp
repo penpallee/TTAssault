@@ -16,18 +16,19 @@ AChildAssaultCharacter::AChildAssaultCharacter()
 	{
 		GetMesh()->SetSkeletalMesh(tempBody.Object);
 		bodyMeshComp = GetMesh();
-		bodyMeshComp->SetRelativeLocation(FVector(0, 0, -90));
+		//bodyMeshComp->SetRelativeLocation(FVector(0, 0, 0));
 	}
 
-	this->SetActorRotation(FRotator(0, 0, -90));
+	this->SetActorRotation(FRotator(0, 0, 0));
 
 	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
 	springArmComp->SetupAttachment((RootComponent));
-	springArmComp->SetRelativeLocation(FVector(0, -90, 0));
+	springArmComp->SetRelativeLocation(FVector(0, 0, 0));
 	springArmComp->TargetArmLength = 1000;
 
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
 	cameraComp->SetupAttachment(springArmComp);
+	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
 
 	weaponComponent = CreateDefaultSubobject <UPlayerFireComponent>("fireComp");//¸ðµâÈ­
 	weaponComponent->SetupAttachment(this->GetMesh());
@@ -64,13 +65,13 @@ void AChildAssaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 void AChildAssaultCharacter::OnAxisHorizontal(float value)
 {
 	Super::OnAxisHorizontal(value);
-	direction.Y = -value;
+	direction.Z = value;
 }
 
 void AChildAssaultCharacter::OnAxisVertical(float value)
 {
 	Super::OnAxisVertical(value);
-	direction.X = value;
+	direction.Y = value;
 }
 
 void AChildAssaultCharacter::onActionBoost()
