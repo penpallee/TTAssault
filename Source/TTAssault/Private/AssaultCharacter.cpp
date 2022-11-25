@@ -90,6 +90,11 @@ void AAssaultCharacter::onActionBoost()
 
 }
 
+void AAssaultCharacter::OnActionFire()
+{
+
+}
+
 void AAssaultCharacter::OnPlayerHit(int damage)
 {
 	HP -= (damage - Defense);

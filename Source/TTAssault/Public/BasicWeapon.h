@@ -27,6 +27,9 @@ public:
 	int Damage;
 	UPROPERTY(EditAnywhere)
 	float Cooltime;
+	UPROPERTY(EditAnywhere)
+	int Ammo;
+	int Remain;
 
-	virtual void Attack();
+	virtual void FireArm();
 };
