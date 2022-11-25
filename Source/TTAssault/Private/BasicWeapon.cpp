@@ -8,6 +8,7 @@ ABasicWeapon::ABasicWeapon()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	Remain = Ammo;
 }
 
 // Called when the game starts or when spawned
@@ -24,7 +25,7 @@ void ABasicWeapon::Tick(float DeltaTime)
 
 }
 
-void ABasicWeapon::Attack()
+void ABasicWeapon::FireArm()
 {
 	
 }

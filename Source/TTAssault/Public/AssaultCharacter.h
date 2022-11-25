@@ -37,6 +37,7 @@ public:
 	virtual void onAxisMouseX(float value);
 	virtual void onAxisMouseY(float value);
 	virtual void onActionBoost();
+	virtual void OnActionFire();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector direction;
