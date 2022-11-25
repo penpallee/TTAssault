@@ -17,6 +17,8 @@ public:
 	AWeapon_Pipe();
 	void BeginPlay();
 	void FireArm();
+	void OnSleep();
+	void OnAwake();
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* meleeMeshComp;

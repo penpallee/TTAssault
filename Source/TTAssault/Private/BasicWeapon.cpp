@@ -29,3 +29,12 @@ void ABasicWeapon::FireArm()
 {
 	
 }
+
+void ABasicWeapon::OnSleep()
+{
+
+}
+void ABasicWeapon::OnAwake()
+{
+
+}

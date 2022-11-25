@@ -32,3 +32,15 @@ void AWeapon_Pipe::FireArm()
 {
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 }
+
+void AWeapon_Pipe::OnSleep()
+{
+	meleeMeshComp->SetVisibility(false);
+	meleeMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+}
+void AWeapon_Pipe::OnAwake()
+{
+	meleeMeshComp->SetVisibility(true);
+	meleeMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}

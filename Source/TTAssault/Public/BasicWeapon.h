@@ -32,4 +32,6 @@ public:
 	int Remain;
 
 	virtual void FireArm();
+	virtual void OnSleep();
+	virtual void OnAwake();
 };

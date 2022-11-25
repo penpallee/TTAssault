@@ -34,3 +34,16 @@ void AWeapon_GrenadeLauncher::FireArm()
 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 }
+
+
+void AWeapon_GrenadeLauncher::OnSleep()
+{
+	gunMeshComp->SetVisibility(false);
+	gunMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+}
+void AWeapon_GrenadeLauncher::OnAwake()
+{
+	gunMeshComp->SetVisibility(true);
+	gunMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}

@@ -6,6 +6,12 @@
 #include <Kismet/GameplayStatics.h>
 #include "AssaultCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class WeaponSel : uint8 {
+	Primary UMETA(displayname=PRIMARY),
+	Secondary UMETA(displayname = SECONDARY),
+	Tertiary UMETA(displayname = TERTIARY)
+};
 
 UCLASS()
 class TTASSAULT_API AAssaultCharacter : public ACharacter
@@ -36,8 +42,6 @@ public:
 	virtual void OnAxisVertical(float value);
 	virtual void onAxisMouseX(float value);
 	virtual void onAxisMouseY(float value);
-	virtual void onActionBoost();
-	virtual void OnActionFire();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector direction;
@@ -58,14 +62,14 @@ public:
 	class USkeletalMeshComponent* bodyMeshComp;
 	UPROPERTY(EditAnywhere)
 	class UPlayerFireComponent* weaponComponent;
-	
-	/*UPROPERTY(EditAnywhere)
-		class UStaticMeshComponent* meleeMeshComp;
-	UPROPERTY(EditAnywhere)
-		class USkeletalMeshComponent* gunMeshComp;
-	UPROPERTY(EditAnywhere)
-		class UStaticMeshComponent* sniperMeshComp;*/
 
-	void OnPlayerHit(int damage);
-	void Stop();
+	WeaponSel selWeapon;
+
+	virtual void OnPlayerHit(int damage);
+	virtual void Stop();
+	virtual void onSelPrimary();
+	virtual void onSelSecondary();
+	virtual void onSelTetertiary();
+	virtual void onActionBoost();
+	virtual void OnActionFire();
 };

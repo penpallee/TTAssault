@@ -17,6 +17,8 @@ public:
 	AWeapon_GrenadeLauncher();
 	void BeginPlay();
 	void FireArm();
+	void OnSleep();
+	void OnAwake();
 
 	UPROPERTY(EditAnywhere)
 	USoundBase* fireSound;

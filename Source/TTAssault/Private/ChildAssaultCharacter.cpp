@@ -29,9 +29,6 @@ AChildAssaultCharacter::AChildAssaultCharacter()
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
 	cameraComp->SetupAttachment(springArmComp);
 	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
-
-	weaponComponent = CreateDefaultSubobject <UPlayerFireComponent>("fireComp");//¸ðµâÈ­
-	weaponComponent->SetupAttachment(this->GetMesh());
 }
 
 // Called when the game starts or when spawned
@@ -59,7 +56,6 @@ void AChildAssaultCharacter::Tick(float DeltaTime)
 void AChildAssaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	weaponComponent->SetupFire(PlayerInputComponent);
 }
 
 void AChildAssaultCharacter::OnAxisHorizontal(float value)

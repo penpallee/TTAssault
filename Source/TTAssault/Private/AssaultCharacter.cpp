@@ -108,3 +108,17 @@ void AAssaultCharacter::Stop()
 {
 
 }
+
+
+void AAssaultCharacter::onSelPrimary()
+{
+
+}
+void AAssaultCharacter::onSelSecondary()
+{
+
+}
+void AAssaultCharacter::onSelTetertiary()
+{
+
+}

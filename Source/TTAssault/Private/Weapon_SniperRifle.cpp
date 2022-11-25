@@ -48,3 +48,15 @@ void AWeapon_SniperRifle::FireArm()
 		}
 	}
 }
+
+void AWeapon_SniperRifle::OnSleep()
+{
+	sniperMeshComp->SetVisibility(false);
+	sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+}
+void AWeapon_SniperRifle::OnAwake()
+{
+	sniperMeshComp->SetVisibility(true);
+	sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}

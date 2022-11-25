@@ -7,7 +7,6 @@
 #include "GameFramework/Pawn.h"
 #include "Character_Danmoozi.generated.h"
 
-
 UCLASS()
 class TTASSAULT_API ACharacter_Danmoozi : public AAssaultCharacter
 {
@@ -26,7 +25,27 @@ public:
 	virtual void onAxisMouseX(float value);
 	virtual void onAxisMouseY(float value);
 	virtual void onActionBoost();
+	virtual void OnActionFire();
+	virtual void OnPlayerHit(int damage);
+	virtual void Stop();
+	virtual void onSelPrimary();
+	virtual void onSelSecondary();
+	virtual void onSelTetertiary();
 
-	void OnPlayerHit(int damage);
-	void Stop();
+	UPROPERTY(BlueprintReadOnly)
+	class AWeapon_Pipe* pipe;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AWeapon_Pipe> pipeFactory;
+
+	UPROPERTY(BlueprintReadOnly)
+	class AWeapon_GrenadeLauncher* launcher;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AWeapon_GrenadeLauncher> launcherFactory;
+
+	UPROPERTY(BlueprintReadOnly)
+	class AWeapon_SniperRifle* rifle;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AWeapon_SniperRifle> rifleFactory;
+
+
 };

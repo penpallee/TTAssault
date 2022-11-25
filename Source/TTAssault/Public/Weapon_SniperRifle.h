@@ -17,6 +17,8 @@ public:
 	AWeapon_SniperRifle();
 	void BeginPlay();
 	void FireArm();
+	void OnSleep();
+	void OnAwake();
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* sniperMeshComp;

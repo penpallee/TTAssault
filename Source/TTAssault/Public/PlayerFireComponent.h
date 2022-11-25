@@ -30,36 +30,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	void SetupFire(UInputComponent* PlayerInputComponent);
-	void OnActionFire();
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AMyGrenade> bulletFactory;
-
-	class AAssaultCharacter* myOwner;//전방선언, include what you use
-
-	UPROPERTY(EditAnywhere)
-	USoundBase* fireSound;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UArrowComponent* FirePosition;
-
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* meleeMeshComp;
-	UPROPERTY(EditAnywhere)
-	class USkeletalMeshComponent* gunMeshComp;
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* sniperMeshComp;
-	UPROPERTY(EditAnywhere)
-	class UParticleSystem* bulletImpactFactory;
-
-	WeponSel selWeapon;
-	//FTransform t;
-
-	void onSelPrimary();
-	void onSelSecondary();
-	void onSelTetertiary();
-	void SetGun(WeponSel num);
-	void Sniping();
 };
