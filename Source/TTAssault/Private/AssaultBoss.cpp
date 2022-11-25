@@ -8,6 +8,7 @@
 #include <Engine/SkeletalMesh.h>
 #include <Kismet/KismetMathLibrary.h>
 #include "AIController.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 AAssaultBoss::AAssaultBoss()
@@ -40,7 +41,17 @@ AAssaultBoss::AAssaultBoss()
 		springArmComp->bInheritYaw = false;
 
 		cameraComp->SetupAttachment(springArmComp);
-		
+
+	
+
+		particleComp1 = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("LeftFootBoostFire"));
+		particleComp2 = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("RightFootBoostFire"));
+
+		particleComp1->SetupAttachment(GetMesh());
+		particleComp2->SetupAttachment(GetMesh());
+
+		particleComp1->SetRelativeLocationAndRotation(FVector(50, 30, -5), FRotator(90, 90, 0));
+		particleComp2->SetRelativeLocationAndRotation(FVector(-50, -30, 5), FRotator(90, 90, 0));
 	}
 
 

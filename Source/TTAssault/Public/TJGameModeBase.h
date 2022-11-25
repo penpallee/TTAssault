@@ -13,5 +13,14 @@ UCLASS()
 class TTASSAULT_API ATJGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	ATJGameModeBase();
+
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> GameStartUIF;
+	UPROPERTY(EditAnywhere)
+	class UUserWidget* GameStartUI;
 };

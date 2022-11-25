@@ -34,5 +34,9 @@ public:
 	void OnAxisVertical(float value);
 	void OnAxisHorizontal(float value);
 	void OnAxisHorizontalView(float value);
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystemComponent* particleComp1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystemComponent* particleComp2;
 };
