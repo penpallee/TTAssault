@@ -66,14 +66,18 @@ void ACharacter_Danmoozi::BeginPlay()
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
+	pipe->SetActorRelativeRotation(FRotator(0,90,0));
+	pipe->SetActorRelativeLocation(FVector(10,0,0));
 
 	launcher = GetWorld()->SpawnActor<AWeapon_GrenadeLauncher>(launcherFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	launcher->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
+	launcher->SetActorRelativeLocation(FVector(10, 0, 0));
 
 	rifle = GetWorld()->SpawnActor<AWeapon_SniperRifle>(rifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	rifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
+	rifle->SetActorRelativeLocation(FVector(-10, -20, -10));
 
 }
 

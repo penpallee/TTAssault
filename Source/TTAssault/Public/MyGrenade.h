@@ -31,7 +31,7 @@ public:
 
 	float life;
 	float radius;
-	float speed = 1000;
+	float speed = 2000;
 
 	void Expolosion();
 	/*void OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);*/
