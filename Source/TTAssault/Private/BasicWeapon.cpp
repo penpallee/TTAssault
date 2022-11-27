@@ -22,7 +22,7 @@ void ABasicWeapon::BeginPlay()
 void ABasicWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	//this->SetActorRotation(this->GetActorRotation());
 }
 
 void ABasicWeapon::FireArm()

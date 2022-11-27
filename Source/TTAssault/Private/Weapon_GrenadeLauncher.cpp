@@ -16,6 +16,7 @@ AWeapon_GrenadeLauncher::AWeapon_GrenadeLauncher()
 		gunMeshComp->SetSkeletalMesh(tempGun.Object);
 		gunMeshComp->SetVisibility(false);
 	}
+	//this->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 }
 
 void AWeapon_GrenadeLauncher::BeginPlay()
@@ -24,6 +25,11 @@ void AWeapon_GrenadeLauncher::BeginPlay()
 	Damage = 50;
 	Cooltime = 1.0f;
 	Ammo = 10;
+}
+
+void AWeapon_GrenadeLauncher::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 
 void AWeapon_GrenadeLauncher::FireArm()

@@ -15,6 +15,7 @@ class TTASSAULT_API AWeapon_GrenadeLauncher : public ABasicWeapon
 	GENERATED_BODY()
 public:
 	AWeapon_GrenadeLauncher();
+	void Tick(float DeltaTime) override;
 	void BeginPlay();
 	void FireArm();
 	void OnSleep();

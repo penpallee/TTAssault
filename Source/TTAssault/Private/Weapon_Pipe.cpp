@@ -13,10 +13,12 @@ AWeapon_Pipe::AWeapon_Pipe()
 	if (tempMelee.Succeeded())
 	{
 		meleeMeshComp->SetStaticMesh(tempMelee.Object);
-		//meleeMeshComp->SetRelativeRotation(FRotator(90, 0, 0));
 		meleeMeshComp->SetRelativeLocation(FVector(-60, 0, 0));
-		meleeMeshComp->SetRelativeScale3D(FVector(.15f));
+		meleeMeshComp->SetRelativeScale3D(FVector(.5f));
+		meleeMeshComp->SetRelativeRotation(FRotator(90, 90, 90));
 	}
+
+	//this->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 }
 
 // Called when the game starts
@@ -26,6 +28,11 @@ void AWeapon_Pipe::BeginPlay()
 	Damage=40;
 	Ammo = 2147483646;
 	Cooltime=0.5f;
+}
+
+void AWeapon_Pipe::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 
 void AWeapon_Pipe::FireArm()

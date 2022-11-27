@@ -15,6 +15,7 @@ class TTASSAULT_API AWeapon_SniperRifle : public ABasicWeapon
 	GENERATED_BODY()
 public:
 	AWeapon_SniperRifle();
+	void Tick(float DeltaTime) override;
 	void BeginPlay();
 	void FireArm();
 	void OnSleep();

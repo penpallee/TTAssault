@@ -16,6 +16,8 @@ AWeapon_SniperRifle::AWeapon_SniperRifle()
 		sniperMeshComp->SetRelativeScale3D(FVector(.15f));
 		sniperMeshComp->SetVisibility(false);
 	}
+
+	//this->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 }
 
 void AWeapon_SniperRifle::BeginPlay()
@@ -24,6 +26,11 @@ void AWeapon_SniperRifle::BeginPlay()
 	Damage = 20;
 	Cooltime = 20.0f;
 	Ammo = 20;
+}
+
+void AWeapon_SniperRifle::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 
 void AWeapon_SniperRifle::FireArm()
@@ -38,14 +45,14 @@ void AWeapon_SniperRifle::FireArm()
 		FTransform impactTransform(hitInfo.ImpactPoint);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, impactTransform);
 
-		auto hitComp = hitInfo.GetComponent();
+		/*auto hitComp = hitInfo.GetComponent();
 		if (hitComp && hitComp->IsSimulatingPhysics())
 		{
 			FVector dir = (hitInfo.ImpactPoint - start).GetSafeNormal();
 			FVector force = dir * hitComp->GetMass() * 500000;
 
 			hitInfo.Component->AddForceAtLocation(force, dir);
-		}
+		}*/
 	}
 }
 

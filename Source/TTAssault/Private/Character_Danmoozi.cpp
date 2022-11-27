@@ -8,6 +8,7 @@
 #include "Weapon_Pipe.h"
 #include "Weapon_GrenadeLauncher.h"
 #include "Weapon_SniperRifle.h"
+#include <Kismet/KismetMathLibrary.h>
 
 ACharacter_Danmoozi::ACharacter_Danmoozi()
 {
@@ -25,13 +26,13 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 
 	this->SetActorRotation(FRotator(0, 0, 0));
 
-	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
+	/*springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
 	springArmComp->SetupAttachment((RootComponent));
 	springArmComp->SetRelativeLocation(FVector(0, 0, 0));
-	springArmComp->TargetArmLength = 1000;
+	springArmComp->TargetArmLength = 1000;*/
 
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
-	cameraComp->SetupAttachment(springArmComp);
+	//cameraComp->SetupAttachment(springArmComp);
 	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
 
 	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
@@ -63,20 +64,27 @@ void ACharacter_Danmoozi::BeginPlay()
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
-	pipe->AttachToComponent(this->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform, NAME_None);//TEXT("rHand"));
+	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
+	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
 
 	launcher = GetWorld()->SpawnActor<AWeapon_GrenadeLauncher>(launcherFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
-	launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
+	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
+	launcher->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
 
 	rifle = GetWorld()->SpawnActor<AWeapon_SniperRifle>(rifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
-	rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
+	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
+	rifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
+
 }
 
 // Called every frame
 void ACharacter_Danmoozi::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	FVector t = this->GetActorLocation();
 	this->SetActorLocation(GetActorLocation() + direction * speed * DeltaTime);
+	cameraComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(cameraComp->GetRelativeLocation(), this->GetActorLocation()));
+	cameraComp->SetRelativeLocation(FVector(-1000, t.Y * 0.95f, t.Z * 0.95f));
 }
 
 // Called to bind functionality to input

@@ -34,8 +34,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere)
-	class USpringArmComponent* springArmComp;
-	UPROPERTY(EditAnywhere)
 	class UCameraComponent* cameraComp;	
 
 	virtual void OnAxisHorizontal(float value);

@@ -21,13 +21,13 @@ AChildAssaultCharacter::AChildAssaultCharacter()
 
 	this->SetActorRotation(FRotator(0, 0, 0));
 
-	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
+	/*springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
 	springArmComp->SetupAttachment((RootComponent));
 	springArmComp->SetRelativeLocation(FVector(0, 0, 0));
-	springArmComp->TargetArmLength = 1000;
+	springArmComp->TargetArmLength = 1000;*/
 
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
-	cameraComp->SetupAttachment(springArmComp);
+	//cameraComp->SetupAttachment(springArmComp);
 	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
 }
 

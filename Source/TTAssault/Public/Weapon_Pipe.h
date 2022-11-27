@@ -15,6 +15,7 @@ class TTASSAULT_API AWeapon_Pipe : public ABasicWeapon
 	GENERATED_BODY()
 public:
 	AWeapon_Pipe();
+	void Tick(float DeltaTime) override;
 	void BeginPlay();
 	void FireArm();
 	void OnSleep();
