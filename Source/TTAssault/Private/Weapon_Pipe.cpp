@@ -27,7 +27,9 @@ void AWeapon_Pipe::BeginPlay()
 	Super::BeginPlay();
 	Damage=40;
 	Ammo = 2147483646;
-	Cooltime=0.5f;
+	Cooltime = 0.5f;
+	Remain = Ammo;
+	myName = TEXT("TitaniumPipe");
 }
 
 void AWeapon_Pipe::Tick(float DeltaTime)
@@ -50,4 +52,14 @@ void AWeapon_Pipe::OnAwake()
 {
 	meleeMeshComp->SetVisibility(true);
 	meleeMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+int AWeapon_Pipe::returnAmmo()
+{
+	return Remain;
+}
+
+FString AWeapon_Pipe::returnName()
+{
+	return myName;
 }

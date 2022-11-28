@@ -59,8 +59,10 @@ void ACharacter_Danmoozi::BeginPlay()
 	InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &AAssaultCharacter::onSelPrimary);
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);
+
 	speed = 500;
 	booster = 1000;
+
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
@@ -77,8 +79,7 @@ void ACharacter_Danmoozi::BeginPlay()
 	rifle = GetWorld()->SpawnActor<AWeapon_SniperRifle>(rifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	rifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	rifle->SetActorRelativeLocation(FVector(-10, -20, -10));
-
+	//rifle->SetActorRelativeLocation(FVector(-10, -20, -10));
 }
 
 // Called every frame
@@ -175,4 +176,28 @@ void ACharacter_Danmoozi::onSelTetertiary()
 	pipe->OnSleep();
 	launcher->OnSleep();
 	rifle->OnAwake();
+}
+
+PlayerStatus ACharacter_Danmoozi::returnStatus()
+{
+	Super::returnStatus();
+	switch (selWeapon)
+	{
+	case WeaponSel::Primary:
+		nowStat.ammo=pipe->returnAmmo();
+		nowStat.WeaponName=pipe->returnName();
+		break;
+	case WeaponSel::Secondary:
+		nowStat.ammo = launcher->returnAmmo();
+		nowStat.WeaponName = launcher->returnName();
+		break;
+	case WeaponSel::Tertiary:
+		nowStat.ammo = rifle->returnAmmo();
+		nowStat.WeaponName = rifle->returnName();
+		break;
+	}
+	nowStat.HP = this->HP;
+	nowStat.boost = booster;
+	
+	return nowStat;
 }

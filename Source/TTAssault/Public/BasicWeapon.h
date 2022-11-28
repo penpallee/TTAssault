@@ -30,8 +30,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	int Ammo;
 	int Remain;
+	FString myName;
 
 	virtual void FireArm();
 	virtual void OnSleep();
 	virtual void OnAwake();
+	virtual int returnAmmo();
+	virtual FString returnName();
 };
