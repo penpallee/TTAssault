@@ -20,6 +20,8 @@ public:
 	void FireArm();
 	void OnSleep();
 	void OnAwake();
+	virtual int returnAmmo();
+	virtual FString returnName();
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* meleeMeshComp;

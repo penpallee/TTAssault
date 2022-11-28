@@ -95,6 +95,11 @@ void AAssaultCharacter::OnActionFire()
 
 }
 
+PlayerStatus AAssaultCharacter::returnStatus()
+{
+	return nowStat;
+}
+
 void AAssaultCharacter::OnPlayerHit(int damage)
 {
 	HP -= (damage - Defense);

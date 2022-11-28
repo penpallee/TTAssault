@@ -38,3 +38,13 @@ void ABasicWeapon::OnAwake()
 {
 
 }
+
+int ABasicWeapon::returnAmmo()
+{
+	return Remain;
+}
+
+FString ABasicWeapon::returnName()
+{
+	return myName;
+}

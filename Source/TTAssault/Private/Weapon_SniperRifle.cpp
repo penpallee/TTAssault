@@ -26,6 +26,8 @@ void AWeapon_SniperRifle::BeginPlay()
 	Damage = 20;
 	Cooltime = 20.0f;
 	Ammo = 20;
+	Remain = Ammo;
+	myName = TEXT("SniperRifle");
 }
 
 void AWeapon_SniperRifle::Tick(float DeltaTime)
@@ -66,4 +68,14 @@ void AWeapon_SniperRifle::OnAwake()
 {
 	sniperMeshComp->SetVisibility(true);
 	sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+int AWeapon_SniperRifle::returnAmmo()
+{
+	return Remain;
+}
+
+FString AWeapon_SniperRifle::returnName()
+{
+	return myName;
 }
