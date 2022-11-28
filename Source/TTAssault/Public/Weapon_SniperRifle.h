@@ -20,6 +20,8 @@ public:
 	void FireArm();
 	void OnSleep();
 	void OnAwake();
+	virtual int returnAmmo();
+	virtual FString returnName();
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* sniperMeshComp;
@@ -27,6 +29,4 @@ public:
 	USoundBase* fireSound;
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* bulletImpactFactory;
-
-
 };

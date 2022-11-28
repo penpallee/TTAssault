@@ -20,17 +20,18 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void OnAxisHorizontal(float value);
-	virtual void OnAxisVertical(float value);
-	virtual void onAxisMouseX(float value);
-	virtual void onAxisMouseY(float value);
-	virtual void onActionBoost();
-	virtual void OnActionFire();
-	virtual void OnPlayerHit(int damage);
-	virtual void Stop();
-	virtual void onSelPrimary();
-	virtual void onSelSecondary();
-	virtual void onSelTetertiary();
+	void OnAxisHorizontal(float value);
+	void OnAxisVertical(float value);
+	void onAxisMouseX(float value);
+	void onAxisMouseY(float value);
+	void onActionBoost();
+	void OnActionFire();
+	void OnPlayerHit(int damage);
+	void Stop();
+	void onSelPrimary();
+	void onSelSecondary();
+	void onSelTetertiary();
+	PlayerStatus returnStatus();
 
 	UPROPERTY(BlueprintReadOnly)
 	class AWeapon_Pipe* pipe;
@@ -46,6 +47,4 @@ public:
 	class AWeapon_SniperRifle* rifle;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AWeapon_SniperRifle> rifleFactory;
-
-
 };

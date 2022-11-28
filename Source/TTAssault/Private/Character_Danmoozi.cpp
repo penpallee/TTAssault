@@ -59,22 +59,27 @@ void ACharacter_Danmoozi::BeginPlay()
 	InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &AAssaultCharacter::onSelPrimary);
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);
+
 	speed = 500;
 	booster = 1000;
+
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
+	pipe->SetActorRelativeRotation(FRotator(0,90,0));
+	pipe->SetActorRelativeLocation(FVector(10,0,0));
 
 	launcher = GetWorld()->SpawnActor<AWeapon_GrenadeLauncher>(launcherFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	launcher->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
+	launcher->SetActorRelativeLocation(FVector(10, 0, 0));
 
 	rifle = GetWorld()->SpawnActor<AWeapon_SniperRifle>(rifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	rifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-
+	rifle->SetActorRelativeLocation(FVector(-10, 20, 0));
 }
 
 // Called every frame
@@ -171,4 +176,28 @@ void ACharacter_Danmoozi::onSelTetertiary()
 	pipe->OnSleep();
 	launcher->OnSleep();
 	rifle->OnAwake();
+}
+
+PlayerStatus ACharacter_Danmoozi::returnStatus()
+{
+	Super::returnStatus();
+	switch (selWeapon)
+	{
+	case WeaponSel::Primary:
+		nowStat.ammo=pipe->returnAmmo();
+		nowStat.WeaponName=pipe->returnName();
+		break;
+	case WeaponSel::Secondary:
+		nowStat.ammo = launcher->returnAmmo();
+		nowStat.WeaponName = launcher->returnName();
+		break;
+	case WeaponSel::Tertiary:
+		nowStat.ammo = rifle->returnAmmo();
+		nowStat.WeaponName = rifle->returnName();
+		break;
+	}
+	nowStat.HP = this->HP;
+	nowStat.boost = booster;
+	
+	return nowStat;
 }

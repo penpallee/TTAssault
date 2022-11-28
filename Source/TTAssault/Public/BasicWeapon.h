@@ -29,9 +29,21 @@ public:
 	float Cooltime;
 	UPROPERTY(EditAnywhere)
 	int Ammo;
-	int Remain;
+	UPROPERTY(EditAnywhere)
+	float reloadingTime;
 
-	virtual void FireArm();
+	int Remain;
+	bool isMagazine;
+	bool isCoolDown;
+	FString myName;
+
+	virtual bool FireArm();
 	virtual void OnSleep();
 	virtual void OnAwake();
+	virtual int returnAmmo();
+	virtual FString returnName();
+	virtual void SetTimerMagazineReload();
+	virtual void MagazineReloadComplete();
+	virtual void SetTimerRemaining();
+	virtual void SetTimerCoolDown();
 };

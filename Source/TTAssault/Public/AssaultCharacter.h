@@ -13,6 +13,14 @@ enum class WeaponSel : uint8 {
 	Tertiary UMETA(displayname = TERTIARY)
 };
 
+struct PlayerStatus
+{
+	int HP;
+	float boost;
+	int ammo;
+	FString WeaponName;
+};
+
 UCLASS()
 class TTASSAULT_API AAssaultCharacter : public ACharacter
 {
@@ -45,7 +53,7 @@ public:
 	FVector direction;
 	FRotator rotation;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float speed;
 	UPROPERTY(EditAnywhere)
 	float booster;
@@ -56,12 +64,13 @@ public:
 	UPROPERTY(EditAnywhere)
 	int Defense;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	class USkeletalMeshComponent* bodyMeshComp;
 	UPROPERTY(EditAnywhere)
 	class UPlayerFireComponent* weaponComponent;
 
 	WeaponSel selWeapon;
+	PlayerStatus nowStat;
 
 	virtual void OnPlayerHit(int damage);
 	virtual void Stop();
@@ -70,4 +79,5 @@ public:
 	virtual void onSelTetertiary();
 	virtual void onActionBoost();
 	virtual void OnActionFire();
+	virtual PlayerStatus  returnStatus();
 };
