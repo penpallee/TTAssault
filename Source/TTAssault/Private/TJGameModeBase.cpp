@@ -5,6 +5,7 @@
 
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameStartUI.h"
 
 ATJGameModeBase::ATJGameModeBase()
 {
@@ -15,6 +16,9 @@ void ATJGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//UGameplayStatics::SetGamePaused(GetWorld(), true);
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
 
+	GameStartUI = CreateWidget<UGameStartUI>(GetWorld(), GameStartUIF);
+
+	GameStartUI->AddToViewport();
 }
