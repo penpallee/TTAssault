@@ -53,7 +53,7 @@ public:
 	FVector direction;
 	FRotator rotation;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float speed;
 	UPROPERTY(EditAnywhere)
 	float booster;
@@ -64,7 +64,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	int Defense;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	class USkeletalMeshComponent* bodyMeshComp;
 	UPROPERTY(EditAnywhere)
 	class UPlayerFireComponent* weaponComponent;
