@@ -41,6 +41,7 @@ void AWeapon_GrenadeLauncher::FireArm()
 	GetWorld()->SpawnActor<AMyGrenade>(bulletFactory, t);
 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+	Remain--;
 }
 
 

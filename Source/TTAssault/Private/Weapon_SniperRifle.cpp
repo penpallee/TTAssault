@@ -56,6 +56,8 @@ void AWeapon_SniperRifle::FireArm()
 			hitInfo.Component->AddForceAtLocation(force, dir);
 		}*/
 	}
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(),fireSound,this->GetActorLocation(),1,1,0);
+	Remain--;
 }
 
 void AWeapon_SniperRifle::OnSleep()
