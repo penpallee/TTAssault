@@ -20,7 +20,7 @@ public:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class UUserWidget> GameStartUIF;
+	TSubclassOf<class UGameStartUI> GameStartUIF;
 	UPROPERTY(EditAnywhere)
-	class UUserWidget* GameStartUI;
+	class UGameStartUI* GameStartUI;
 };
