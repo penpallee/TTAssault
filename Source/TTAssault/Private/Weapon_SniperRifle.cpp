@@ -35,7 +35,7 @@ void AWeapon_SniperRifle::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AWeapon_SniperRifle::FireArm()
+bool AWeapon_SniperRifle::FireArm()
 {
 	FVector start = sniperMeshComp->GetSocketLocation(TEXT("FirePosition"));
 	FVector end = start + sniperMeshComp->GetRightVector() * 300000.0f;
@@ -58,6 +58,7 @@ void AWeapon_SniperRifle::FireArm()
 	}
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(),fireSound,this->GetActorLocation(),1,1,0);
 	Remain--;
+	return true;
 }
 
 void AWeapon_SniperRifle::OnSleep()

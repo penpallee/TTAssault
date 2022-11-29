@@ -178,7 +178,7 @@ void ACharacter_Danmoozi::onSelTetertiary()
 	rifle->OnAwake();
 }
 
-PlayerStatus ACharacter_Danmoozi::returnStatus()
+FPlayerStatus ACharacter_Danmoozi::returnStatus()
 {
 	Super::returnStatus();
 	switch (selWeapon)

@@ -17,7 +17,7 @@ public:
 	AWeapon_GrenadeLauncher();
 	void Tick(float DeltaTime) override;
 	void BeginPlay();
-	void FireArm();
+	bool FireArm();
 	void OnSleep();
 	void OnAwake();
 	virtual int returnAmmo();

@@ -34,7 +34,7 @@ void AWeapon_GrenadeLauncher::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AWeapon_GrenadeLauncher::FireArm()
+bool AWeapon_GrenadeLauncher::FireArm()
 {
 	Super::FireArm();
 	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
@@ -42,6 +42,7 @@ void AWeapon_GrenadeLauncher::FireArm()
 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 	Remain--;
+	return true;
 }
 
 

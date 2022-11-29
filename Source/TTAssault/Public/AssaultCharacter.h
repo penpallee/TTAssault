@@ -13,11 +13,18 @@ enum class WeaponSel : uint8 {
 	Tertiary UMETA(displayname = TERTIARY)
 };
 
-struct PlayerStatus
+USTRUCT(Atomic, BlueprintType)
+struct FPlayerStatus
 {
+	GENERATED_USTRUCT_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite)
 	int HP;
+	UPROPERTY(BlueprintReadWrite)
 	float boost;
+	UPROPERTY(BlueprintReadWrite)
 	int ammo;
+	UPROPERTY(BlueprintReadWrite)
 	FString WeaponName;
 };
 
@@ -70,7 +77,9 @@ public:
 	class UPlayerFireComponent* weaponComponent;
 
 	WeaponSel selWeapon;
-	PlayerStatus nowStat;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FPlayerStatus nowStat;
 
 	virtual void OnPlayerHit(int damage);
 	virtual void Stop();
@@ -79,5 +88,5 @@ public:
 	virtual void onSelTetertiary();
 	virtual void onActionBoost();
 	virtual void OnActionFire();
-	virtual PlayerStatus  returnStatus();
+	virtual FPlayerStatus returnStatus();
 };

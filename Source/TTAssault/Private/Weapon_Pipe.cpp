@@ -37,9 +37,10 @@ void AWeapon_Pipe::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AWeapon_Pipe::FireArm()
+bool AWeapon_Pipe::FireArm()
 {
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+	return true;
 }
 
 void AWeapon_Pipe::OnSleep()

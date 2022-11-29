@@ -19,7 +19,6 @@ ABasicWeapon::ABasicWeapon()
 void ABasicWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -30,7 +29,7 @@ void ABasicWeapon::Tick(float DeltaTime)
 
 bool ABasicWeapon::FireArm()
 {
-	
+	return true;
 }
 
 void ABasicWeapon::OnSleep()

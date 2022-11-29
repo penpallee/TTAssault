@@ -31,7 +31,7 @@ public:
 	void onSelPrimary();
 	void onSelSecondary();
 	void onSelTetertiary();
-	PlayerStatus returnStatus();
+	FPlayerStatus returnStatus();
 
 	UPROPERTY(BlueprintReadOnly)
 	class AWeapon_Pipe* pipe;
