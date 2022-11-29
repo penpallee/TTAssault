@@ -97,6 +97,7 @@ void AAssaultCharacter::OnActionFire()
 
 FPlayerStatus AAssaultCharacter::returnStatus()
 {
+	FPlayerStatus nowStat;
 	return nowStat;
 }
 

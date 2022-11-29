@@ -63,7 +63,7 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float speed;
 	UPROPERTY(EditAnywhere)
-	float booster;
+	float booster = 1000;
 	UPROPERTY(EditAnywhere)
 	int HP = 100;
 	UPROPERTY(EditAnywhere)
@@ -77,9 +77,6 @@ public:
 	class UPlayerFireComponent* weaponComponent;
 
 	WeaponSel selWeapon;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FPlayerStatus nowStat;
 
 	virtual void OnPlayerHit(int damage);
 	virtual void Stop();

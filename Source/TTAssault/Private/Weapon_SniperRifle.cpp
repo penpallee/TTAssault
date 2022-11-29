@@ -37,6 +37,10 @@ void AWeapon_SniperRifle::Tick(float DeltaTime)
 
 bool AWeapon_SniperRifle::FireArm()
 {
+	//Super::FireArm();
+	if (Remain <= 0)
+		return false;
+
 	FVector start = sniperMeshComp->GetSocketLocation(TEXT("FirePosition"));
 	FVector end = start + sniperMeshComp->GetRightVector() * 300000.0f;
 	FHitResult hitInfo;

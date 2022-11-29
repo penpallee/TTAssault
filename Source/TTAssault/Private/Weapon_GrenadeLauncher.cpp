@@ -36,7 +36,10 @@ void AWeapon_GrenadeLauncher::Tick(float DeltaTime)
 
 bool AWeapon_GrenadeLauncher::FireArm()
 {
-	Super::FireArm();
+	//Super::FireArm();
+	if(Remain<=0)
+		return false;
+
 	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	GetWorld()->SpawnActor<AMyGrenade>(bulletFactory, t);
 
