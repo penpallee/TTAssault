@@ -14,6 +14,9 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 {
 	//Super();
 	PrimaryActorTick.bCanEverTick = true;
+
+	this->speed = 500;
+	this->booster = 1000;
 	selWeapon= WeaponSel::Primary;
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBody(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn'"));//½ºÄÌ·¹Å» ¸Þ½Ã °¡Á®¿È
@@ -60,8 +63,6 @@ void ACharacter_Danmoozi::BeginPlay()
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);
 
-	speed = 500;
-	booster = 1000;
 
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
@@ -100,6 +101,7 @@ void ACharacter_Danmoozi::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 void ACharacter_Danmoozi::OnActionFire()
 {
+	UE_LOG(LogTemp,Warning,TEXT("HP : %d, Ammo : %d, Booster : %d"),this->returnStatus().HP, this->returnStatus().ammo, this->returnStatus().boost);
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:
@@ -180,7 +182,7 @@ void ACharacter_Danmoozi::onSelTetertiary()
 
 FPlayerStatus ACharacter_Danmoozi::returnStatus()
 {
-	Super::returnStatus();
+	FPlayerStatus nowStat;
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:
@@ -197,7 +199,7 @@ FPlayerStatus ACharacter_Danmoozi::returnStatus()
 		break;
 	}
 	nowStat.HP = this->HP;
-	nowStat.boost = booster;
+	nowStat.boost = this->booster;
 	
 	return nowStat;
 }

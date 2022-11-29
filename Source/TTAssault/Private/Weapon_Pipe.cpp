@@ -38,7 +38,7 @@ void AWeapon_Pipe::Tick(float DeltaTime)
 }
 
 bool AWeapon_Pipe::FireArm()
-{
+{ 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 	return true;
 }
