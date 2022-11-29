@@ -80,7 +80,6 @@ FString AWeapon_GrenadeLauncher::returnName()
 void AWeapon_GrenadeLauncher::CoolComplete()
 {
 	isCoolDown=false;
-	GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
 }
 
 void AWeapon_GrenadeLauncher::RemainReload()

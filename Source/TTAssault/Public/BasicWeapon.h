@@ -26,7 +26,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	int Damage;					//공격력
 	UPROPERTY(EditAnywhere)
-	float Cooltime = 10;				//발사 딜레이
+	float Cooltime;				//발사 딜레이
 	UPROPERTY(EditAnywhere)
 	int Ammo;					//탄창 크기
 	UPROPERTY(EditAnywhere)
