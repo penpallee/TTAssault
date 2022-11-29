@@ -29,5 +29,5 @@ public:
 	UPROPERTY(EditAnywhere)
 	class USkeletalMeshComponent* gunMeshComp;
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class AMyGrenade> bulletFactory;
+	TSubclassOf<class AMyGrenade> bulletFactory;
 };
