@@ -20,8 +20,10 @@ public:
 	bool FireArm();
 	void OnSleep();
 	void OnAwake();
-	virtual int returnAmmo();
-	virtual FString returnName();
+	int returnAmmo();
+
+	UFUNCTION(BlueprintCallable)
+	FString returnName();
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* sniperMeshComp;
@@ -29,4 +31,8 @@ public:
 	USoundBase* fireSound;
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* bulletImpactFactory;
+
+	void SetTimerMagazineReload();
+	void MagazineReloadComplete();
+	void SetTimerCoolDown();
 };

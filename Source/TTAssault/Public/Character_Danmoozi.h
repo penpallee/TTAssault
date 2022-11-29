@@ -31,6 +31,7 @@ public:
 	void onSelPrimary();
 	void onSelSecondary();
 	void onSelTetertiary();
+	UFUNCTION(BlueprintCallable)
 	FPlayerStatus returnStatus();
 
 	UPROPERTY(BlueprintReadOnly)

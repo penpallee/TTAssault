@@ -20,11 +20,13 @@ public:
 	bool FireArm();
 	void OnSleep();
 	void OnAwake();
-	virtual int returnAmmo();
-	virtual FString returnName();
+	int returnAmmo();
+	FString returnName();
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* meleeMeshComp;
 	UPROPERTY(EditAnywhere)
 	USoundBase* fireSound;
+
+	virtual void SetTimerCoolDown();
 };

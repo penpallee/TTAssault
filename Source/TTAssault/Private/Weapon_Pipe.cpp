@@ -64,3 +64,8 @@ FString AWeapon_Pipe::returnName()
 {
 	return myName;
 }
+
+void AWeapon_Pipe::SetTimerCoolDown()
+{
+	
+}

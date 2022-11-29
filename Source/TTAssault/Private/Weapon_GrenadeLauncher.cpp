@@ -48,13 +48,13 @@ bool AWeapon_GrenadeLauncher::FireArm()
 	return true;
 }
 
-
 void AWeapon_GrenadeLauncher::OnSleep()
 {
 	gunMeshComp->SetVisibility(false);
 	gunMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 }
+
 void AWeapon_GrenadeLauncher::OnAwake()
 {
 	gunMeshComp->SetVisibility(true);
@@ -69,4 +69,14 @@ int AWeapon_GrenadeLauncher::returnAmmo()
 FString AWeapon_GrenadeLauncher::returnName()
 {
 	return myName;
+}
+
+void AWeapon_GrenadeLauncher::SetTimerRemaining()
+{
+	
+}
+
+void AWeapon_GrenadeLauncher::SetTimerCoolDown()
+{
+
 }

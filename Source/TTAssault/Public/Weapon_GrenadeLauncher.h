@@ -20,8 +20,8 @@ public:
 	bool FireArm();
 	void OnSleep();
 	void OnAwake();
-	virtual int returnAmmo();
-	virtual FString returnName();
+	int returnAmmo();
+	FString returnName();
 
 	UPROPERTY(EditAnywhere)
 	USoundBase* fireSound;
@@ -29,4 +29,7 @@ public:
 	class USkeletalMeshComponent* gunMeshComp;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AMyGrenade> bulletFactory;
+
+	void SetTimerRemaining();
+	void SetTimerCoolDown();
 };

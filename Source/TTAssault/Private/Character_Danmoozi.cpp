@@ -15,8 +15,8 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 	//Super();
 	PrimaryActorTick.bCanEverTick = true;
 
-	this->speed = 500;
-	this->booster = 1000;
+	ACharacter_Danmoozi::HP = 500;
+	ACharacter_Danmoozi::booster = 2000;
 	selWeapon= WeaponSel::Primary;
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBody(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn'"));//½ºÄÌ·¹Å» ¸Þ½Ã °¡Á®¿È
@@ -183,6 +183,7 @@ void ACharacter_Danmoozi::onSelTetertiary()
 FPlayerStatus ACharacter_Danmoozi::returnStatus()
 {
 	FPlayerStatus nowStat;
+
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:

@@ -86,3 +86,18 @@ FString AWeapon_SniperRifle::returnName()
 {
 	return myName;
 }
+
+void AWeapon_SniperRifle::SetTimerMagazineReload()
+{
+
+}
+
+void AWeapon_SniperRifle::MagazineReloadComplete()
+{
+
+}
+
+void AWeapon_SniperRifle::SetTimerCoolDown()
+{
+
+}
