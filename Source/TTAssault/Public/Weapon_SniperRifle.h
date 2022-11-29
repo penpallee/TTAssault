@@ -31,8 +31,9 @@ public:
 	USoundBase* fireSound;
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* bulletImpactFactory;
+	UPROPERTY(EditAnywhere)
+	USoundBase* reloadSound;
 
-	void SetTimerMagazineReload();
-	void MagazineReloadComplete();
-	void SetTimerCoolDown();
+	void MagazineReloadComplete() override;
+	void CoolComplete() override;
 };

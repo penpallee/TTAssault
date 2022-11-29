@@ -17,6 +17,7 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 
 	ACharacter_Danmoozi::HP = 500;
 	ACharacter_Danmoozi::booster = 2000;
+	ACharacter_Danmoozi::speed = 900;
 	selWeapon= WeaponSel::Primary;
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBody(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn'"));//½ºÄÌ·¹Å» ¸Þ½Ã °¡Á®¿È
@@ -101,7 +102,7 @@ void ACharacter_Danmoozi::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 void ACharacter_Danmoozi::OnActionFire()
 {
-	UE_LOG(LogTemp,Warning,TEXT("HP : %d, Ammo : %d, Booster : %d"),this->returnStatus().HP, this->returnStatus().ammo, this->returnStatus().boost);
+	//UE_LOG(LogTemp,Warning,TEXT("HP : %d, Ammo : %d, Booster : %d"),this->returnStatus().HP, this->returnStatus().ammo, this->returnStatus().boost);
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:
