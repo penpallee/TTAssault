@@ -30,6 +30,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AMyGrenade> bulletFactory;
 
-	void SetTimerRemaining();
-	void SetTimerCoolDown();
+	void RemainReload();
+	void CoolComplete();
 };

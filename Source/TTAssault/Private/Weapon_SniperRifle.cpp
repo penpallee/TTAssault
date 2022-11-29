@@ -23,10 +23,12 @@ AWeapon_SniperRifle::AWeapon_SniperRifle()
 void AWeapon_SniperRifle::BeginPlay()
 {
 	Super::BeginPlay();
-	Damage = 20;
-	Cooltime = 20.0f;
-	Ammo = 20;
+	Damage = 30;
+	Cooltime = 5.0f;
+	Ammo = 5;
 	Remain = Ammo;
+	reloadingTime = 5.0f;
+	isCoolDown = false;
 	myName = TEXT("SniperRifle");
 }
 
@@ -38,8 +40,12 @@ void AWeapon_SniperRifle::Tick(float DeltaTime)
 bool AWeapon_SniperRifle::FireArm()
 {
 	//Super::FireArm();
-	if (Remain <= 0)
+
+	if (Remain <= 0 || isCoolDown)
+	{
 		return false;
+	}
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_SniperRifle::CoolComplete, Cooltime, false);
 
 	FVector start = sniperMeshComp->GetSocketLocation(TEXT("FirePosition"));
 	FVector end = start + sniperMeshComp->GetRightVector() * 300000.0f;
@@ -55,13 +61,21 @@ bool AWeapon_SniperRifle::FireArm()
 		if (hitComp && hitComp->IsSimulatingPhysics())
 		{
 			FVector dir = (hitInfo.ImpactPoint - start).GetSafeNormal();
-			FVector force = dir * hitComp->GetMass() * 500000;
+			FVector force = dir * hitComp->GetMass() * 500;
 
 			hitInfo.Component->AddForceAtLocation(force, dir);
 		}*/
 	}
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(),fireSound,this->GetActorLocation(),1,1,0);
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireSound, this->GetActorLocation(), 1, 1, 0);
+
 	Remain--;
+	if (Remain == 0)
+	{
+		GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_SniperRifle::MagazineReloadComplete, reloadingTime, false);
+		UE_LOG(LogTemp, Warning, TEXT("Magazine"));
+	}
+
+	isCoolDown = true;
 	return true;
 }
 
@@ -87,17 +101,17 @@ FString AWeapon_SniperRifle::returnName()
 	return myName;
 }
 
-void AWeapon_SniperRifle::SetTimerMagazineReload()
-{
-
-}
-
 void AWeapon_SniperRifle::MagazineReloadComplete()
 {
-
+	UE_LOG(LogTemp, Warning, TEXT("MagazineComplete"));
+	Remain = 5;
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), reloadSound, this->GetActorLocation(), 1, 1, 0);
+	//GetWorldTimerManager().ClearTimer(autoReloadTimerHandle);
 }
 
-void AWeapon_SniperRifle::SetTimerCoolDown()
+void AWeapon_SniperRifle::CoolComplete()
 {
-
+	UE_LOG(LogTemp, Warning, TEXT("CoolDown"));
+	isCoolDown = false;
+	//GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
 }

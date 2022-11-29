@@ -51,23 +51,17 @@ FString ABasicWeapon::returnName()
 	return myName;
 }
 
-void ABasicWeapon::SetTimerMagazineReload()
-{
-	FTimerHandle T;
-	GetWorldTimerManager().SetTimer(T, this, &ABasicWeapon::MagazineReloadComplete, reloadingTime, false, 0);
-}
-
 void ABasicWeapon::MagazineReloadComplete()
 {
 	Remain = Ammo;
 }
 
-void ABasicWeapon::SetTimerRemaining()
+void ABasicWeapon::RemainReload()
 {
-	
+	Remain++;
 }
 
-void ABasicWeapon::SetTimerCoolDown()
+void ABasicWeapon::CoolComplete()
 {
-
+	
 }

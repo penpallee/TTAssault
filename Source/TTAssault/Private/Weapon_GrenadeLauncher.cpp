@@ -22,11 +22,15 @@ AWeapon_GrenadeLauncher::AWeapon_GrenadeLauncher()
 void AWeapon_GrenadeLauncher::BeginPlay()
 {
 	Super::BeginPlay();
-	Damage = 50;
-	Cooltime = 1.0f;
+	Damage = 10;
+	Cooltime = 2.0f;
 	Ammo = 10;
 	Remain = Ammo;
+	reloadingTime = 2;
+	isCoolDown = false;
 	myName = TEXT("GrenadeLauncher");
+
+	GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_GrenadeLauncher::RemainReload, reloadingTime, true, 0);
 }
 
 void AWeapon_GrenadeLauncher::Tick(float DeltaTime)
@@ -37,7 +41,7 @@ void AWeapon_GrenadeLauncher::Tick(float DeltaTime)
 bool AWeapon_GrenadeLauncher::FireArm()
 {
 	//Super::FireArm();
-	if(Remain<=0)
+	if (Remain <= 0 || isCoolDown)
 		return false;
 
 	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
@@ -45,6 +49,8 @@ bool AWeapon_GrenadeLauncher::FireArm()
 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 	Remain--;
+	isCoolDown = true;
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_GrenadeLauncher::CoolComplete, Cooltime, false, 0);
 	return true;
 }
 
@@ -71,12 +77,14 @@ FString AWeapon_GrenadeLauncher::returnName()
 	return myName;
 }
 
-void AWeapon_GrenadeLauncher::SetTimerRemaining()
+void AWeapon_GrenadeLauncher::CoolComplete()
 {
-	
+	isCoolDown=false;
+	GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
 }
 
-void AWeapon_GrenadeLauncher::SetTimerCoolDown()
+void AWeapon_GrenadeLauncher::RemainReload()
 {
-
+	if(Remain<Ammo)
+	Remain++;
 }

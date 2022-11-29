@@ -28,5 +28,5 @@ public:
 	UPROPERTY(EditAnywhere)
 	USoundBase* fireSound;
 
-	virtual void SetTimerCoolDown();
+	void CoolComplete();
 };
