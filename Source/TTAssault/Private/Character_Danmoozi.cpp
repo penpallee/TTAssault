@@ -54,7 +54,6 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 void ACharacter_Danmoozi::BeginPlay()
 {
 	Super::BeginPlay();
-<<<<<<< Updated upstream
 	// InputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &AAssaultCharacter::onActionBoost);
 	// InputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &AAssaultCharacter::OnAxisHorizontal);
 	// InputComponent->BindAxis(TEXT("Move Right / Left"), this, &AAssaultCharacter::OnAxisVertical);
@@ -64,9 +63,6 @@ void ACharacter_Danmoozi::BeginPlay()
 	InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &AAssaultCharacter::onSelPrimary);
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);
-
-=======
->>>>>>> Stashed changes
 
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
