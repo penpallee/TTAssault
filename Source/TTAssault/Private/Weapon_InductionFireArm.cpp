@@ -3,6 +3,8 @@
 
 #include "Weapon_InductionFireArm.h"
 
+#include "Kismet/GameplayStatics.h"
+
 AWeapon_InductionFireArm::AWeapon_InductionFireArm()
 {
 }
@@ -15,6 +17,19 @@ void AWeapon_InductionFireArm::Tick(float DeltaTime)
 void AWeapon_InductionFireArm::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FTimerHandle GravityTimerHandle;
+	float GravityTime = 2.1;
+
+	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			// 코드 구현
+			this->Destroy();
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+
+			// TimerHandle 초기화
+			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+		}), GravityTime, false);
 }
 
 bool AWeapon_InductionFireArm::FireArm()

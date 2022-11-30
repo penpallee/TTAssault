@@ -2,6 +2,7 @@
 
 
 #include "Weapon_DirectFire.h"
+#include "Kismet/GameplayStatics.h"
 
 AWeapon_DirectFire::AWeapon_DirectFire()
 {
@@ -15,6 +16,19 @@ void AWeapon_DirectFire::Tick(float DeltaTime)
 void AWeapon_DirectFire::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FTimerHandle GravityTimerHandle;
+	float GravityTime = 4;
+
+	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			// 코드 구현
+			this->Destroy();
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+
+			// TimerHandle 초기화
+			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+		}), GravityTime, false);
 }
 
 bool AWeapon_DirectFire::FireArm()

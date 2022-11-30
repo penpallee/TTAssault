@@ -2,6 +2,7 @@
 
 
 #include "BossBullet.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABossBullet::ABossBullet()
@@ -15,7 +16,19 @@ ABossBullet::ABossBullet()
 void ABossBullet::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FTimerHandle GravityTimerHandle;
+	float GravityTime = 4;
 	
+	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			// 코드 구현
+			this->Destroy();
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+
+			// TimerHandle 초기화
+			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+		}), GravityTime, false);	// 반복하려면 false를 true로 변경
 }
 
 // Called every frame
