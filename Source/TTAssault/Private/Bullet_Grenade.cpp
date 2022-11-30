@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MyGrenade.h"
+#include "Bullet_Grenade.h"
 #include <Components/SphereComponent.h>
 #include <Components/StaticMeshComponent.h>
 #include <Kismet/GameplayStatics.h>
 
 // Sets default values
-AMyGrenade::AMyGrenade()
+ABullet_Grenade::ABullet_Grenade()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -17,23 +17,23 @@ AMyGrenade::AMyGrenade()
 
 	sphereComp->SetGenerateOverlapEvents(true);
 	sphereComp->SetCollisionProfileName(TEXT("Bullet"));
-	//sphereComp->OnComponentBeginOverlap.AddDynamic(this, &AMyGrenade::OnSphereComponentBeginOverlap);
+	//sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_Grenade::OnSphereComponentBeginOverlap);
 	RootComponent = sphereComp;
 	meshComp->SetRelativeScale3D(FVector(0.3f));
 	meshComp->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
-void AMyGrenade::BeginPlay()
+void ABullet_Grenade::BeginPlay()
 {
 	Super::BeginPlay();
 
 	FTimerHandle handle;
-	GetWorldTimerManager().SetTimer(handle, this, &AMyGrenade::Expolosion, 0.1f, false, 5.0f);
+	GetWorldTimerManager().SetTimer(handle, this, &ABullet_Grenade::Expolosion, 0.1f, false, 5.0f);
 }
 
 // Called every frame
-void AMyGrenade::Tick(float DeltaTime)
+void ABullet_Grenade::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	FVector direction = GetActorForwardVector();
@@ -43,14 +43,14 @@ void AMyGrenade::Tick(float DeltaTime)
 	SetActorLocation(P0 + velocity * DeltaTime, true);
 }
 
-void AMyGrenade::Expolosion()
+void ABullet_Grenade::Expolosion()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionVFXFactory, GetActorLocation());
 	//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld, explosionNiagaraFactory, GetActorLocation());
 	this->Destroy();
 }
 
-void AMyGrenade::NotifyActorBeginOverlap(AActor* OtherActor)
+void ABullet_Grenade::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Expolosion();
 }

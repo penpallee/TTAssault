@@ -4,7 +4,6 @@
 #include "Character_Danmoozi.h"
 #include <GameFramework/SpringArmComponent.h>
 #include <Camera/CameraComponent.h>
-#include "PlayerFireComponent.h"
 #include "Weapon_Pipe.h"
 #include "Weapon_GrenadeLauncher.h"
 #include "Weapon_SniperRifle.h"
@@ -64,7 +63,7 @@ void ACharacter_Danmoozi::BeginPlay()
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);*/
 
-	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
+	//UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
@@ -101,7 +100,7 @@ void ACharacter_Danmoozi::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	InputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &AAssaultCharacter::OnAxisHorizontal);
 	InputComponent->BindAxis(TEXT("Move Right / Left"), this, &AAssaultCharacter::OnAxisVertical);
 	InputComponent->BindAxis("Look Up / Down Mouse", this, &AAssaultCharacter::onAxisMouseY);
-	InputComponent->BindAxis("Turn Right / Left Mouse", this, &AAssaultCharacter::onAxisMouseX);
+	InputComponent->BindAxis("Turn Right / Left", this, &AAssaultCharacter::onAxisMouseX);
 	InputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AAssaultCharacter::OnActionFire);
 	InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &AAssaultCharacter::onSelPrimary);
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
@@ -155,11 +154,13 @@ void ACharacter_Danmoozi::Stop()
 void ACharacter_Danmoozi::onAxisMouseX(float value)
 {
 	Super::onAxisMouseX(value);
+	AddControllerYawInput(-value);
 }
 
 void ACharacter_Danmoozi::onAxisMouseY(float value)
 {
 	Super::onAxisMouseY(value);
+	AddControllerRollInput(value);
 }
 
 void ACharacter_Danmoozi::onSelPrimary()

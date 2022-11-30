@@ -27,12 +27,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* sniperMeshComp;
-	UPROPERTY(EditAnywhere)
-	USoundBase* fireSound;
+	//UPROPERTY(EditAnywhere)
+	//USoundBase* fireSound;
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* bulletImpactFactory;
-	UPROPERTY(EditAnywhere)
-	USoundBase* reloadSound;
+	//UPROPERTY(EditAnywhere)
+	//USoundBase* reloadSound;
 
 	void MagazineReloadComplete() override;
 	void CoolComplete() override;

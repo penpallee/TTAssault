@@ -24,10 +24,10 @@ public:
 	virtual int returnAmmo();
 	virtual FString returnName();
 
-	UPROPERTY(EditAnywhere)
-	USoundBase* fireSound;
+	//UPROPERTY(EditAnywhere)
+	//USoundBase* fireSound;
 	UPROPERTY(EditAnywhere)
 	class USkeletalMeshComponent* gunMeshComp;
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AMyGrenade> bulletFactory;
+	TSubclassOf<class ABullet_Grenade> bulletFactory;
 };
