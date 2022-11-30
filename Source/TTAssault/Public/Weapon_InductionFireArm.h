@@ -30,4 +30,7 @@ public:
 	class USkeletalMeshComponent* gunMeshComp;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABullet_Grenade> bulletFactory;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* explosionFX;
 };
