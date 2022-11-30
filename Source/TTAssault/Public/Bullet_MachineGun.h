@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include <Particles/ParticleSystem.h>
-#include "MyGrenade.generated.h"
+#include "Bullet_MachineGun.generated.h"
 
 UCLASS()
-class TTASSAULT_API AMyGrenade : public AActor
+class TTASSAULT_API ABullet_MachineGun : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AMyGrenade();
+	ABullet_MachineGun();
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,7 +31,7 @@ public:
 
 	float life;
 	float radius;
-	float speed = 2000;
+	float speed = 30000;
 
 	void Expolosion();
 	/*void OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);*/

@@ -4,7 +4,6 @@
 #include "ChildAssaultCharacter.h"
 #include <GameFramework/SpringArmComponent.h>
 #include <Camera/CameraComponent.h>
-#include "PlayerFireComponent.h"
 
 AChildAssaultCharacter::AChildAssaultCharacter()
 {

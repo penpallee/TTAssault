@@ -2,7 +2,7 @@
 
 
 #include "Weapon_GrenadeLauncher.h"
-#include "MyGrenade.h"
+#include "Bullet_Grenade.h"
 #include <Kismet/GameplayStatics.h>
 
 AWeapon_GrenadeLauncher::AWeapon_GrenadeLauncher()
@@ -23,7 +23,7 @@ void AWeapon_GrenadeLauncher::BeginPlay()
 {
 	Super::BeginPlay();
 	Damage = 10;
-	Cooltime = 2.0f;
+	Cooltime = 0.7f;
 	Ammo = 10;
 	Remain = Ammo;
 	reloadingTime = 2;
@@ -43,14 +43,15 @@ bool AWeapon_GrenadeLauncher::FireArm()
 	//Super::FireArm();
 	if (Remain <= 0 || isCoolDown)
 		return false;
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_GrenadeLauncher::CoolComplete, Cooltime, false);
 
 	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
-	GetWorld()->SpawnActor<AMyGrenade>(bulletFactory, t);
+	GetWorld()->SpawnActor<ABullet_Grenade>(bulletFactory, t);
 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 	Remain--;
 	isCoolDown = true;
-	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_GrenadeLauncher::CoolComplete, Cooltime, false, 0);
+	
 	return true;
 }
 

@@ -3,7 +3,6 @@
 
 #include "AssaultCharacter.h"
 #include <GameFramework/SpringArmComponent.h>
-#include "PlayerFireComponent.h"
 #include <Camera/CameraComponent.h>
 #include <Kismet/GameplayStatics.h>
 #include <Blueprint/WidgetLayoutLibrary.h>

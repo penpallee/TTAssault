@@ -25,8 +25,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* meleeMeshComp;
-	UPROPERTY(EditAnywhere)
-	USoundBase* fireSound;
+	//UPROPERTY(EditAnywhere)
+	//USoundBase* fireSound;
 
 	void CoolComplete();
 };

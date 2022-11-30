@@ -56,6 +56,10 @@ void ABasicWeapon::MagazineReloadComplete()
 	Remain = Ammo;
 }
 
+void ABasicWeapon::AutoFire()
+{
+}
+
 void ABasicWeapon::RemainReload()
 {
 	Remain++;

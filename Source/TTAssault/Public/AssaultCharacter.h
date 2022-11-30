@@ -73,8 +73,6 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	class USkeletalMeshComponent* bodyMeshComp;
-	UPROPERTY(EditAnywhere)
-	class UPlayerFireComponent* weaponComponent;
 
 	WeaponSel selWeapon;
 
