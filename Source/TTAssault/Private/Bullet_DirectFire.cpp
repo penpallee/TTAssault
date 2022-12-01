@@ -1,19 +1,30 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BossBullet.h"
+#include "Bullet_DirectFire.h"
+
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
-ABossBullet::ABossBullet()
+ABullet_DirectFire::ABullet_DirectFire()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	bulletTrailFX = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("bulletTrailFX"));
+	bulletMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("bulletMovement"));
+
+	bulletTrailFX->bAllowRecycling = true;
+
+	bulletMovementComp->InitialSpeed = 1200;
+	bulletMovementComp->MaxSpeed = 1200;
+	bulletMovementComp->ProjectileGravityScale = 0;
 }
 
 // Called when the game starts or when spawned
-void ABossBullet::BeginPlay()
+void ABullet_DirectFire::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -32,7 +43,7 @@ void ABossBullet::BeginPlay()
 }
 
 // Called every frame
-void ABossBullet::Tick(float DeltaTime)
+void ABullet_DirectFire::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 

@@ -32,5 +32,5 @@ public:
 	TSubclassOf<class ABullet_Grenade> bulletFactory;
 
 	UPROPERTY(EditAnywhere)
-		class UParticleSystem* explosionFX;
+	class UParticleSystem* explosionFX;
 };

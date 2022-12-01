@@ -26,6 +26,20 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+
+	UFUNCTION(BlueprintCallable)
+	void OnBossHit(int damage);
+
+	UPROPERTY(EditAnywhere)
+	float booster = 1000;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int HP = 100;
+	UPROPERTY(EditAnywhere)
+	bool isBooster = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Defense;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USpringArmComponent* springArmComp;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

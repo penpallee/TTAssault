@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "BossBullet.generated.h"
+#include "Bullet_InductionFire.generated.h"
 
 UCLASS()
-class TTASSAULT_API ABossBullet : public AActor
+class TTASSAULT_API ABullet_InductionFire : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABossBullet();
+	ABullet_InductionFire();
 
 protected:
 	// Called when the game starts or when spawned
@@ -23,7 +23,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* explosionFX;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystemComponent* bulletTrailFX;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UProjectileMovementComponent* bulletMovementComp;
 };

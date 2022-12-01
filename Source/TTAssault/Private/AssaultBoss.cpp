@@ -54,6 +54,7 @@ AAssaultBoss::AAssaultBoss()
 		particleComp2->SetRelativeLocationAndRotation(FVector(-50, -30, 5), FRotator(90, 90, 0));
 	}
 
+	Defense = 0;
 
 }
 
@@ -79,6 +80,15 @@ void AAssaultBoss::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &AAssaultBoss::OnAxisVertical);
 	PlayerInputComponent->BindAxis(TEXT("Move Right / Left"), this, &AAssaultBoss::OnAxisHorizontal);
 	PlayerInputComponent->BindAxis(TEXT("Turn R/L"), this, &AAssaultBoss::OnAxisHorizontalView);
+}
+
+void AAssaultBoss::OnBossHit(int damage)
+{
+	HP -= (damage - Defense);
+	if (HP <= 0)
+	{
+		Destroy();
+	}
 }
 
 void AAssaultBoss::OnAxisVertical(float value)
