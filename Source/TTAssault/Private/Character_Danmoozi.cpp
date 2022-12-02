@@ -63,14 +63,13 @@ void ACharacter_Danmoozi::BeginPlay()
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);*/
 
-	//UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
+	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
 	pipe->SetActorRelativeLocation(FVector(40, 50, 0));
 	pipe->SetActorRelativeRotation(FRotator(0, 90, 0));
-
 
 	launcher = GetWorld()->SpawnActor<AWeapon_GrenadeLauncher>(launcherFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
@@ -95,6 +94,16 @@ void ACharacter_Danmoozi::Tick(float DeltaTime)
 	this->SetActorLocation(GetActorLocation() + direction * speed * DeltaTime);
 	cameraComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(cameraComp->GetRelativeLocation(), this->GetActorLocation()));
 	cameraComp->SetRelativeLocation(FVector(-1000, t.Y * 0.95f, t.Z * 0.95f));
+
+	/*FRotator deltaRot = UKismetMathLibrary::NormalizedDeltaRotator(this->GetControlRotation(),GetActorRotation());
+	FRotator makeRot = FRotator(0,mouseX,mouseY);
+
+	FRotator interRot = UKismetMathLibrary::RInterpTo(makeRot, deltaRot,GetWorld()->GetDeltaSeconds(),15);
+	this->SetActorRotation(interRot);*/
+
+	FHitResult result;
+	GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1,false,result );
+	this->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(result.Location,GetActorLocation()));
 }
 
 // Called to bind functionality to input
@@ -159,13 +168,18 @@ void ACharacter_Danmoozi::Stop()
 void ACharacter_Danmoozi::onAxisMouseX(float value)
 {
 	Super::onAxisMouseX(value);
-	AddControllerYawInput(-value);
+	//AddControllerYawInput(-value);
+	//mouseX -= value;
+
 }
 
 void ACharacter_Danmoozi::onAxisMouseY(float value)
 {
 	Super::onAxisMouseY(value);
-	AddControllerRollInput(value);
+	//AddControllerRollInput(value);
+	//mouseY += value;
+	//AddControllerYawInput(value);
+
 }
 
 void ACharacter_Danmoozi::onSelPrimary()

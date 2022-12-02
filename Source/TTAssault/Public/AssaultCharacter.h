@@ -71,6 +71,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	int Defense;
 
+	float mouseX;
+	float mouseY;
+
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	class USkeletalMeshComponent* bodyMeshComp;
 
