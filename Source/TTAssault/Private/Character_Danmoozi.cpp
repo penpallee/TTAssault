@@ -69,20 +69,20 @@ void ACharacter_Danmoozi::BeginPlay()
 	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
 	pipe->SetActorRelativeLocation(FVector(40, 50, 0));
-	pipe->SetActorRelativeRotation(FRotator(0, 90, 0));
+	pipe->SetActorRelativeRotation(FRotator(-10, 70, 0));
 
 	launcher = GetWorld()->SpawnActor<AWeapon_GrenadeLauncher>(launcherFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	launcher->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
 	launcher->SetActorRelativeLocation(FVector(0, 0, 0));
-	launcher->SetActorRelativeRotation(FRotator(1, 90, 10));
+	launcher->SetActorRelativeRotation(FRotator(-10, 105, 0));
 
 
 	rifle = GetWorld()->SpawnActor<AWeapon_SniperRifle>(rifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	rifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
 	rifle->SetActorRelativeLocation(FVector(-30, 0, 0));
-	rifle->SetActorRelativeRotation(FRotator(10, 90, 10));
+	rifle->SetActorRelativeRotation(FRotator(-10, 105, 0));
 
 }
 
@@ -101,9 +101,9 @@ void ACharacter_Danmoozi::Tick(float DeltaTime)
 	FRotator interRot = UKismetMathLibrary::RInterpTo(makeRot, deltaRot,GetWorld()->GetDeltaSeconds(),15);
 	this->SetActorRotation(interRot);*/
 
-	FHitResult result;
-	GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1,false,result );
-	this->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(result.Location,GetActorLocation()));
+	//FHitResult result;
+	//GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1,false,result );
+	//this->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(result.Location,GetActorLocation()));
 }
 
 // Called to bind functionality to input
