@@ -47,12 +47,23 @@ bool AWeapon_SniperRifle::FireArm()
 	}
 	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_SniperRifle::CoolComplete, Cooltime, false);
 
-	FVector start = sniperMeshComp->GetSocketLocation(TEXT("FirePosition"));
-	FVector end = start + sniperMeshComp->GetRightVector() * 300000.0f;
+	//마우스 트레이스를 위한 플레이어 컨트롤러
+	APlayerController* AimController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	//마우스가 AimLayer에 충돌한 위치
+	FHitResult result;
+	AimController->GetHitResultUnderCursorForObjects(objTypes, true, result);
+
+	//총구 Location
+	FTransform temp = sniperMeshComp->GetSocketTransform(TEXT("FirePosition"));
+	//총구의 맵 평면상의 Location
+	FVector temp2 = FVector(-140, temp.GetLocation().Y, temp.GetLocation().Z);
+	//AimLayer = 플레이어 X 위치 반영 안돼서 -140 하드코딩, Y, Z는 마우스 방향
+	FVector dir = FVector(-140, result.Location.Y, result.Location.Z);
+
 	FHitResult hitInfo;
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(GetOwner());
-	if (GetWorld()->LineTraceSingleByChannel(hitInfo, start, end, ECollisionChannel::ECC_Visibility, params))
+	if (GetWorld()->LineTraceSingleByChannel(hitInfo, temp2, FVector(dir-temp2)*300000, ECollisionChannel::ECC_Visibility, params))
 	{
 		FTransform impactTransform(hitInfo.ImpactPoint);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, impactTransform);

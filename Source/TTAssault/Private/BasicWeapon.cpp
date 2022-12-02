@@ -13,6 +13,14 @@ ABasicWeapon::ABasicWeapon()
 	Remain = Ammo;
 	isMagazine = false;
 	isCoolDown = true;
+
+	// From "custom" collision channels.
+	ECollisionChannel CollisionChannel;
+	FCollisionResponseParams ResponseParams;
+	if (UCollisionProfile::GetChannelAndResponseParams(FName(TEXT("AimLayer")), CollisionChannel, ResponseParams))
+	{
+		objTypes.Add(UEngineTypes::ConvertToObjectType(CollisionChannel));
+	}
 }
 
 // Called when the game starts or when spawned
