@@ -6,6 +6,7 @@
 #include "BasicWeapon.h"
 #include "Weapon_InductionFireArm.generated.h"
 
+
 /**
  * 
  */
@@ -18,7 +19,7 @@ public:
 	AWeapon_InductionFireArm();
 	void Tick(float DeltaTime) override;
 	void BeginPlay();
-	bool FireArm();
+	bool FireArm(FString SelectBossORPlayer);
 	void OnSleep();
 	void OnAwake();
 	virtual int returnAmmo();
@@ -28,9 +29,17 @@ public:
 	//USoundBase* fireSound;
 	UPROPERTY(EditAnywhere)
 	class USkeletalMeshComponent* gunMeshComp;
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ABullet_Grenade> bulletFactory;
 
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* explosionFX;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABullet_InductionFire> bulletFactory;
+
+	class ABullet_InductionFire* InductionBullet;
+
+	void RemainReload();
+	void CoolComplete();
+
+
 };

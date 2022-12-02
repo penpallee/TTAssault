@@ -8,6 +8,7 @@
 #include <Engine/SkeletalMesh.h>
 #include <Kismet/KismetMathLibrary.h>
 #include "AIController.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
@@ -52,6 +53,25 @@ AAssaultBoss::AAssaultBoss()
 
 		particleComp1->SetRelativeLocationAndRotation(FVector(50, 30, -5), FRotator(90, 90, 0));
 		particleComp2->SetRelativeLocationAndRotation(FVector(-50, -30, 5), FRotator(90, 90, 0));
+
+		BossMoveComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("BossMoveComp"));
+
+		BossMoveComp->bRotationFollowsVelocity = true;
+		BossMoveComp->ProjectileGravityScale = 0;
+		BossMoveComp->bInitialVelocityInLocalSpace = true;
+		BossMoveComp->bShouldBounce = true;
+		BossMoveComp->Bounciness = 0.7;
+		BossMoveComp->Friction = 0.2;
+		BossMoveComp->bForceSubStepping = true;
+		BossMoveComp->bIsHomingProjectile = true;
+		BossMoveComp->HomingAccelerationMagnitude = 1000;
+		BossMoveComp->bInterpMovement = true;
+		BossMoveComp->bInterpRotation = true;
+		BossMoveComp->SetPlaneConstraintNormal(FVector(1, 0, 0));
+		BossMoveComp->bConstrainToPlane = true;
+		BossMoveComp->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::X);
+
+
 	}
 
 	Defense = 0;
