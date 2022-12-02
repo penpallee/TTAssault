@@ -63,23 +63,27 @@ void ACharacter_Danmoozi::BeginPlay()
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);*/
 
-	//UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
+	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	pipe->SetActorRelativeRotation(FRotator(0,90,0));
-	pipe->SetActorRelativeLocation(FVector(10,0,0));
+	pipe->SetActorRelativeLocation(FVector(40, 50, 0));
+	pipe->SetActorRelativeRotation(FRotator(0, 90, 0));
 
 	launcher = GetWorld()->SpawnActor<AWeapon_GrenadeLauncher>(launcherFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	launcher->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	launcher->SetActorRelativeLocation(FVector(10, 0, 0));
+	launcher->SetActorRelativeLocation(FVector(0, 0, 0));
+	launcher->SetActorRelativeRotation(FRotator(1, 90, 10));
+
 
 	rifle = GetWorld()->SpawnActor<AWeapon_SniperRifle>(rifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	rifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	rifle->SetActorRelativeLocation(FVector(-10, 20, 0));
+	rifle->SetActorRelativeLocation(FVector(-30, 0, 0));
+	rifle->SetActorRelativeRotation(FRotator(10, 90, 10));
+
 }
 
 // Called every frame
@@ -90,6 +94,16 @@ void ACharacter_Danmoozi::Tick(float DeltaTime)
 	this->SetActorLocation(GetActorLocation() + direction * speed * DeltaTime);
 	cameraComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(cameraComp->GetRelativeLocation(), this->GetActorLocation()));
 	cameraComp->SetRelativeLocation(FVector(-1000, t.Y * 0.95f, t.Z * 0.95f));
+
+	/*FRotator deltaRot = UKismetMathLibrary::NormalizedDeltaRotator(this->GetControlRotation(),GetActorRotation());
+	FRotator makeRot = FRotator(0,mouseX,mouseY);
+
+	FRotator interRot = UKismetMathLibrary::RInterpTo(makeRot, deltaRot,GetWorld()->GetDeltaSeconds(),15);
+	this->SetActorRotation(interRot);*/
+
+	FHitResult result;
+	GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1,false,result );
+	this->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(result.Location,GetActorLocation()));
 }
 
 // Called to bind functionality to input
@@ -154,13 +168,18 @@ void ACharacter_Danmoozi::Stop()
 void ACharacter_Danmoozi::onAxisMouseX(float value)
 {
 	Super::onAxisMouseX(value);
-	AddControllerYawInput(-value);
+	//AddControllerYawInput(-value);
+	//mouseX -= value;
+
 }
 
 void ACharacter_Danmoozi::onAxisMouseY(float value)
 {
 	Super::onAxisMouseY(value);
-	AddControllerRollInput(value);
+	//AddControllerRollInput(value);
+	//mouseY += value;
+	//AddControllerYawInput(value);
+
 }
 
 void ACharacter_Danmoozi::onSelPrimary()

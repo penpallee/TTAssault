@@ -53,4 +53,6 @@ public:
 	USoundBase* fireSound;
 	UPROPERTY(EditAnywhere)
 	USoundBase* reloadSound;
+
+	TArray<TEnumAsByte<EObjectTypeQuery> > objTypes;
 };
