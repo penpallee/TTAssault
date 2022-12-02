@@ -53,4 +53,7 @@ public:
 	class UParticleSystemComponent* particleComp1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UParticleSystemComponent* particleComp2;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UProjectileMovementComponent* BossMoveComp;
 };

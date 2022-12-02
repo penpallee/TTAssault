@@ -3,6 +3,9 @@
 
 #include "Bullet_InductionFire.h"
 
+#include "AssaultBoss.h"
+#include "Character_Danmoozi.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -23,7 +26,7 @@ ABullet_InductionFire::ABullet_InductionFire()
 	bulletMovementComp->ProjectileGravityScale = 0;
 	bulletMovementComp->bIsHomingProjectile = true;
 	bulletMovementComp->HomingAccelerationMagnitude = 800;
-
+	
 	
 
 }
@@ -53,5 +56,13 @@ void ABullet_InductionFire::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ABullet_InductionFire::SetInductionFireTarget(TargetSel target)
+{
+	// if (target == TargetSel::Boss) bulletMovementComp->HomingTargetComponent = Cast<AAssaultBoss>(UGameplayStatics::GetActorOfClass(GetWorld(), targetBoss));
+	// 	else if (target == TargetSel::Player) bulletMovementComp->HomingTargetComponent = Cast<ACharacter_Danmoozi>(UGameplayStatics::GetActorOfClass(GetWorld(), targetPlayer));
+
+	
 }
 

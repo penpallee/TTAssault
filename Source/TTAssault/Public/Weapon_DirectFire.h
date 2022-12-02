@@ -29,8 +29,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	class USkeletalMeshComponent* gunMeshComp;
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ABullet_Grenade> bulletFactory;
+	TSubclassOf<class ABullet_DirectFire> bulletFactory;
 
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* explosionFX;
+
+	void RemainReload();
+	void CoolComplete();
 };
