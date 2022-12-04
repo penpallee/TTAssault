@@ -127,3 +127,8 @@ void AAssaultCharacter::onSelTetertiary()
 {
 
 }
+
+void AAssaultCharacter::PlayAttackAnim()
+{
+	PlayAnimMontage(attackAnimMontage);
+}

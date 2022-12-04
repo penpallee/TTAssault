@@ -124,6 +124,8 @@ void ACharacter_Danmoozi::SetupPlayerInputComponent(UInputComponent* PlayerInput
 void ACharacter_Danmoozi::OnActionFire()
 {
 	//UE_LOG(LogTemp,Warning,TEXT("HP : %d, Ammo : %d, Booster : %d"),this->returnStatus().HP, this->returnStatus().ammo, this->returnStatus().boost);
+	PlayAnimMontage(attackAnimMontage);
+
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:

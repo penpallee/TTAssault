@@ -77,6 +77,9 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	class USkeletalMeshComponent* bodyMeshComp;
 
+	UPROPERTY(EditAnywhere)
+	class UAnimMontage* attackAnimMontage;
+
 	WeaponSel selWeapon;
 
 	virtual void OnPlayerHit(int damage);
@@ -87,4 +90,5 @@ public:
 	virtual void onActionBoost();
 	virtual void OnActionFire();
 	virtual FPlayerStatus returnStatus();
+	virtual void PlayAttackAnim();
 };

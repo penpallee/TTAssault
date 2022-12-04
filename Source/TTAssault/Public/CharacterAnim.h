@@ -15,10 +15,10 @@ class TTASSAULT_API UCharacterAnim : public UAnimInstance
 	GENERATED_BODY()
 public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-		UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float XValue;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float YValue;
+	float forwardVelocity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool isDash;
+	float rightVelocity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isDash;
 };
