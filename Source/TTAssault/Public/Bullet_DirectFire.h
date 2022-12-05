@@ -31,4 +31,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UProjectileMovementComponent* bulletMovementComp;
+
+	
+	UPROPERTY(EditAnywhere)
+	class USoundBase* fireTrailSound;
+
+	UPROPERTY(EditAnywhere)
+	class USoundBase* fireDestroySound;
 };
