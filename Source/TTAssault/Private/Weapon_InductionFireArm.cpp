@@ -27,10 +27,10 @@ void AWeapon_InductionFireArm::Tick(float DeltaTime)
 void AWeapon_InductionFireArm::BeginPlay()
 {
 	Super::BeginPlay();
-	Damage = 20;
-	Cooltime = 2.0f;
-	Ammo = 3;
-	Remain = Ammo;
+	damage = 20;
+	coolTime = 2.0f;
+	ammo = 3;
+	remain = ammo;
 	reloadingTime = 3;
 	isCoolDown = false;
 	myName = TEXT("InductionFireWeapon");
@@ -42,14 +42,14 @@ void AWeapon_InductionFireArm::BeginPlay()
 
 bool AWeapon_InductionFireArm::FireArm(FString SelectBossORPlayer)
 {
-	if (Remain <= 0 || isCoolDown)
+	if (remain <= 0 || isCoolDown)
 		return false;
-	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_InductionFireArm::CoolComplete, Cooltime, false);
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_InductionFireArm::CoolComplete, coolTime, false);
 
 	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	GetWorld()->SpawnActor<ABullet_InductionFire>(bulletFactory, t);
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
-	Remain--;
+	remain--;
 	isCoolDown = true;
 
 	if (SelectBossORPlayer == FString("Boss"))	InductionBullet->SetInductionFireTarget(TargetSel::Boss);
@@ -74,7 +74,7 @@ void AWeapon_InductionFireArm::OnAwake()
 
 int AWeapon_InductionFireArm::returnAmmo()
 {
-	return Remain;
+	return remain;
 }
 
 FString AWeapon_InductionFireArm::returnName()
@@ -84,8 +84,8 @@ FString AWeapon_InductionFireArm::returnName()
 
 void AWeapon_InductionFireArm::RemainReload()
 {
-	if (Remain < Ammo)
-		Remain++;
+	if (remain < ammo)
+		remain++;
 }
 
 void AWeapon_InductionFireArm::CoolComplete()

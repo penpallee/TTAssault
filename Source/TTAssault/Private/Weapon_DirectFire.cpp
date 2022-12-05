@@ -27,10 +27,10 @@ void AWeapon_DirectFire::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Damage = 12;
-	Cooltime = 0.5f;
-	Ammo = 8;
-	Remain = Ammo;
+	damage = 12;
+	coolTime = 0.5f;
+	ammo = 8;
+	remain = ammo;
 	reloadingTime = 1;
 	isCoolDown = false;
 	myName = TEXT("DirectFireGun");
@@ -44,15 +44,15 @@ bool AWeapon_DirectFire::FireArm()
 	//return Super::FireArm();
 
 		//Super::FireArm();
-	if (Remain <= 0 || isCoolDown)
+	if (remain <= 0 || isCoolDown)
 		return false;
-	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_DirectFire::CoolComplete, Cooltime, false);
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_DirectFire::CoolComplete, coolTime, false);
 
 	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	GetWorld()->SpawnActor<ABullet_DirectFire>(bulletFactory, t);
 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
-	Remain--;
+	remain--;
 	isCoolDown = true;
 
 	return true;
@@ -74,7 +74,7 @@ void AWeapon_DirectFire::OnAwake()
 
 int AWeapon_DirectFire::returnAmmo()
 {
-	return Remain;
+	return remain;
 }
 
 FString AWeapon_DirectFire::returnName()
@@ -84,8 +84,8 @@ FString AWeapon_DirectFire::returnName()
 
 void AWeapon_DirectFire::RemainReload()
 {
-	if (Remain < Ammo)
-		Remain++;
+	if (remain < ammo)
+		remain++;
 }
 
 void AWeapon_DirectFire::CoolComplete()

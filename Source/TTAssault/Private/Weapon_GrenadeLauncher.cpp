@@ -23,31 +23,31 @@ AWeapon_GrenadeLauncher::AWeapon_GrenadeLauncher()
 void AWeapon_GrenadeLauncher::BeginPlay()
 {
 	Super::BeginPlay();
-	Damage = 10;
-	Cooltime = 0.7f;
-	Ammo = 10;
-	Remain = Ammo;
+	damage = 10;
+	coolTime = 0.7f;
+	ammo = 10;
+	remain = ammo;
 	reloadingTime = 2;
 	isCoolDown = false;
 	myName = TEXT("GrenadeLauncher");
 
-	GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_GrenadeLauncher::RemainReload, reloadingTime, true, 0);
+	GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_GrenadeLauncher::RemainReload, 0.1f, true, 0);
 }
 
 void AWeapon_GrenadeLauncher::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
 }
 
 bool AWeapon_GrenadeLauncher::FireArm()
 {
 	//잔탄이 없거나 쿨타임 상태면 발사 실패
-	if (Remain <= 0 || isCoolDown)
+	if (remain <= 0 || isCoolDown)
 		return false;
 
 	//쿨타임 설정 타이머
-	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_GrenadeLauncher::CoolComplete, Cooltime, false);
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_GrenadeLauncher::CoolComplete, 0.1f, true, 0);
 
 	//마우스 트레이스를 위한 플레이어 컨트롤러
 	APlayerController* AimController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -70,7 +70,7 @@ bool AWeapon_GrenadeLauncher::FireArm()
 	//발사 효과음
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 	//잔탄 감소
-	Remain--;
+	remain--;
 	//쿨타임 상태
 	isCoolDown = true;
 
@@ -82,7 +82,6 @@ void AWeapon_GrenadeLauncher::OnSleep()
 {
 	gunMeshComp->SetVisibility(false);
 	gunMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
 }
 
 void AWeapon_GrenadeLauncher::OnAwake()
@@ -93,7 +92,7 @@ void AWeapon_GrenadeLauncher::OnAwake()
 
 int AWeapon_GrenadeLauncher::returnAmmo()
 {
-	return Remain;
+	return remain;
 }
 
 FString AWeapon_GrenadeLauncher::returnName()
@@ -103,11 +102,23 @@ FString AWeapon_GrenadeLauncher::returnName()
 
 void AWeapon_GrenadeLauncher::CoolComplete()
 {
-	isCoolDown=false;
+	//UE_LOG(LogTemp, Warning, TEXT("Grenade cool...%f"), coolTimeProgress);
+	coolTimeProgress += 0.1f;
+	if (coolTimeProgress >= coolTime)
+	{
+		isCoolDown = false;
+		coolTimeProgress = 0;
+		GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
+	}
 }
 
 void AWeapon_GrenadeLauncher::RemainReload()
-{
-	if(Remain<Ammo)
-	Remain++;
+{	
+	//UE_LOG(LogTemp, Warning, TEXT("grenade reload...%f"), reloadingProgress);
+	reloadingProgress += 0.1f;
+	if (remain < ammo && reloadingProgress >= reloadingTime)
+	{
+		remain++;
+		reloadingProgress = 0;
+	}
 }

@@ -25,10 +25,10 @@ AWeapon_Pipe::AWeapon_Pipe()
 void AWeapon_Pipe::BeginPlay()
 {
 	Super::BeginPlay();
-	Damage = 30;
-	Ammo = 2147483646;
-	Cooltime = 0.5f;
-	Remain = Ammo;
+	damage = 30;
+	ammo = 2147483646;
+	coolTime = 0.5f;
+	remain = ammo;
 	isCoolDown = false;
 	myName = TEXT("TitaniumPipe");
 }
@@ -45,7 +45,7 @@ bool AWeapon_Pipe::FireArm()
 
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 
-	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_Pipe::CoolComplete, Cooltime, false, 0);
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_Pipe::CoolComplete, 0.1f, true, 0);
 
 	return true;
 }
@@ -64,7 +64,7 @@ void AWeapon_Pipe::OnAwake()
 
 int AWeapon_Pipe::returnAmmo()
 {
-	return Remain;
+	return remain;
 }
 
 FString AWeapon_Pipe::returnName()
@@ -74,6 +74,11 @@ FString AWeapon_Pipe::returnName()
 
 void AWeapon_Pipe::CoolComplete()
 {
-	isCoolDown = false;
-	GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
+	coolTimeProgress += 0.1f;
+	if (coolTimeProgress >= coolTime)
+	{
+		isCoolDown = false;
+		GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
+		coolTimeProgress = 0;
+	}
 }

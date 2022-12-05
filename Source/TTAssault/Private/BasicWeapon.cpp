@@ -10,7 +10,7 @@ ABasicWeapon::ABasicWeapon()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	Remain = Ammo;
+	remain = ammo;
 	isMagazine = false;
 	isCoolDown = true;
 
@@ -51,12 +51,12 @@ void ABasicWeapon::OnAwake()
 
 int ABasicWeapon::returnAmmo()
 {
-	return Remain;
+	return remain;
 }
 
 int ABasicWeapon::returnMagazine()
 {
-	return Ammo;;
+	return ammo;;
 }
 
 FString ABasicWeapon::returnName()
@@ -64,9 +64,14 @@ FString ABasicWeapon::returnName()
 	return myName;
 }
 
+float ABasicWeapon::returnCoolTime()
+{
+	return coolTime;
+}
+
 void ABasicWeapon::MagazineReloadComplete()
 {
-	Remain = Ammo;
+	remain = ammo;
 }
 
 void ABasicWeapon::AutoFire()
@@ -75,7 +80,7 @@ void ABasicWeapon::AutoFire()
 
 void ABasicWeapon::RemainReload()
 {
-	Remain++;
+	remain++;
 }
 
 void ABasicWeapon::CoolComplete()
