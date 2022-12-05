@@ -43,6 +43,7 @@ public:
 	virtual void OnSleep();		//비활성화
 	virtual void OnAwake();		//활성화
 	virtual int returnAmmo();	//잔탄량 확인용
+	virtual int returnMagazine(); //전체 탄창 크기
 	virtual FString returnName();	//무기 이름 확인용
 	virtual void AutoFire();	//연사형 무기
 	virtual void MagazineReloadComplete();	//탄창 교체 완료

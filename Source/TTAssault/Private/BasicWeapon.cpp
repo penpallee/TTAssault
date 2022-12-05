@@ -54,6 +54,11 @@ int ABasicWeapon::returnAmmo()
 	return Remain;
 }
 
+int ABasicWeapon::returnMagazine()
+{
+	return Ammo;;
+}
+
 FString ABasicWeapon::returnName()
 {
 	return myName;
