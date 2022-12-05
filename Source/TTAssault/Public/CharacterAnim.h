@@ -21,4 +21,6 @@ public:
 	float rightVelocity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isDash;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool melee;
 };

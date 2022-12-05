@@ -22,6 +22,11 @@ void UCharacterAnim::NativeUpdateAnimation(float DeltaSeconds)
 		if (player->speed < 1000)
 			isDash = false;
 		else
-			isDash = true; 
+			isDash = true;
+
+		if (player->selWeapon == WeaponSel::Primary)
+			melee = true;
+		else
+			melee = false;
 	}
 }

@@ -26,6 +26,8 @@ public:
 	int ammo;
 	UPROPERTY(BlueprintReadWrite)
 	FString WeaponName;
+	UPROPERTY(BlueprintReadWrite)
+	int magazine;
 };
 
 UCLASS()

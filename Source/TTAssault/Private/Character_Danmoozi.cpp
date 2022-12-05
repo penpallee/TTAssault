@@ -68,8 +68,8 @@ void ACharacter_Danmoozi::BeginPlay()
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	pipe->SetActorRelativeLocation(FVector(40, 50, 0));
-	pipe->SetActorRelativeRotation(FRotator(-10, 70, 0));
+	pipe->SetActorRelativeLocation(FVector(0, 0, -30));
+	pipe->SetActorRelativeRotation(FRotator(30, 50, 0));
 
 	launcher = GetWorld()->SpawnActor<AWeapon_GrenadeLauncher>(launcherFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
@@ -124,18 +124,21 @@ void ACharacter_Danmoozi::SetupPlayerInputComponent(UInputComponent* PlayerInput
 void ACharacter_Danmoozi::OnActionFire()
 {
 	//UE_LOG(LogTemp,Warning,TEXT("HP : %d, Ammo : %d, Booster : %d"),this->returnStatus().HP, this->returnStatus().ammo, this->returnStatus().boost);
-	PlayAnimMontage(attackAnimMontage);
+	
 
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:
 		pipe->FireArm();
+		PlayAnimMontage(attackAnimMontage, 2, TEXT("Attack_Melee"));
 		break;
 	case WeaponSel::Secondary:
 		launcher->FireArm();
+		PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
 		break;
 	case WeaponSel::Tertiary:
 		rifle->FireArm();
+		PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Rifle"));
 		break;
 	}
 }
@@ -220,14 +223,17 @@ FPlayerStatus ACharacter_Danmoozi::returnStatus()
 	case WeaponSel::Primary:
 		nowStat.ammo=pipe->returnAmmo();
 		nowStat.WeaponName=pipe->returnName();
+		nowStat.magazine=pipe->returnMagazine();
 		break;
 	case WeaponSel::Secondary:
 		nowStat.ammo = launcher->returnAmmo();
 		nowStat.WeaponName = launcher->returnName();
+		nowStat.magazine = launcher->returnMagazine();
 		break;
 	case WeaponSel::Tertiary:
 		nowStat.ammo = rifle->returnAmmo();
 		nowStat.WeaponName = rifle->returnName();
+		nowStat.magazine = rifle->returnMagazine();
 		break;
 	}
 	nowStat.HP = this->HP;
