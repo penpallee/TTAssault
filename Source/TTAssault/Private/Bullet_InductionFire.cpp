@@ -36,6 +36,7 @@ void ABullet_InductionFire::BeginPlay()
 {
 	Super::BeginPlay();	
 
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireTrailSound, GetActorLocation());
 	FTimerHandle GravityTimerHandle;
 	float GravityTime = 2.1;
 
@@ -44,7 +45,8 @@ void ABullet_InductionFire::BeginPlay()
 			// 코드 구현
 			this->Destroy();
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+	
 			// TimerHandle 초기화
 			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
 		}), GravityTime, false);

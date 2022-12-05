@@ -21,12 +21,15 @@ ABullet_DirectFire::ABullet_DirectFire()
 	bulletMovementComp->InitialSpeed = 1200;
 	bulletMovementComp->MaxSpeed = 1200;
 	bulletMovementComp->ProjectileGravityScale = 0;
+	
 }
 
 // Called when the game starts or when spawned
 void ABullet_DirectFire::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireTrailSound, GetActorLocation());
 
 	FTimerHandle GravityTimerHandle;
 	float GravityTime = 4;
@@ -36,6 +39,7 @@ void ABullet_DirectFire::BeginPlay()
 			// 코드 구현
 			this->Destroy();
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
 
 			// TimerHandle 초기화
 			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);

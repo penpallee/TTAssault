@@ -49,4 +49,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ACharacter_Danmoozi> targetPlayer;
+
+	UPROPERTY(EditAnywhere)
+	class USoundBase* fireTrailSound;
+
+	UPROPERTY(EditAnywhere)
+	class USoundBase* fireDestroySound;
 };
