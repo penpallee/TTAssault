@@ -23,11 +23,11 @@ AWeapon_SniperRifle::AWeapon_SniperRifle()
 void AWeapon_SniperRifle::BeginPlay()
 {
 	Super::BeginPlay();
-	Damage = 30;
-	Cooltime = 5.0f;
-	Ammo = 5;
-	Remain = Ammo;
-	reloadingTime = 5.0f;
+	damage = 30;
+	coolTime = 5.0f;
+	ammo = 5;
+	remain = ammo;
+	reloadingTime = 10.0f;
 	isCoolDown = false;
 	myName = TEXT("SniperRifle");
 }
@@ -41,11 +41,11 @@ bool AWeapon_SniperRifle::FireArm()
 {
 	//Super::FireArm();
 
-	if (Remain <= 0 || isCoolDown)
+	if (remain <= 0 || isCoolDown)
 	{
 		return false;
 	}
-	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_SniperRifle::CoolComplete, Cooltime, false);
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_SniperRifle::CoolComplete, 0.1f, true, 0);
 
 	//마우스 트레이스를 위한 플레이어 컨트롤러
 	APlayerController* AimController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -63,7 +63,7 @@ bool AWeapon_SniperRifle::FireArm()
 	FHitResult hitInfo;
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(GetOwner());
-	if (GetWorld()->LineTraceSingleByChannel(hitInfo, temp2, FVector(dir-temp2)*300000, ECollisionChannel::ECC_Visibility, params))
+	if (GetWorld()->LineTraceSingleByChannel(hitInfo, temp2, FVector(dir - temp2) * 300000, ECollisionChannel::ECC_Visibility, params))
 	{
 		FTransform impactTransform(hitInfo.ImpactPoint);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, impactTransform);
@@ -79,10 +79,10 @@ bool AWeapon_SniperRifle::FireArm()
 	}
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireSound, this->GetActorLocation(), 1, 1, 0);
 
-	Remain--;
-	if (Remain == 0)
+	remain--;
+	if (remain == 0)
 	{
-		GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_SniperRifle::MagazineReloadComplete, reloadingTime, false);
+		GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_SniperRifle::MagazineReloadComplete, 0.1f, true, 0);
 		UE_LOG(LogTemp, Warning, TEXT("Magazine"));
 	}
 
@@ -104,7 +104,7 @@ void AWeapon_SniperRifle::OnAwake()
 
 int AWeapon_SniperRifle::returnAmmo()
 {
-	return Remain;
+	return remain;
 }
 
 FString AWeapon_SniperRifle::returnName()
@@ -114,15 +114,27 @@ FString AWeapon_SniperRifle::returnName()
 
 void AWeapon_SniperRifle::MagazineReloadComplete()
 {
-	UE_LOG(LogTemp, Warning, TEXT("MagazineComplete"));
-	Remain = 5;
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), reloadSound, this->GetActorLocation(), 1, 1, 0);
-	//GetWorldTimerManager().ClearTimer(autoReloadTimerHandle);
+	reloadingProgress += 0.1f;
+	UE_LOG(LogTemp, Warning, TEXT("Sniper reloading...%f"), reloadingProgress);
+	if (reloadingProgress >= reloadingTime)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Sniper MagazineComplete"));
+		remain = ammo;
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), reloadSound, this->GetActorLocation(), 1, 1, 0);
+		GetWorldTimerManager().ClearTimer(autoReloadTimerHandle);
+		reloadingProgress = 0;
+	}
 }
 
 void AWeapon_SniperRifle::CoolComplete()
 {
-	UE_LOG(LogTemp, Warning, TEXT("CoolDown"));
-	isCoolDown = false;
-	//GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
+	UE_LOG(LogTemp, Warning, TEXT("Sniper cool...%f"), coolTimeProgress);
+	coolTimeProgress += 0.1f;
+	if (coolTimeProgress >= coolTime)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Sniper CoolDown"));
+		isCoolDown = false;
+		GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
+		coolTimeProgress = 0;
+	}
 }

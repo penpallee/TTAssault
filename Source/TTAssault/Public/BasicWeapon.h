@@ -24,15 +24,17 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere)
-	int Damage;					//공격력
+	int damage;					//공격력
 	UPROPERTY(EditAnywhere)
-	float Cooltime;				//발사 딜레이
+	float coolTime;				//발사 딜레이
+	float coolTimeProgress;		//쿨타임 진행률
 	UPROPERTY(EditAnywhere)
-	int Ammo;					//탄창 크기
+	int ammo;					//탄창 크기
 	UPROPERTY(EditAnywhere)
 	float reloadingTime;		//재장전 시간
+	float reloadingProgress;	//재장전률
 
-	int Remain;					//잔탄량
+	int remain;					//잔탄량
 	bool isMagazine;			//탄창형 무기 판별
 	bool isCoolDown;			//딜레이 체크
 	FString myName;				//무기명
@@ -45,6 +47,7 @@ public:
 	virtual int returnAmmo();	//잔탄량 확인용
 	virtual int returnMagazine(); //전체 탄창 크기
 	virtual FString returnName();	//무기 이름 확인용
+	virtual float returnCoolTime();
 	virtual void AutoFire();	//연사형 무기
 	virtual void MagazineReloadComplete();	//탄창 교체 완료
 	virtual void RemainReload();	//비탄창 무기의 잔탄 장전

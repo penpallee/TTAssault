@@ -22,10 +22,10 @@ AWeapon_MachineGun::AWeapon_MachineGun()
 void AWeapon_MachineGun::BeginPlay()
 {
 	Super::BeginPlay();
-	Damage = 2;
-	Cooltime = 0.03f;
-	Ammo = 30;
-	Remain = Ammo;
+	damage = 2;
+	coolTime = 0.03f;
+	ammo = 30;
+	remain = ammo;
 	reloadingTime = 5;
 	isCoolDown = false;
 	myName = TEXT("MachineGun");
@@ -39,10 +39,10 @@ void AWeapon_MachineGun::Tick(float DeltaTime)
 bool AWeapon_MachineGun::FireArm()
 {
 	//Super::FireArm();
-	if (Remain <= 0 || isCoolDown)
+	if (isCoolDown || remain <= 0)
 		return false;
 
-	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_MachineGun::AutoFire, Cooltime, true, 0);
+	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_MachineGun::AutoFire, coolTime, true, 0);
 
 	return true;
 }
@@ -62,7 +62,7 @@ void AWeapon_MachineGun::OnAwake()
 
 int AWeapon_MachineGun::returnAmmo()
 {
-	return Remain;
+	return remain;
 }
 
 FString AWeapon_MachineGun::returnName()
@@ -77,15 +77,25 @@ void AWeapon_MachineGun::CoolComplete()
 
 void AWeapon_MachineGun::MagazineReloadComplete()
 {
-	UE_LOG(LogTemp, Warning, TEXT("MagazineComplete"));
-	Remain = 5;
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), reloadSound, this->GetActorLocation(), 1, 1, 0);
-	//GetWorldTimerManager().ClearTimer(autoReloadTimerHandle);
+	reloadingProgress += 0.1f;
+	if (reloadingProgress >= reloadingTime)
+	{
+		remain = ammo;
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), reloadSound, this->GetActorLocation(), 1, 1, 0);
+		GetWorldTimerManager().ClearTimer(autoReloadTimerHandle);
+		reloadingProgress = 0;
+	}
 }
 
 void AWeapon_MachineGun::AutoFire()
 {
+	if (remain < 0)
+	{
+		GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_MachineGun::MagazineReloadComplete, 0.1f, true, 0);
+		return;
+	}
 	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	GetWorld()->SpawnActor<ABullet_MachineGun>(bulletFactory, t);
+	remain--;
 	//PlayAttackAnim();
 }
