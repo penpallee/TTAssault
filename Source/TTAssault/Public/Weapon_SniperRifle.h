@@ -34,6 +34,6 @@ public:
 	//UPROPERTY(EditAnywhere)
 	//USoundBase* reloadSound;
 
-	void MagazineReloadComplete() override;
-	void CoolComplete() override;
+	virtual void MagazineReloadComplete() override;
+	virtual void CoolComplete() override;
 };

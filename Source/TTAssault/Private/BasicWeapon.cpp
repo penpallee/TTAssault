@@ -8,11 +8,12 @@
 // Sets default values
 ABasicWeapon::ABasicWeapon()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	remain = ammo;
 	isMagazine = false;
 	isCoolDown = true;
+	combo = 1;
 
 	// From "custom" collision channels.
 	ECollisionChannel CollisionChannel;
@@ -100,5 +101,16 @@ void ABasicWeapon::RemainReload()
 
 void ABasicWeapon::CoolComplete()
 {
-	
+}
+
+int ABasicWeapon::GetCombo()
+{
+	return combo;
+}
+
+void ABasicWeapon::SetCombo()
+{
+	combo++;
+	if (combo > comboMax)
+		combo = 1;
 }

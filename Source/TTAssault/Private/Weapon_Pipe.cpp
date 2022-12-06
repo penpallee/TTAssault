@@ -27,7 +27,9 @@ void AWeapon_Pipe::BeginPlay()
 	Super::BeginPlay();
 	damage = 30;
 	ammo = 2147483646;
-	coolTime = 0.5f;
+	coolTime = 0.7f;
+	comboMax = 3;
+	comboTime = 3;
 	remain = ammo;
 	isCoolDown = false;
 	myName = TEXT("TitaniumPipe");
@@ -36,17 +38,22 @@ void AWeapon_Pipe::BeginPlay()
 void AWeapon_Pipe::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (coolTimeProgress > comboTime)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("ÄðÃÊ"));
+		combo = 1;
+	}
 }
 
 bool AWeapon_Pipe::FireArm()
 {
 	if (isCoolDown)
 		return false;
-
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 
 	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_Pipe::CoolComplete, 0.1f, true, 0);
-
+	
+	isCoolDown = true;
 	return true;
 }
 

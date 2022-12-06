@@ -40,6 +40,9 @@ public:
 	FString myName;				//무기명
 	FTimerHandle autoFireTimerHandle;	//발사 딜레이 체크용 타이머 핸들
 	FTimerHandle autoReloadTimerHandle;	//재장전 타이머 핸들
+	int combo;					//근접무기 모션 인덱스
+	int comboMax;				//무기 타수
+	float comboTime;			//근접모션 초기화 시간
 
 	virtual bool FireArm();		//무기 발사
 	virtual void OnSleep();		//비활성화
@@ -55,6 +58,8 @@ public:
 	virtual void MagazineReloadComplete();	//탄창 교체 완료
 	virtual void RemainReload();	//비탄창 무기의 잔탄 장전
 	virtual void CoolComplete();	//발사 딜레이 종료
+	virtual int GetCombo();
+	virtual void SetCombo();
 
 	UPROPERTY(EditAnywhere)
 	USoundBase* fireSound;

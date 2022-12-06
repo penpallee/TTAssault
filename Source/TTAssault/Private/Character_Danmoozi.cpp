@@ -23,7 +23,7 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 	if (tempBody.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(tempBody.Object);
-		bodyMeshComp = GetMesh();
+		bodyMeshComp = GetMesh(); 
 		//bodyMeshComp->SetRelativeLocation(FVector(0, 0, 0));
 	}
 
@@ -123,21 +123,23 @@ void ACharacter_Danmoozi::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 void ACharacter_Danmoozi::OnActionFire()
 {
-	//UE_LOG(LogTemp,Warning,TEXT("HP : %d, Ammo : %d, Booster : %d"),this->returnStatus().HP, this->returnStatus().ammo, this->returnStatus().boost);
-	
-
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:
-		pipe->FireArm();
-		PlayAnimMontage(attackAnimMontage, 2, TEXT("Attack_Melee"));
+		if(pipe->FireArm())
+		{
+			FString sectionName = FString::Printf(TEXT("Attack_Melee%d"), pipe->GetCombo());
+			PlayAnimMontage(attackAnimMontage, 2, FName(*sectionName));
+			pipe->SetCombo();
+			UE_LOG(LogTemp,Warning,TEXT("%d"),pipe->GetCombo());
+		}
 		break;
 	case WeaponSel::Secondary:
-		launcher->FireArm();
+		if(launcher->FireArm())
 		PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
 		break;
 	case WeaponSel::Tertiary:
-		rifle->FireArm();
+		if(rifle->FireArm())
 		PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Rifle"));
 		break;
 	}
