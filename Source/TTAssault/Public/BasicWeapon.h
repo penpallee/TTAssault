@@ -48,6 +48,9 @@ public:
 	virtual int returnMagazine(); //전체 탄창 크기
 	virtual FString returnName();	//무기 이름 확인용
 	virtual float returnCoolTime();
+	virtual float returnCoolProgress();
+	virtual float returnReloadTime();
+	virtual float returnReloadProgress();
 	virtual void AutoFire();	//연사형 무기
 	virtual void MagazineReloadComplete();	//탄창 교체 완료
 	virtual void RemainReload();	//비탄창 무기의 잔탄 장전

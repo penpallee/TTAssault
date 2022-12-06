@@ -224,16 +224,28 @@ FPlayerStatus ACharacter_Danmoozi::returnStatus()
 		nowStat.ammo=pipe->returnAmmo();
 		nowStat.WeaponName=pipe->returnName();
 		nowStat.magazine=pipe->returnMagazine();
+		nowStat.coolTime = pipe->returnCoolTime();
+		nowStat.coolTimeProgress = pipe->returnCoolProgress();
+		nowStat.reloadTime = pipe->returnReloadTime();
+		nowStat.reloadProgress = pipe->returnReloadProgress();
 		break;
 	case WeaponSel::Secondary:
 		nowStat.ammo = launcher->returnAmmo();
 		nowStat.WeaponName = launcher->returnName();
 		nowStat.magazine = launcher->returnMagazine();
+		nowStat.coolTime = launcher->returnCoolTime();
+		nowStat.coolTimeProgress = launcher->returnCoolProgress();
+		nowStat.reloadTime = launcher->returnReloadTime();
+		nowStat.reloadProgress = launcher->returnReloadProgress();
 		break;
 	case WeaponSel::Tertiary:
 		nowStat.ammo = rifle->returnAmmo();
 		nowStat.WeaponName = rifle->returnName();
 		nowStat.magazine = rifle->returnMagazine();
+		nowStat.coolTime = rifle->returnCoolTime();
+		nowStat.coolTimeProgress = rifle->returnCoolProgress();
+		nowStat.reloadTime = rifle->returnReloadTime();
+		nowStat.reloadProgress = rifle->returnReloadProgress();
 		break;
 	}
 	nowStat.HP = this->HP;

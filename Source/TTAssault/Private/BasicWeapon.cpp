@@ -69,6 +69,21 @@ float ABasicWeapon::returnCoolTime()
 	return coolTime;
 }
 
+float ABasicWeapon::returnCoolProgress()
+{
+	return coolTimeProgress;
+}
+
+float ABasicWeapon::returnReloadTime()
+{
+	return reloadingTime;
+}
+
+float ABasicWeapon::returnReloadProgress()
+{
+	return reloadingProgress;
+}
+
 void ABasicWeapon::MagazineReloadComplete()
 {
 	remain = ammo;

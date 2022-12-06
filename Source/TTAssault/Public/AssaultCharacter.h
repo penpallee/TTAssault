@@ -28,6 +28,14 @@ public:
 	FString WeaponName;
 	UPROPERTY(BlueprintReadWrite)
 	int magazine;
+	UPROPERTY(BlueprintReadWrite)
+	float coolTime;
+	UPROPERTY(BlueprintReadWrite)
+	float coolTimeProgress;
+	UPROPERTY(BlueprintReadWrite)
+	float reloadTime;
+	UPROPERTY(BlueprintReadWrite)
+	float reloadProgress;
 };
 
 UCLASS()
