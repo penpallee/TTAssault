@@ -19,15 +19,19 @@ struct FPlayerStatus
 	GENERATED_USTRUCT_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite)
+	int HPMax;
+	UPROPERTY(BlueprintReadWrite)
 	int HP;
+	UPROPERTY(BlueprintReadWrite)
+	float boostMax;
 	UPROPERTY(BlueprintReadWrite)
 	float boost;
 	UPROPERTY(BlueprintReadWrite)
 	int ammo;
 	UPROPERTY(BlueprintReadWrite)
-	FString WeaponName;
-	UPROPERTY(BlueprintReadWrite)
 	int magazine;
+	UPROPERTY(BlueprintReadWrite)
+	FString WeaponName;
 	UPROPERTY(BlueprintReadWrite)
 	float coolTime;
 	UPROPERTY(BlueprintReadWrite)
@@ -80,9 +84,14 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float speed;
 	UPROPERTY(EditAnywhere)
-	float booster = 1000;
+	float boosterMax = 1000;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float booster = boosterMax;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float boosterLose=100;
 	UPROPERTY(EditAnywhere)
-	int HP = 100;
+	int HPMax = 100;
+	int HP = HPMax;
 	UPROPERTY(EditAnywhere)
 	bool isBooster = false;
 	UPROPERTY(EditAnywhere)
@@ -98,6 +107,7 @@ public:
 	class UAnimMontage* attackAnimMontage;
 
 	WeaponSel selWeapon;
+	FTimerHandle autoBoosterTimerHandle;	//부스터 타이머 핸들
 
 	virtual void OnPlayerHit(int damage);
 	virtual void Stop();
@@ -108,4 +118,5 @@ public:
 	virtual void OnActionFire();
 	virtual FPlayerStatus returnStatus();
 	virtual void PlayAttackAnim();
+	virtual void boosterCharge();
 };

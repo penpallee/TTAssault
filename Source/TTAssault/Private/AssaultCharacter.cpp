@@ -138,3 +138,8 @@ void AAssaultCharacter::PlayAttackAnim()
 {
 	PlayAnimMontage(attackAnimMontage);
 }
+
+void AAssaultCharacter::boosterCharge()
+{
+	
+}

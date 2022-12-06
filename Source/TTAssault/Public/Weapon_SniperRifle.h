@@ -6,9 +6,6 @@
 #include "BasicWeapon.h"
 #include "Weapon_SniperRifle.generated.h"
 
-/**
- *
- */
 UCLASS()
 class TTASSAULT_API AWeapon_SniperRifle : public ABasicWeapon
 {
@@ -27,12 +24,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* sniperMeshComp;
-	//UPROPERTY(EditAnywhere)
-	//USoundBase* fireSound;
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* bulletImpactFactory;
-	//UPROPERTY(EditAnywhere)
-	//USoundBase* reloadSound;
 
 	virtual void MagazineReloadComplete() override;
 	virtual void CoolComplete() override;

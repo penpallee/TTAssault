@@ -15,40 +15,25 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 	//Super();
 	PrimaryActorTick.bCanEverTick = true;
 
-	ACharacter_Danmoozi::HP = 500;
-	ACharacter_Danmoozi::booster = 2000;
+	ACharacter_Danmoozi::HPMax = 500;
+	ACharacter_Danmoozi::boosterMax = 2000;
 	ACharacter_Danmoozi::speed = 900;
-	selWeapon= WeaponSel::Primary;
+	selWeapon = WeaponSel::Primary;
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBody(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn'"));//½ºÄÌ·¹Å» ¸Þ½Ã °¡Á®¿È
 	if (tempBody.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(tempBody.Object);
-		bodyMeshComp = GetMesh(); 
+		bodyMeshComp = GetMesh();
 		//bodyMeshComp->SetRelativeLocation(FVector(0, 0, 0));
 	}
 
 	this->SetActorRotation(FRotator(0, 0, 0));
 
-	/*springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
-	springArmComp->SetupAttachment((RootComponent));
-	springArmComp->SetRelativeLocation(FVector(0, 0, 0));
-	springArmComp->TargetArmLength = 1000;*/
-
-
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
 	//cameraComp->SetupAttachment(springArmComp);
 	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
 
-	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
-	//pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
-	//pipe->AttachToComponent(this->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform,NAME_None);//TEXT("rHand"));
-
-	//launcher = CreateDefaultSubobject<AWeapon_GrenadeLauncher>(TEXT("Weapon_GL"));
-	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
-
-	//rifle = CreateDefaultSubobject<AWeapon_SniperRifle>(TEXT("Weapon_SR"));
-	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -60,16 +45,6 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 void ACharacter_Danmoozi::BeginPlay()
 {
 	Super::BeginPlay();
-	// InputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &AAssaultCharacter::onActionBoost);
-	// InputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &AAssaultCharacter::OnAxisHorizontal);
-	// InputComponent->BindAxis(TEXT("Move Right / Left"), this, &AAssaultCharacter::OnAxisVertical);
-	// InputComponent->BindAxis("Look Up / Down Mouse", this, &AAssaultCharacter::onAxisMouseY);
-	// InputComponent->BindAxis("Turn Right / Left Mouse", this, &AAssaultCharacter::onAxisMouseX);
-	// InputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AAssaultCharacter::OnActionFire);
-	/*InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &AAssaultCharacter::onSelPrimary);
-	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
-	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);*/
-
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
@@ -91,6 +66,7 @@ void ACharacter_Danmoozi::BeginPlay()
 	rifle->SetActorRelativeLocation(FVector(-30, 0, 0));
 	rifle->SetActorRelativeRotation(FRotator(-10, 105, 0));
 
+	GetWorldTimerManager().SetTimer(autoBoosterTimerHandle, this, &ACharacter_Danmoozi::boosterCharge, 0.1f, true, 0);
 }
 
 // Called every frame
@@ -105,7 +81,7 @@ void ACharacter_Danmoozi::Tick(float DeltaTime)
 	{
 		tingCurrentTime -= DeltaTime;
 		SetActorLocation(GetActorLocation() + tingDirection * tingSpeed * DeltaTime);
-		if (tingCurrentTime <=0)
+		if (tingCurrentTime <= 0)
 		{
 			bTing = false;
 			tingCurrentTime = 0;
@@ -132,10 +108,9 @@ void ACharacter_Danmoozi::Tick(float DeltaTime)
 				UE_LOG(LogTemp, Warning, TEXT("%s"), *hitActor->GetName());
 			}
 		}
-
 	}
 
-	
+
 	cameraComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(cameraComp->GetRelativeLocation(), this->GetActorLocation()));
 	cameraComp->SetRelativeLocation(FVector(-1000, t.Y * 0.95f, t.Z * 0.95f));
 
@@ -170,21 +145,21 @@ void ACharacter_Danmoozi::OnActionFire()
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:
-		if(pipe->FireArm())
+		if (pipe->FireArm())
 		{
 			FString sectionName = FString::Printf(TEXT("Attack_Melee%d"), pipe->GetCombo());
 			PlayAnimMontage(attackAnimMontage, 2, FName(*sectionName));
 			pipe->SetCombo();
-			UE_LOG(LogTemp,Warning,TEXT("%d"),pipe->GetCombo());
+			UE_LOG(LogTemp, Warning, TEXT("%d"), pipe->GetCombo());
 		}
 		break;
 	case WeaponSel::Secondary:
-		if(launcher->FireArm())
-		PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
+		if (launcher->FireArm())
+			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
 		break;
 	case WeaponSel::Tertiary:
-		if(rifle->FireArm())
-		PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Rifle"));
+		if (rifle->FireArm())
+			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Rifle"));
 		break;
 	}
 }
@@ -221,7 +196,6 @@ void ACharacter_Danmoozi::onAxisMouseX(float value)
 	Super::onAxisMouseX(value);
 	//AddControllerYawInput(-value);
 	//mouseX -= value;
-
 }
 
 void ACharacter_Danmoozi::onAxisMouseY(float value)
@@ -230,7 +204,6 @@ void ACharacter_Danmoozi::onAxisMouseY(float value)
 	//AddControllerRollInput(value);
 	//mouseY += value;
 	//AddControllerYawInput(value);
-
 }
 
 void ACharacter_Danmoozi::onSelPrimary()
@@ -267,9 +240,9 @@ FPlayerStatus ACharacter_Danmoozi::returnStatus()
 	switch (selWeapon)
 	{
 	case WeaponSel::Primary:
-		nowStat.ammo=pipe->returnAmmo();
-		nowStat.WeaponName=pipe->returnName();
-		nowStat.magazine=pipe->returnMagazine();
+		nowStat.ammo = pipe->returnAmmo();
+		nowStat.WeaponName = pipe->returnName();
+		nowStat.magazine = pipe->returnMagazine();
 		nowStat.coolTime = pipe->returnCoolTime();
 		nowStat.coolTimeProgress = pipe->returnCoolProgress();
 		nowStat.reloadTime = pipe->returnReloadTime();
@@ -294,8 +267,18 @@ FPlayerStatus ACharacter_Danmoozi::returnStatus()
 		nowStat.reloadProgress = rifle->returnReloadProgress();
 		break;
 	}
+	nowStat.HPMax = this->HPMax;
 	nowStat.HP = this->HP;
+	nowStat.boostMax = this->boosterMax;
 	nowStat.boost = this->booster;
-	
+
 	return nowStat;
+}
+
+void ACharacter_Danmoozi::boosterCharge()
+{
+	if (booster < boosterMax)
+		booster += 10;
+	else
+		booster = boosterMax;
 }

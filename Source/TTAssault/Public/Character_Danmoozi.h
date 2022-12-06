@@ -31,6 +31,7 @@ public:
 	void onSelPrimary();
 	void onSelSecondary();
 	void onSelTetertiary();
+	virtual void boosterCharge() override;
 	UFUNCTION(BlueprintCallable)
 	FPlayerStatus returnStatus();
 

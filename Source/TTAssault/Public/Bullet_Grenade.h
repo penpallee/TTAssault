@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include <Particles/ParticleSystem.h>
+#include <Engine/EngineTypes.h>
 #include "Bullet_Grenade.generated.h"
 
 UCLASS()
@@ -24,10 +25,19 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+		void OnSphereComponentBeginOverlap(
+			UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+			bool bFromSweep, const FHitResult& SweepResult);
+
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* meshComp;
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* sphereComp;
+	UPROPERTY(EditAnywhere)
+	USoundBase* fireSound;
 
 	float life;
 	float radius;
@@ -36,7 +46,6 @@ public:
 	void Expolosion();
 	/*void OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);*/
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
-
 
 	UPROPERTY(EditAnywhere)
 	//class UNiagaraSystem* explosionNiagaraFactory;

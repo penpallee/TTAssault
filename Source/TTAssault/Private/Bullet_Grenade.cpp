@@ -5,6 +5,7 @@
 #include <Components/SphereComponent.h>
 #include <Components/StaticMeshComponent.h>
 #include <Kismet/GameplayStatics.h>
+#include "AssaultBoss.h"
 
 // Sets default values
 ABullet_Grenade::ABullet_Grenade()
@@ -15,12 +16,18 @@ ABullet_Grenade::ABullet_Grenade()
 	sphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("sphereComp"));
 	sphereComp->SetSphereRadius(1);
 
-	sphereComp->SetGenerateOverlapEvents(true);
+	/*sphereComp->SetGenerateOverlapEvents(true);
 	sphereComp->SetCollisionProfileName(TEXT("Bullet"));
-	//sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_Grenade::OnSphereComponentBeginOverlap);
+	sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_Grenade::OnSphereComponentBeginOverlap);*/
 	RootComponent = sphereComp;
-	meshComp->SetRelativeScale3D(FVector(0.3f));
+	meshComp->SetRelativeScale3D(FVector(0.2f));
 	meshComp->SetupAttachment(RootComponent);
+
+	sphereComp->SetGenerateOverlapEvents(true);
+	sphereComp->SetNotifyRigidBodyCollision(true);
+	sphereComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	sphereComp->SetCollisionProfileName(TEXT("Bullet"));
+	sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_Grenade::OnSphereComponentBeginOverlap);
 }
 
 // Called when the game starts or when spawned
@@ -29,7 +36,7 @@ void ABullet_Grenade::BeginPlay()
 	Super::BeginPlay();
 
 	FTimerHandle handle;
-	GetWorldTimerManager().SetTimer(handle, this, &ABullet_Grenade::Expolosion, 0.1f, false, 5.0f);
+	GetWorldTimerManager().SetTimer(handle, this, &ABullet_Grenade::Expolosion, 5, false);
 }
 
 // Called every frame
@@ -46,11 +53,25 @@ void ABullet_Grenade::Tick(float DeltaTime)
 void ABullet_Grenade::Expolosion()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionVFXFactory, GetActorLocation());
-	//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld, explosionNiagaraFactory, GetActorLocation());
+	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 	this->Destroy();
 }
 
 void ABullet_Grenade::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Expolosion();
+}
+
+void ABullet_Grenade::OnSphereComponentBeginOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+	bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
+	{
+		Cast<AAssaultBoss>(OtherActor)->OnBossHit(10);
+		UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+		Expolosion();
+	}
 }
