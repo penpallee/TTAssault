@@ -48,4 +48,14 @@ public:
 	class AWeapon_SniperRifle* rifle;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AWeapon_SniperRifle> rifleFactory;
+
+	bool bTing = false;
+	FVector tingDirection;
+	float tingCurrentTime;
+
+	UPROPERTY(EditAnywhere)
+	float tingTime = 0.1f;
+	UPROPERTY(EditAnywhere)
+	float tingSpeed = 100;
 };
+

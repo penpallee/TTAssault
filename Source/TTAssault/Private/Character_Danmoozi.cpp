@@ -34,6 +34,7 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 	springArmComp->SetRelativeLocation(FVector(0, 0, 0));
 	springArmComp->TargetArmLength = 1000;*/
 
+
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
 	//cameraComp->SetupAttachment(springArmComp);
 	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
@@ -90,8 +91,45 @@ void ACharacter_Danmoozi::BeginPlay()
 void ACharacter_Danmoozi::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	FVector t = this->GetActorLocation();
-	this->SetActorLocation(GetActorLocation() + direction * speed * DeltaTime);
+
+
+	if (bTing && tingCurrentTime > 0)
+	{
+		tingCurrentTime -= DeltaTime;
+		SetActorLocation(GetActorLocation() + tingDirection * tingSpeed * DeltaTime);
+		if (tingCurrentTime <=0)
+		{
+			bTing = false;
+			tingCurrentTime = 0;
+		}
+	}
+	else
+	{
+		FHitResult hitInfo;
+
+		this->SetActorLocation(GetActorLocation() + direction * speed * DeltaTime, true, &hitInfo);
+
+		auto hitActor = hitInfo.GetActor();
+		if (hitActor)
+		{
+			tingDirection = hitInfo.ImpactNormal;
+			tingDirection.X = 0;
+			tingDirection.Normalize();
+
+			tingCurrentTime = tingTime;
+			bTing = true;
+
+			if (hitActor)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("%s"), *hitActor->GetName());
+			}
+		}
+
+	}
+
+	
 	cameraComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(cameraComp->GetRelativeLocation(), this->GetActorLocation()));
 	cameraComp->SetRelativeLocation(FVector(-1000, t.Y * 0.95f, t.Z * 0.95f));
 
