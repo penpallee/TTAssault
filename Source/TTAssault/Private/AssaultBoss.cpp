@@ -74,6 +74,7 @@ AAssaultBoss::AAssaultBoss()
 		BossMoveComp->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::X);
 
 		GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+		GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		GetCapsuleComponent()->SetCollisionProfileName(TEXT("Boss"));
 		GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
