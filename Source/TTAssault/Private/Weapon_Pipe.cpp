@@ -29,7 +29,7 @@ void AWeapon_Pipe::BeginPlay()
 	ammo = 2147483646;
 	coolTime = 0.7f;
 	comboMax = 3;
-	comboTime = 3;
+	comboTime = 0.5f;
 	remain = ammo;
 	isCoolDown = false;
 	myName = TEXT("TitaniumPipe");

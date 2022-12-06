@@ -58,4 +58,3 @@ public:
 	UPROPERTY(EditAnywhere)
 	float tingSpeed = 100;
 };
-
