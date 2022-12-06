@@ -38,6 +38,7 @@ public:
 
 	class ABullet_InductionFire* InductionBullet;
 
+
 	void RemainReload();
 	void CoolComplete();
 

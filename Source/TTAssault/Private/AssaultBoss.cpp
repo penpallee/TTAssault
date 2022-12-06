@@ -8,6 +8,8 @@
 #include <Engine/SkeletalMesh.h>
 #include <Kismet/KismetMathLibrary.h>
 #include "AIController.h"
+#include "Character_Danmoozi.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
@@ -71,7 +73,10 @@ AAssaultBoss::AAssaultBoss()
 		BossMoveComp->bConstrainToPlane = true;
 		BossMoveComp->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::X);
 
-
+		GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		GetCapsuleComponent()->SetCollisionProfileName(TEXT("Boss"));
+		GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
 	}
 
 	Defense = 0;
@@ -126,3 +131,15 @@ void AAssaultBoss::OnAxisHorizontalView(float value)
 	SetActorRotation(FRotator(0, (-90) * value, 0));
 }
 
+void AAssaultBoss::OnCapsuleComponentBeginOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+	bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
+		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+	}
+}
