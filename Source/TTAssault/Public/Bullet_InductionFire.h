@@ -30,6 +30,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void OnCapsuleComponentBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+
 	void SetInductionFireTarget(TargetSel target);
 	
 	UPROPERTY(EditAnywhere)
@@ -45,14 +54,11 @@ public:
 	TargetSel SetTarget;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AAssaultBoss> targetBoss;
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ACharacter_Danmoozi> targetPlayer;
-
-	UPROPERTY(EditAnywhere)
 	class USoundBase* fireTrailSound;
 
 	UPROPERTY(EditAnywhere)
 	class USoundBase* fireDestroySound;
+
+	UPROPERTY(EditAnywhere)
+	class UCapsuleComponent* inductionFireCollisionComp;
 };

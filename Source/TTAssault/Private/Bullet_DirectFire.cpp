@@ -3,6 +3,8 @@
 
 #include "Bullet_DirectFire.h"
 
+#include "Character_Danmoozi.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -13,14 +15,22 @@ ABullet_DirectFire::ABullet_DirectFire()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	directionFireCollisionComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("directionFireCollisionComp"));
 	bulletTrailFX = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("bulletTrailFX"));
 	bulletMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("bulletMovement"));
 
+	SetRootComponent(directionFireCollisionComp);
+	directionFireCollisionComp->SetGenerateOverlapEvents(true);
+	directionFireCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	directionFireCollisionComp->SetCollisionProfileName(TEXT("Bullet"));
 	bulletTrailFX->bAllowRecycling = true;
 
 	bulletMovementComp->InitialSpeed = 1200;
 	bulletMovementComp->MaxSpeed = 1200;
 	bulletMovementComp->ProjectileGravityScale = 0;
+
+	directionFireCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnCapsuleComponentBeginOverlap);
+	
 	
 }
 
@@ -51,5 +61,17 @@ void ABullet_DirectFire::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ABullet_DirectFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("123123"));
+		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+		this->Destroy();
+		
+	}
 }
 
