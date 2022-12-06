@@ -8,6 +8,7 @@
 #include "Weapon_GrenadeLauncher.h"
 #include "Weapon_SniperRifle.h"
 #include <Kismet/KismetMathLibrary.h>
+#include "Components/CapsuleComponent.h"
 
 ACharacter_Danmoozi::ACharacter_Danmoozi()
 {
@@ -48,6 +49,11 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 
 	//rifle = CreateDefaultSubobject<AWeapon_SniperRifle>(TEXT("Weapon_SR"));
 	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACharacter_Danmoozi::OnCapsuleComponentBeginOverlap);
 }
 
 // Called when the game starts or when spawned
