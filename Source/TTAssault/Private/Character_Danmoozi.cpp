@@ -15,7 +15,7 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 	//Super();
 	PrimaryActorTick.bCanEverTick = true;
 
-	ACharacter_Danmoozi::HPMax = 500;
+	ACharacter_Danmoozi::HPMax = 100;
 	ACharacter_Danmoozi::boosterMax = 2000;
 	ACharacter_Danmoozi::speed = 900;
 	selWeapon = WeaponSel::Primary;
