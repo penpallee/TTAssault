@@ -4,6 +4,8 @@
 #include "Weapon_SniperRifle.h"
 #include <Kismet/GameplayStatics.h>
 
+#include "AssaultBoss.h"
+
 AWeapon_SniperRifle::AWeapon_SniperRifle()
 {
 	sniperMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("sniperMeshComp"));
@@ -62,20 +64,26 @@ bool AWeapon_SniperRifle::FireArm()
 
 	FHitResult hitInfo;
 	FCollisionQueryParams params;
+	params.AddIgnoredActor(this);
+
 	params.AddIgnoredActor(GetOwner());
 	if (GetWorld()->LineTraceSingleByChannel(hitInfo, temp2, FVector(dir - temp2) * 300000, ECollisionChannel::ECC_Visibility, params))
 	{
 		FTransform impactTransform(hitInfo.ImpactPoint);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, impactTransform);
 
-		/*auto hitComp = hitInfo.GetComponent();
-		if (hitComp && hitComp->IsSimulatingPhysics())
+		auto hitActor = hitInfo.GetActor();
+		if (/*hitComp && hitComp->IsSimulatingPhysics()*/hitActor->IsA(AAssaultBoss::StaticClass()))
 		{
-			FVector dir = (hitInfo.ImpactPoint - start).GetSafeNormal();
+			/*FVector dir = (hitInfo.ImpactPoint - start).GetSafeNormal();
 			FVector force = dir * hitComp->GetMass() * 500;
 
-			hitInfo.Component->AddForceAtLocation(force, dir);
-		}*/
+			hitInfo.Component->AddForceAtLocation(force, dir);*/
+
+			Cast<AAssaultBoss>(hitActor)->OnBossHit(10);
+			UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+			Explosion();
+		}
 	}
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireSound, this->GetActorLocation(), 1, 1, 0);
 
@@ -83,7 +91,6 @@ bool AWeapon_SniperRifle::FireArm()
 	if (remain == 0)
 	{
 		GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_SniperRifle::MagazineReloadComplete, 0.1f, true, 0);
-		UE_LOG(LogTemp, Warning, TEXT("Magazine"));
 	}
 
 	isCoolDown = true;
@@ -115,7 +122,6 @@ FString AWeapon_SniperRifle::returnName()
 void AWeapon_SniperRifle::MagazineReloadComplete()
 {
 	reloadingProgress += 0.1f;
-	UE_LOG(LogTemp, Warning, TEXT("Sniper reloading...%f"), reloadingProgress);
 	if (reloadingProgress >= reloadingTime)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Sniper MagazineComplete"));
@@ -128,13 +134,17 @@ void AWeapon_SniperRifle::MagazineReloadComplete()
 
 void AWeapon_SniperRifle::CoolComplete()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Sniper cool...%f"), coolTimeProgress);
 	coolTimeProgress += 0.1f;
 	if (coolTimeProgress >= coolTime)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Sniper CoolDown"));
 		isCoolDown = false;
 		GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
 		coolTimeProgress = 0;
 	}
+}
+
+void AWeapon_SniperRifle::Explosion()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, GetActorLocation());
+	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 }

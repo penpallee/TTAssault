@@ -150,7 +150,6 @@ void ACharacter_Danmoozi::OnActionFire()
 			FString sectionName = FString::Printf(TEXT("Attack_Melee%d"), pipe->GetCombo());
 			PlayAnimMontage(attackAnimMontage, 2, FName(*sectionName));
 			pipe->SetCombo();
-			UE_LOG(LogTemp, Warning, TEXT("%d"), pipe->GetCombo());
 		}
 		break;
 	case WeaponSel::Secondary:

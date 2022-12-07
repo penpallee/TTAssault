@@ -114,3 +114,7 @@ void ABasicWeapon::SetCombo()
 	if (combo > comboMax)
 		combo = 1;
 }
+
+void ABasicWeapon::Explosion()
+{
+}
