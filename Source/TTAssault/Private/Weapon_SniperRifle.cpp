@@ -58,9 +58,9 @@ bool AWeapon_SniperRifle::FireArm()
 	//총구 Location
 	FTransform temp = sniperMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	//총구의 맵 평면상의 Location
-	FVector temp2 = FVector(-140, temp.GetLocation().Y, temp.GetLocation().Z);
+	FVector temp2 = FVector(0, temp.GetLocation().Y, temp.GetLocation().Z);
 	//AimLayer = 플레이어 X 위치 반영 안돼서 -140 하드코딩, Y, Z는 마우스 방향
-	FVector dir = FVector(-140, result.Location.Y, result.Location.Z);
+	FVector dir = FVector(0, result.Location.Y, result.Location.Z);
 
 	FHitResult hitInfo;
 	FCollisionQueryParams params;
@@ -81,9 +81,10 @@ bool AWeapon_SniperRifle::FireArm()
 			hitInfo.Component->AddForceAtLocation(force, dir);*/
 
 			Cast<AAssaultBoss>(hitActor)->OnBossHit(10);
-			UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
-			Explosion();
 		}
+		UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+
+		Explosion();
 	}
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireSound, this->GetActorLocation(), 1, 1, 0);
 

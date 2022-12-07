@@ -66,12 +66,9 @@ void ABullet_Grenade::OnSphereComponentBeginOverlap(
 {
 	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("BossHit"));
 		Cast<AAssaultBoss>(OtherActor)->OnBossHit(10);
 		Expolosion();
 	}
 	if (!OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
-	{
-		
-	}
+		Expolosion();
 }

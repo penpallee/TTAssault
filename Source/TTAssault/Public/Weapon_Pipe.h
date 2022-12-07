@@ -7,7 +7,7 @@
 #include "Weapon_Pipe.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class TTASSAULT_API AWeapon_Pipe : public ABasicWeapon
@@ -25,15 +25,18 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* meleeMeshComp;
+	UPROPERTY(EditAnywhere)
+	USoundBase* hitSound;
 
 	UPROPERTY(EditAnywhere)
-		class UBoxComponent* boxComp;
+	class UBoxComponent* boxComp;
 	UFUNCTION()
 		void OnBoxComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	void CoolComplete();
 	void Explosion() override;
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 	UPROPERTY(EditAnywhere)
-	class UParticleSystem* explosionVFXFactory;
+		class UParticleSystem* explosionVFXFactory;
 };

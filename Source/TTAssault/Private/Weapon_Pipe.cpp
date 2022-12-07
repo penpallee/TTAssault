@@ -23,10 +23,11 @@ AWeapon_Pipe::AWeapon_Pipe()
 
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("boxComp"));
 	boxComp->SetupAttachment(meleeMeshComp);
-	boxComp->SetRelativeLocation(FVector(10, 0, 276));
-	boxComp->SetRelativeScale3D(FVector(.5f));
-
-	boxComp->SetGenerateOverlapEvents(true);
+	boxComp->SetNotifyRigidBodyCollision(true);
+	boxComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	boxComp->SetRelativeLocation(FVector(10, 0, 326));
+	boxComp->SetRelativeScale3D(FVector(.5f,.5f,2.25f));
+	boxComp->SetGenerateOverlapEvents(false);
 	boxComp->SetCollisionProfileName(TEXT("Bullet"));
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AWeapon_Pipe::OnBoxComponentBeginOverlap);
 }
@@ -54,8 +55,8 @@ bool AWeapon_Pipe::FireArm()
 {
 	if (isCoolDown)
 		return false;
+	boxComp->SetGenerateOverlapEvents(true);
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
-	boxComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 
 	GetWorldTimerManager().SetTimer(autoFireTimerHandle, this, &AWeapon_Pipe::CoolComplete, 0.1f, true, 0);
 
@@ -86,18 +87,10 @@ FString AWeapon_Pipe::returnName()
 void AWeapon_Pipe::OnBoxComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("OverLap"));
-
-	auto hitActor = SweepResult.GetActor();
 	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
-		Cast<AAssaultBoss>(OtherActor)->OnBossHit(damage);
-
-	if (hitActor)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitActor->GetName());
+		Cast<AAssaultBoss>(OtherActor)->OnBossHit(damage);
 	}
-
-	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 	Explosion();
 }
 
@@ -106,9 +99,10 @@ void AWeapon_Pipe::CoolComplete()
 	coolTimeProgress += 0.1f;
 	if (coolTimeProgress >= coolTime)
 	{
+		boxComp->SetGenerateOverlapEvents(false);
 		isCoolDown = false;
 		GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
-		boxComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		//boxComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		coolTimeProgress = 0;
 	}
 }
@@ -116,5 +110,14 @@ void AWeapon_Pipe::CoolComplete()
 void AWeapon_Pipe::Explosion()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionVFXFactory, boxComp->GetComponentLocation());
-	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+	UGameplayStatics::PlaySound2D(GetWorld(), hitSound);
+}
+
+void AWeapon_Pipe::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
+	{
+		Cast<AAssaultBoss>(OtherActor)->OnBossHit(damage);
+		Explosion();
+	}
 }
