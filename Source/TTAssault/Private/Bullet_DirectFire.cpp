@@ -16,21 +16,24 @@ ABullet_DirectFire::ABullet_DirectFire()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	directionFireCollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("directionFireCollisionComp"));
+	BulletCollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("directionFireCollisionComp"));
 	bulletTrailFX = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("bulletTrailFX"));
 	bulletMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("bulletMovement"));
 
+	bulletTrailFX->SetupAttachment(BulletCollisionComp);
+	bulletMovementComp->SetUpdatedComponent(BulletCollisionComp);
+	
 	// SetRootComponent(directionFireCollisionComp);
-	directionFireCollisionComp->SetGenerateOverlapEvents(true);
-	directionFireCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	directionFireCollisionComp->SetCollisionProfileName(TEXT("BossBullet"));
+	BulletCollisionComp->SetGenerateOverlapEvents(true);
+	BulletCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	BulletCollisionComp->SetCollisionProfileName(TEXT("BossBullet"));
 	bulletTrailFX->bAllowRecycling = true;
 
 	bulletMovementComp->InitialSpeed = 1200;
 	bulletMovementComp->MaxSpeed = 1200;
 	bulletMovementComp->ProjectileGravityScale = 0;
 
-	directionFireCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnCapsuleComponentBeginOverlap);
+	BulletCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnSphereComponentBeginOverlap);
 	
 	
 }
@@ -64,7 +67,7 @@ void ABullet_DirectFire::Tick(float DeltaTime)
 
 }
 
-void ABullet_DirectFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ABullet_DirectFire::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))

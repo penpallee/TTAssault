@@ -24,7 +24,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void OnCapsuleComponentBeginOverlap(
+	void OnSphereComponentBeginOverlap(
 		UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComp,
@@ -49,7 +49,7 @@ public:
 	class USoundBase* fireDestroySound;
 
 	UPROPERTY(EditAnywhere)
-	class USphereComponent* directionFireCollisionComp;
+	class USphereComponent* BulletCollisionComp;;
 
 
 };
