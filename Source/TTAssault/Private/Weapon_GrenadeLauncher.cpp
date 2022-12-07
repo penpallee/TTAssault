@@ -58,9 +58,9 @@ bool AWeapon_GrenadeLauncher::FireArm()
 	//총구 Location
 	FTransform temp = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	//총구의 맵 평면상의 Location
-	FVector temp2 = FVector(-140, temp.GetLocation().Y, temp.GetLocation().Z);
-	//AimLayer = 플레이어 X 위치 반영 안돼서 -140 하드코딩, Y, Z는 마우스 방향
-	FVector dir = FVector(-140, result.Location.Y, result.Location.Z);
+	FVector temp2 = FVector(0, temp.GetLocation().Y, temp.GetLocation().Z);
+	//AimLayer = 플레이어 X 위치 반영 안돼서 0 하드코딩, Y, Z는 마우스 방향
+	FVector dir = FVector(0, result.Location.Y, result.Location.Z);
 
 	//위에서 구한 location값들로 트랜스폼 생성
 	FTransform aim = UKismetMathLibrary::MakeTransform(temp2, FRotator(UKismetMathLibrary::FindLookAtRotation(temp2, dir)), FVector(1));
