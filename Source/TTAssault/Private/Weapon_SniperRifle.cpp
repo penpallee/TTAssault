@@ -2,6 +2,7 @@
 
 
 #include "Weapon_SniperRifle.h"
+#include "AssaultCharacter.h"
 #include <Kismet/GameplayStatics.h>
 
 #include "AssaultBoss.h"
@@ -65,28 +66,23 @@ bool AWeapon_SniperRifle::FireArm()
 	FHitResult hitInfo;
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(this);
-
+	params.AddIgnoredActor(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 	params.AddIgnoredActor(GetOwner());
+
 	if (GetWorld()->LineTraceSingleByChannel(hitInfo, temp2, FVector(dir - temp2) * 300000, ECollisionChannel::ECC_Visibility, params))
 	{
+		
 		FTransform impactTransform(hitInfo.ImpactPoint);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, impactTransform);
 
 		auto hitActor = hitInfo.GetActor();
-		if (/*hitComp && hitComp->IsSimulatingPhysics()*/hitActor->IsA(AAssaultBoss::StaticClass()))
+		if (hitActor->IsA(AAssaultBoss::StaticClass()))
 		{
-			/*FVector dir = (hitInfo.ImpactPoint - start).GetSafeNormal();
-			FVector force = dir * hitComp->GetMass() * 500;
-
-			hitInfo.Component->AddForceAtLocation(force, dir);*/
-
 			Cast<AAssaultBoss>(hitActor)->OnBossHit(10);
 		}
 		UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
-
-		Explosion();
+		Explosion(hitActor->GetActorLocation());
 	}
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireSound, this->GetActorLocation(), 1, 1, 0);
 
 	remain--;
 	if (remain == 0)
@@ -144,8 +140,8 @@ void AWeapon_SniperRifle::CoolComplete()
 	}
 }
 
-void AWeapon_SniperRifle::Explosion()
+void AWeapon_SniperRifle::Explosion(FVector ImpactPoint)
 {
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, GetActorLocation());
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, ImpactPoint);
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 }

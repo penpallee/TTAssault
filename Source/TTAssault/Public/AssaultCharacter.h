@@ -116,6 +116,7 @@ public:
 	virtual void onSelTetertiary();
 	virtual void onActionBoost();
 	virtual void OnActionFire();
+	virtual void OnActionStop();
 	virtual FPlayerStatus returnStatus();
 	virtual void PlayAttackAnim();
 	virtual void boosterCharge();

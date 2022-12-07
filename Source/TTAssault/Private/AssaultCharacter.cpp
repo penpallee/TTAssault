@@ -100,6 +100,12 @@ void AAssaultCharacter::OnActionFire()
 
 }
 
+void AAssaultCharacter::OnActionStop()
+{
+
+}
+
+
 FPlayerStatus AAssaultCharacter::returnStatus()
 {
 	FPlayerStatus nowStat;

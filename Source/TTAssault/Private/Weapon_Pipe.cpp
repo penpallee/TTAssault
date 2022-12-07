@@ -91,7 +91,7 @@ void AWeapon_Pipe::OnBoxComponentBeginOverlap(UPrimitiveComponent* OverlappedCom
 	{
 		Cast<AAssaultBoss>(OtherActor)->OnBossHit(damage);
 	}
-	Explosion();
+	Explosion(OtherActor->GetActorLocation());
 }
 
 void AWeapon_Pipe::CoolComplete()
@@ -107,9 +107,9 @@ void AWeapon_Pipe::CoolComplete()
 	}
 }
 
-void AWeapon_Pipe::Explosion()
+void AWeapon_Pipe::Explosion(FVector ImpactPoint)
 {
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionVFXFactory, boxComp->GetComponentLocation());
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionVFXFactory, ImpactPoint);
 	UGameplayStatics::PlaySound2D(GetWorld(), hitSound);
 }
 
@@ -118,6 +118,6 @@ void AWeapon_Pipe::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
 	{
 		Cast<AAssaultBoss>(OtherActor)->OnBossHit(damage);
-		Explosion();
+		Explosion(OtherActor->GetActorLocation());
 	}
 }

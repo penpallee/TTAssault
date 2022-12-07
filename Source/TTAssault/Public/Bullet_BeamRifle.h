@@ -6,16 +6,16 @@
 #include "GameFramework/Actor.h"
 #include <Particles/ParticleSystem.h>
 #include <Engine/EngineTypes.h>
-#include "Bullet_Grenade.generated.h"
+#include "Bullet_BeamRifle.generated.h"
 
 UCLASS()
-class TTASSAULT_API ABullet_Grenade : public AActor
+class TTASSAULT_API ABullet_BeamRifle : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABullet_Grenade();
+	ABullet_BeamRifle();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,7 +24,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 	UFUNCTION()
 		void OnSphereComponentBeginOverlap(
 			UPrimitiveComponent* OverlappedComponent,
@@ -41,11 +40,11 @@ public:
 
 	float life;
 	float radius;
-	float speed = 1000;
+	float speed = 30000;
 
 	void Expolosion();
 	/*void OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);*/
 
 	UPROPERTY(EditAnywhere)
-	class UParticleSystem* explosionVFXFactory;
+		class UParticleSystem* explosionVFXFactory;
 };

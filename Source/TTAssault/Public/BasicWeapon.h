@@ -60,7 +60,7 @@ public:
 	virtual void CoolComplete();	//발사 딜레이 종료
 	virtual int GetCombo();
 	virtual void SetCombo();
-	virtual void Explosion();
+	virtual void Explosion(FVector ImpactPoint);
 
 	UPROPERTY(EditAnywhere)
 	USoundBase* fireSound;

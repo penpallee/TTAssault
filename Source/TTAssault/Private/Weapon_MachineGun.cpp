@@ -47,6 +47,11 @@ bool AWeapon_MachineGun::FireArm()
 	return true;
 }
 
+void AWeapon_MachineGun::FireStop()
+{
+	GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
+}
+
 void AWeapon_MachineGun::OnSleep()
 {
 	gunMeshComp->SetVisibility(false);
@@ -80,6 +85,7 @@ void AWeapon_MachineGun::MagazineReloadComplete()
 	reloadingProgress += 0.1f;
 	if (reloadingProgress >= reloadingTime)
 	{
+		UGameplayStatics::PlaySound2D(GetWorld(), reloadSound);
 		remain = ammo;
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), reloadSound, this->GetActorLocation(), 1, 1, 0);
 		GetWorldTimerManager().ClearTimer(autoReloadTimerHandle);
@@ -94,6 +100,8 @@ void AWeapon_MachineGun::AutoFire()
 		GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_MachineGun::MagazineReloadComplete, 0.1f, true, 0);
 		return;
 	}
+	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
+
 	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
 	GetWorld()->SpawnActor<ABullet_MachineGun>(bulletFactory, t);
 	remain--;

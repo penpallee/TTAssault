@@ -115,6 +115,6 @@ void ABasicWeapon::SetCombo()
 		combo = 1;
 }
 
-void ABasicWeapon::Explosion()
+void ABasicWeapon::Explosion(FVector ImpactPoint)
 {
 }

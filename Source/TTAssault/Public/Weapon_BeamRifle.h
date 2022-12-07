@@ -13,7 +13,8 @@ UCLASS()
 class TTASSAULT_API AWeapon_BeamRifle : public ABasicWeapon
 {
 	GENERATED_BODY()
-		AWeapon_BeamRifle();
+	public:
+	AWeapon_BeamRifle();
 	void Tick(float DeltaTime) override;
 	void BeginPlay();
 	bool FireArm();
@@ -23,9 +24,9 @@ class TTASSAULT_API AWeapon_BeamRifle : public ABasicWeapon
 	FString returnName();
 
 	UPROPERTY(EditAnywhere)
-		class USkeletalMeshComponent* gunMeshComp;
+	class UStaticMeshComponent* sniperMeshComp;
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ABullet_Grenade> bulletFactory;
+	TSubclassOf<class ABullet_BeamRifle> bulletFactory;
 
 	void RemainReload();
 	void CoolComplete();

@@ -1,23 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character_Danmoozi.h"
+#include "Character_Soondae.h"
 #include <GameFramework/SpringArmComponent.h>
 #include <Camera/CameraComponent.h>
 #include "Weapon_Pipe.h"
-#include "Weapon_GrenadeLauncher.h"
-#include "Weapon_SniperRifle.h"
+#include "Weapon_MachineGun.h"
+#include "Weapon_BeamRifle.h"
 #include <Kismet/KismetMathLibrary.h>
 #include "Components/CapsuleComponent.h"
 
-ACharacter_Danmoozi::ACharacter_Danmoozi()
+ACharacter_Soondae::ACharacter_Soondae()
 {
 	//Super();
 	PrimaryActorTick.bCanEverTick = true;
 
-	ACharacter_Danmoozi::HPMax = 100;
-	ACharacter_Danmoozi::boosterMax = 1000;
-	ACharacter_Danmoozi::speed = 900;
+	ACharacter_Soondae::HPMax = 100;
+	ACharacter_Soondae::boosterMax = 2000;
+	ACharacter_Soondae::speed = 1000;
 	selWeapon = WeaponSel::Primary;
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempBody(TEXT("SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn'"));//½ºÄÌ·¹Å» ¸Þ½Ã °¡Á®¿È
@@ -25,52 +25,45 @@ ACharacter_Danmoozi::ACharacter_Danmoozi()
 	{
 		GetMesh()->SetSkeletalMesh(tempBody.Object);
 		bodyMeshComp = GetMesh();
-		//bodyMeshComp->SetRelativeLocation(FVector(0, 0, 0));
 	}
 
 	this->SetActorRotation(FRotator(0, 0, 0));
 
 	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
-	//cameraComp->SetupAttachment(springArmComp);
-	//cameraComp->SetRelativeRotation(FRotator(0, -90, 0));
 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACharacter_Danmoozi::OnCapsuleComponentBeginOverlap);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACharacter_Soondae::OnCapsuleComponentBeginOverlap);
 }
 
 // Called when the game starts or when spawned
-void ACharacter_Danmoozi::BeginPlay()
+void ACharacter_Soondae::BeginPlay()
 {
 	Super::BeginPlay();
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
-	//pipe = CreateDefaultSubobject<AWeapon_Pipe>(TEXT("Weapon_Pipe"));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
 	pipe->SetActorRelativeLocation(FVector(0, 0, -30));
 	pipe->SetActorRelativeRotation(FRotator(30, 50, 0));
 
-	launcher = GetWorld()->SpawnActor<AWeapon_GrenadeLauncher>(launcherFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
-	//launcher->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
-	launcher->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	launcher->SetActorRelativeLocation(FVector(0, 0, 0));
-	launcher->SetActorRelativeRotation(FRotator(-10, 105, 0));
+	machineGun = GetWorld()->SpawnActor<AWeapon_MachineGun>(machineGunFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
+	machineGun->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
+	machineGun->SetActorRelativeLocation(FVector(0, 0, 0));
+	machineGun->SetActorRelativeRotation(FRotator(-10, 105, 0));
 
+	beamRifle = GetWorld()->SpawnActor<AWeapon_BeamRifle>(beamRifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
+	beamRifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
+	beamRifle->SetActorRelativeLocation(FVector(-30, 0, 0));
+	beamRifle->SetActorRelativeRotation(FRotator(-10, 105, 0));
 
-	rifle = GetWorld()->SpawnActor<AWeapon_SniperRifle>(rifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
-	//rifle->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
-	rifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	rifle->SetActorRelativeLocation(FVector(-30, 0, 0));
-	rifle->SetActorRelativeRotation(FRotator(-10, 105, 0));
-
-	GetWorldTimerManager().SetTimer(autoBoosterTimerHandle, this, &ACharacter_Danmoozi::boosterCharge, 0.1f, true, 0);
+	GetWorldTimerManager().SetTimer(autoBoosterTimerHandle, this, &ACharacter_Soondae::boosterCharge, 0.1f, true, 0);
 }
 
 // Called every frame
-void ACharacter_Danmoozi::Tick(float DeltaTime)
+void ACharacter_Soondae::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -109,24 +102,12 @@ void ACharacter_Danmoozi::Tick(float DeltaTime)
 			}
 		}
 	}
-
-
 	cameraComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(cameraComp->GetRelativeLocation(), this->GetActorLocation()));
 	cameraComp->SetRelativeLocation(FVector(-1000, t.Y * 0.95f, t.Z * 0.95f));
-
-	/*FRotator deltaRot = UKismetMathLibrary::NormalizedDeltaRotator(this->GetControlRotation(),GetActorRotation());
-	FRotator makeRot = FRotator(0,mouseX,mouseY);
-
-	FRotator interRot = UKismetMathLibrary::RInterpTo(makeRot, deltaRot,GetWorld()->GetDeltaSeconds(),15);
-	this->SetActorRotation(interRot);*/
-
-	//FHitResult result;
-	//GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1,false,result );
-	//this->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(result.Location,GetActorLocation()));
 }
 
 // Called to bind functionality to input
-void ACharacter_Danmoozi::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACharacter_Soondae::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	InputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &AAssaultCharacter::onActionBoost);
@@ -135,12 +116,13 @@ void ACharacter_Danmoozi::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	InputComponent->BindAxis("Look Up / Down Mouse", this, &AAssaultCharacter::onAxisMouseY);
 	InputComponent->BindAxis("Turn Right / Left", this, &AAssaultCharacter::onAxisMouseX);
 	InputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AAssaultCharacter::OnActionFire);
+	InputComponent->BindAction(TEXT("Fire"), IE_Released, this, &AAssaultCharacter::OnActionStop);
 	InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &AAssaultCharacter::onSelPrimary);
 	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);
 }
 
-void ACharacter_Danmoozi::OnActionFire()
+void ACharacter_Soondae::OnActionFire()
 {
 	switch (selWeapon)
 	{
@@ -153,51 +135,56 @@ void ACharacter_Danmoozi::OnActionFire()
 		}
 		break;
 	case WeaponSel::Secondary:
-		if (launcher->FireArm())
+		if (machineGun->FireArm())
 			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
 		break;
 	case WeaponSel::Tertiary:
-		if (rifle->FireArm())
+		if (beamRifle->FireArm())
 			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Rifle"));
 		break;
 	}
 }
 
-void ACharacter_Danmoozi::OnAxisHorizontal(float value)
+void ACharacter_Soondae::OnActionStop()
+{
+	machineGun->FireStop();
+}
+
+void ACharacter_Soondae::OnAxisHorizontal(float value)
 {
 	Super::OnAxisHorizontal(value);
 	direction.Z = value;
 }
 
-void ACharacter_Danmoozi::OnAxisVertical(float value)
+void ACharacter_Soondae::OnAxisVertical(float value)
 {
 	Super::OnAxisVertical(value);
 	direction.Y = value;
 }
 
-void ACharacter_Danmoozi::onActionBoost()
+void ACharacter_Soondae::onActionBoost()
 {
 	Super::onActionBoost();
 }
 
-void ACharacter_Danmoozi::OnPlayerHit(int damage)
+void ACharacter_Soondae::OnPlayerHit(int damage)
 {
 	Super::OnPlayerHit(damage);
 }
 
-void ACharacter_Danmoozi::Stop()
+void ACharacter_Soondae::Stop()
 {
 	Super::Stop();
 }
 
-void ACharacter_Danmoozi::onAxisMouseX(float value)
+void ACharacter_Soondae::onAxisMouseX(float value)
 {
 	Super::onAxisMouseX(value);
 	//AddControllerYawInput(-value);
 	//mouseX -= value;
 }
 
-void ACharacter_Danmoozi::onAxisMouseY(float value)
+void ACharacter_Soondae::onAxisMouseY(float value)
 {
 	Super::onAxisMouseY(value);
 	//AddControllerRollInput(value);
@@ -205,34 +192,34 @@ void ACharacter_Danmoozi::onAxisMouseY(float value)
 	//AddControllerYawInput(value);
 }
 
-void ACharacter_Danmoozi::onSelPrimary()
+void ACharacter_Soondae::onSelPrimary()
 {
 	selWeapon = WeaponSel::Primary;
 
 	pipe->OnAwake();
-	launcher->OnSleep();
-	rifle->OnSleep();
+	machineGun->OnSleep();
+	beamRifle->OnSleep();
 }
 
-void ACharacter_Danmoozi::onSelSecondary()
+void ACharacter_Soondae::onSelSecondary()
 {
 	selWeapon = WeaponSel::Secondary;
 
 	pipe->OnSleep();
-	launcher->OnAwake();
-	rifle->OnSleep();
+	machineGun->OnAwake();
+	beamRifle->OnSleep();
 }
 
-void ACharacter_Danmoozi::onSelTetertiary()
+void ACharacter_Soondae::onSelTetertiary()
 {
 	selWeapon = WeaponSel::Tertiary;
 
 	pipe->OnSleep();
-	launcher->OnSleep();
-	rifle->OnAwake();
+	machineGun->OnSleep();
+	beamRifle->OnAwake();
 }
 
-FPlayerStatus ACharacter_Danmoozi::returnStatus()
+FPlayerStatus ACharacter_Soondae::returnStatus()
 {
 	FPlayerStatus nowStat;
 
@@ -248,22 +235,22 @@ FPlayerStatus ACharacter_Danmoozi::returnStatus()
 		nowStat.reloadProgress = pipe->returnReloadProgress();
 		break;
 	case WeaponSel::Secondary:
-		nowStat.ammo = launcher->returnAmmo();
-		nowStat.WeaponName = launcher->returnName();
-		nowStat.magazine = launcher->returnMagazine();
-		nowStat.coolTime = launcher->returnCoolTime();
-		nowStat.coolTimeProgress = launcher->returnCoolProgress();
-		nowStat.reloadTime = launcher->returnReloadTime();
-		nowStat.reloadProgress = launcher->returnReloadProgress();
+		nowStat.ammo = machineGun->returnAmmo();
+		nowStat.WeaponName = machineGun->returnName();
+		nowStat.magazine = machineGun->returnMagazine();
+		nowStat.coolTime = machineGun->returnCoolTime();
+		nowStat.coolTimeProgress = machineGun->returnCoolProgress();
+		nowStat.reloadTime = machineGun->returnReloadTime();
+		nowStat.reloadProgress = machineGun->returnReloadProgress();
 		break;
 	case WeaponSel::Tertiary:
-		nowStat.ammo = rifle->returnAmmo();
-		nowStat.WeaponName = rifle->returnName();
-		nowStat.magazine = rifle->returnMagazine();
-		nowStat.coolTime = rifle->returnCoolTime();
-		nowStat.coolTimeProgress = rifle->returnCoolProgress();
-		nowStat.reloadTime = rifle->returnReloadTime();
-		nowStat.reloadProgress = rifle->returnReloadProgress();
+		nowStat.ammo = beamRifle->returnAmmo();
+		nowStat.WeaponName = beamRifle->returnName();
+		nowStat.magazine = beamRifle->returnMagazine();
+		nowStat.coolTime = beamRifle->returnCoolTime();
+		nowStat.coolTimeProgress = beamRifle->returnCoolProgress();
+		nowStat.reloadTime = beamRifle->returnReloadTime();
+		nowStat.reloadProgress = beamRifle->returnReloadProgress();
 		break;
 	}
 	nowStat.HPMax = this->HPMax;
@@ -274,7 +261,7 @@ FPlayerStatus ACharacter_Danmoozi::returnStatus()
 	return nowStat;
 }
 
-void ACharacter_Danmoozi::boosterCharge()
+void ACharacter_Soondae::boosterCharge()
 {
 	if (booster < boosterMax)
 		booster += 10;

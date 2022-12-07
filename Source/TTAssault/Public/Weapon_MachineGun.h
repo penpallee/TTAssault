@@ -18,6 +18,7 @@ public:
 	void Tick(float DeltaTime) override;
 	void BeginPlay();
 	bool FireArm();
+	void FireStop();
 	void OnSleep();
 	void OnAwake();
 	int returnAmmo();
