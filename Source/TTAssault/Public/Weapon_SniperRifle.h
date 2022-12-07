@@ -29,4 +29,5 @@ public:
 
 	virtual void MagazineReloadComplete() override;
 	virtual void CoolComplete() override;
+	virtual void Explosion() override;
 };

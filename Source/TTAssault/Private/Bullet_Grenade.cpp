@@ -6,6 +6,7 @@
 #include <Components/StaticMeshComponent.h>
 #include <Kismet/GameplayStatics.h>
 #include "AssaultBoss.h"
+#include "Character_Danmoozi.h"
 
 // Sets default values
 ABullet_Grenade::ABullet_Grenade()
@@ -57,11 +58,6 @@ void ABullet_Grenade::Expolosion()
 	this->Destroy();
 }
 
-void ABullet_Grenade::NotifyActorBeginOverlap(AActor* OtherActor)
-{
-	Expolosion();
-}
-
 void ABullet_Grenade::OnSphereComponentBeginOverlap(
 	UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
@@ -70,8 +66,12 @@ void ABullet_Grenade::OnSphereComponentBeginOverlap(
 {
 	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
 	{
+		UE_LOG(LogTemp,Warning,TEXT("BossHit"));
 		Cast<AAssaultBoss>(OtherActor)->OnBossHit(10);
-		UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 		Expolosion();
+	}
+	if (!OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
+	{
+		
 	}
 }

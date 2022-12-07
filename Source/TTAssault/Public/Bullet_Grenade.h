@@ -45,9 +45,8 @@ public:
 
 	void Expolosion();
 	/*void OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);*/
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	//virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 	UPROPERTY(EditAnywhere)
-	//class UNiagaraSystem* explosionNiagaraFactory;
 	class UParticleSystem* explosionVFXFactory;
 };
