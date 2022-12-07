@@ -5,6 +5,7 @@
 
 #include "Character_Danmoozi.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -15,21 +16,21 @@ ABullet_DirectFire::ABullet_DirectFire()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// directionFireCollisionComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("directionFireCollisionComp"));
+	directionFireCollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("directionFireCollisionComp"));
 	bulletTrailFX = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("bulletTrailFX"));
 	bulletMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("bulletMovement"));
 
 	// SetRootComponent(directionFireCollisionComp);
-	// directionFireCollisionComp->SetGenerateOverlapEvents(true);
-	// directionFireCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	// directionFireCollisionComp->SetCollisionProfileName(TEXT("BossBullet"));
+	directionFireCollisionComp->SetGenerateOverlapEvents(true);
+	directionFireCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	directionFireCollisionComp->SetCollisionProfileName(TEXT("BossBullet"));
 	bulletTrailFX->bAllowRecycling = true;
 
 	bulletMovementComp->InitialSpeed = 1200;
 	bulletMovementComp->MaxSpeed = 1200;
 	bulletMovementComp->ProjectileGravityScale = 0;
 
-	// directionFireCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnCapsuleComponentBeginOverlap);
+	directionFireCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnCapsuleComponentBeginOverlap);
 	
 	
 }

@@ -40,8 +40,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float booster = 1000;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int HP = 100;
+	int HP = 300;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxHP = HP;
 	UPROPERTY(EditAnywhere)
 	bool isBooster = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
