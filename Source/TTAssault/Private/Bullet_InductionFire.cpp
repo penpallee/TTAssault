@@ -27,11 +27,11 @@ ABullet_InductionFire::ABullet_InductionFire()
 	// inductionFireCollisionComp->SetCollisionProfileName(TEXT("BossBullet"));
 	bulletTrailFX->bAllowRecycling = true;
 
-	bulletMovementComp->InitialSpeed = 800;
-	bulletMovementComp->MaxSpeed = 800;
+	bulletMovementComp->InitialSpeed = 1200;
+	bulletMovementComp->MaxSpeed = 1200;
 	bulletMovementComp->ProjectileGravityScale = 0;
 	bulletMovementComp->bIsHomingProjectile = true;
-	bulletMovementComp->HomingAccelerationMagnitude = 800;
+	bulletMovementComp->HomingAccelerationMagnitude = 1200;
 
 	// inductionFireCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_InductionFire::OnCapsuleComponentBeginOverlap);
 

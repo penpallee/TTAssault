@@ -49,5 +49,7 @@ public:
 	class USoundBase* fireDestroySound;
 
 	UPROPERTY(EditAnywhere)
-	class UCapsuleComponent* directionFireCollisionComp;
+	class USphereComponent* directionFireCollisionComp;
+
+
 };
