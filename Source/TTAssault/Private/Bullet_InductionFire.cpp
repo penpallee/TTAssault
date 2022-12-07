@@ -17,14 +17,14 @@ ABullet_InductionFire::ABullet_InductionFire()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	inductionFireCollisionComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("inductionFireCollisionComp"));
+	// inductionFireCollisionComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("inductionFireCollisionComp"));
 	bulletTrailFX = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("bulletTrailFX"));
 	bulletMovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("bulletMovement"));
 
-	SetRootComponent(inductionFireCollisionComp);
-	inductionFireCollisionComp->SetGenerateOverlapEvents(true);
-	inductionFireCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	inductionFireCollisionComp->SetCollisionProfileName(TEXT("Bullet"));
+	// SetRootComponent(inductionFireCollisionComp);
+	// inductionFireCollisionComp->SetGenerateOverlapEvents(true);
+	// inductionFireCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	// inductionFireCollisionComp->SetCollisionProfileName(TEXT("BossBullet"));
 	bulletTrailFX->bAllowRecycling = true;
 
 	bulletMovementComp->InitialSpeed = 800;
@@ -33,7 +33,7 @@ ABullet_InductionFire::ABullet_InductionFire()
 	bulletMovementComp->bIsHomingProjectile = true;
 	bulletMovementComp->HomingAccelerationMagnitude = 800;
 
-	inductionFireCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_InductionFire::OnCapsuleComponentBeginOverlap);
+	// inductionFireCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_InductionFire::OnCapsuleComponentBeginOverlap);
 
 }
 

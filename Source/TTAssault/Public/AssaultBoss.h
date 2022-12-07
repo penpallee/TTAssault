@@ -26,13 +26,13 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION()
-	void OnCapsuleComponentBeginOverlap(
-		UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,
-		bool bFromSweep,const FHitResult& SweepResult);
-	
+	// UFUNCTION()
+	// void OnCapsuleComponentBeginOverlap(
+	// 	UPrimitiveComponent* OverlappedComponent,
+	// 	AActor* OtherActor,
+	// 	UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,
+	// 	bool bFromSweep,const FHitResult& SweepResult);
+	//
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -47,11 +47,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Defense;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class USpringArmComponent* springArmComp;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UCameraComponent* cameraComp;
-
 	void OnAxisVertical(float value);
 	void OnAxisHorizontal(float value);
 	void OnAxisHorizontalView(float value);
@@ -63,4 +58,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UProjectileMovementComponent* BossMoveComp;
+	
+
+	
 };

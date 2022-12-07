@@ -34,17 +34,6 @@ AAssaultBoss::AAssaultBoss()
 		GetCharacterMovement()->bUseSeparateBrakingFriction = true;
 		GetCharacterMovement()->BrakingFriction = 1.0f;
 
-		springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("springArmComp"));
-		cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("cameraComp"));
-		
-		springArmComp->SetupAttachment(RootComponent);
-		springArmComp->TargetArmLength = 1000;
-		springArmComp->bInheritPitch = false;
-		springArmComp->bInheritRoll = false;
-		springArmComp->bInheritYaw = false;
-
-		cameraComp->SetupAttachment(springArmComp);
-
 	
 
 		particleComp1 = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("LeftFootBoostFire"));
@@ -77,7 +66,7 @@ AAssaultBoss::AAssaultBoss()
 		GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		GetCapsuleComponent()->SetCollisionProfileName(TEXT("Boss"));
-		GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
+		// GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
 	}
 
 	Defense = 0;
@@ -132,15 +121,15 @@ void AAssaultBoss::OnAxisHorizontalView(float value)
 	SetActorRotation(FRotator(0, (-90) * value, 0));
 }
 
-void AAssaultBoss::OnCapsuleComponentBeginOverlap(
-	UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-	bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
-	{
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
-		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
-	}
-}
+// void AAssaultBoss::OnCapsuleComponentBeginOverlap(
+// 	UPrimitiveComponent* OverlappedComponent,
+// 	AActor* OtherActor,
+// 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+// 	bool bFromSweep, const FHitResult& SweepResult)
+// {
+// 	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
+// 	{
+// 		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
+// 		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+// 	}
+// }
