@@ -66,7 +66,9 @@ AAssaultBoss::AAssaultBoss()
 		GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		GetCapsuleComponent()->SetCollisionProfileName(TEXT("Boss"));
-		// GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
+		GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
+		GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentHit);
+
 	}
 
 	Defense = 0;
@@ -97,6 +99,15 @@ void AAssaultBoss::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis(TEXT("Turn R/L"), this, &AAssaultBoss::OnAxisHorizontalView);
 }
 
+void AAssaultBoss::OnCapsuleComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
+		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+	}
+}
+
 void AAssaultBoss::OnBossHit(int damage)
 {
 	HP -= (damage - Defense);
@@ -104,6 +115,22 @@ void AAssaultBoss::OnBossHit(int damage)
 	{
 		Destroy();
 	}
+}
+
+void AAssaultBoss::OnBossStunned()
+{
+	FTimerHandle GravityTimerHandle;
+	float GravityTime = 3;
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), StunnedVFX, GetActorLocation());
+
+	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			// 코드 구현
+			AutoPossessAI = EAutoPossessAI::Disabled;
+			// TimerHandle 초기화
+			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+		}), GravityTime, false);	// 반복하려면 false를 true로 변경
 }
 
 void AAssaultBoss::OnAxisVertical(float value)
@@ -121,15 +148,11 @@ void AAssaultBoss::OnAxisHorizontalView(float value)
 	SetActorRotation(FRotator(0, (-90) * value, 0));
 }
 
-// void AAssaultBoss::OnCapsuleComponentBeginOverlap(
-// 	UPrimitiveComponent* OverlappedComponent,
-// 	AActor* OtherActor,
-// 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-// 	bool bFromSweep, const FHitResult& SweepResult)
-// {
-// 	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
-// 	{
-// 		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
-// 		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
-// 	}
-// }
+void AAssaultBoss::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
+		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+	}
+}

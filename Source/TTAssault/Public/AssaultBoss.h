@@ -26,17 +26,28 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	// UFUNCTION()
-	// void OnCapsuleComponentBeginOverlap(
-	// 	UPrimitiveComponent* OverlappedComponent,
-	// 	AActor* OtherActor,
-	// 	UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,
-	// 	bool bFromSweep,const FHitResult& SweepResult);
-	//
+	UFUNCTION()
+	void OnCapsuleComponentHit(
+		UPrimitiveComponent* HitComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		FVector NormalImpulse,
+		const FHitResult& Hit);
+
+	UFUNCTION()
+	void OnCapsuleComponentBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,
+		bool bFromSweep,const FHitResult& SweepResult);
+	
 public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnBossHit(int damage);
+
+	UFUNCTION(BlueprintCallable)
+	void OnBossStunned();
 
 	UPROPERTY(EditAnywhere)
 	float booster = 1000;
@@ -58,6 +69,9 @@ public:
 	class UParticleSystemComponent* particleComp1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UParticleSystemComponent* particleComp2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystem* StunnedVFX;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UProjectileMovementComponent* BossMoveComp;
