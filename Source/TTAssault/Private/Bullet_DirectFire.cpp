@@ -4,6 +4,7 @@
 #include "Bullet_DirectFire.h"
 
 #include "Character_Danmoozi.h"
+#include "Character_Soondae.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -33,8 +34,6 @@ ABullet_DirectFire::ABullet_DirectFire()
 	bulletMovementComp->MaxSpeed = 1200;
 	bulletMovementComp->ProjectileGravityScale = 0;
 
-	BulletCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnCapsuleComponentBeginOverlap);
-	
 	
 }
 
@@ -42,6 +41,8 @@ ABullet_DirectFire::ABullet_DirectFire()
 void ABullet_DirectFire::BeginPlay()
 {
 	Super::BeginPlay();
+
+	BulletCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnCapsuleComponentBeginOverlap);
 
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireTrailSound, GetActorLocation());
 
@@ -72,10 +73,24 @@ void ABullet_DirectFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* Ove
 {
 	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
 	{
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("123112312312312312323"));
-		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(8);
 		this->Destroy();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
 		
+	}
+	else if (OtherActor->IsA(ACharacter_Soondae::StaticClass()))
+	{
+		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(8);
+		this->Destroy();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+	}
+	else
+	{
+		this->Destroy();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
 	}
 }
 

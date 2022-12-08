@@ -5,6 +5,7 @@
 
 #include "AssaultBoss.h"
 #include "Character_Danmoozi.h"
+#include "Character_Soondae.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -35,15 +36,15 @@ ABullet_InductionFire::ABullet_InductionFire()
 	bulletMovementComp->ProjectileGravityScale = 0;
 	bulletMovementComp->bIsHomingProjectile = true;
 	bulletMovementComp->HomingAccelerationMagnitude = 1200;
-
-	BulletCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_InductionFire::OnCapsuleComponentBeginOverlap);
-
 }
 
 // Called when the game starts or when spawned
 void ABullet_InductionFire::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
+
+	BulletCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_InductionFire::OnCapsuleComponentBeginOverlap);
+
 
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireTrailSound, GetActorLocation());
 	FTimerHandle GravityTimerHandle;
@@ -72,7 +73,28 @@ void ABullet_InductionFire::Tick(float DeltaTime)
 void ABullet_InductionFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
+	{
+		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(2);
+		this->Destroy();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
 
+	}
+	else if (OtherActor->IsA(ACharacter_Soondae::StaticClass()))
+	{
+		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(2);
+		this->Destroy();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+
+	}
+	else
+	{
+		this->Destroy();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+	}
 }
 
 void ABullet_InductionFire::SetInductionFireTarget(TargetSel target)

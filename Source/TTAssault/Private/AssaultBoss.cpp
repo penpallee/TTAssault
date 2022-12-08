@@ -7,8 +7,11 @@
 #include <GameFramework/CharacterMovementComponent.h>
 #include <Engine/SkeletalMesh.h>
 #include <Kismet/KismetMathLibrary.h>
+
+#include "AIBossController.h"
 #include "AIController.h"
 #include "Character_Danmoozi.h"
+#include "Character_Soondae.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -66,9 +69,7 @@ AAssaultBoss::AAssaultBoss()
 		GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		GetCapsuleComponent()->SetCollisionProfileName(TEXT("Boss"));
-		GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
-		GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentHit);
-
+	
 	}
 
 	Defense = 0;
@@ -79,7 +80,9 @@ AAssaultBoss::AAssaultBoss()
 void AAssaultBoss::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentHit);
+
 }
 
 // Called every frame
@@ -103,8 +106,15 @@ void AAssaultBoss::OnCapsuleComponentHit(UPrimitiveComponent* HitComponent, AAct
 {
 	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
 	{
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
+		// UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
 		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BossBodyAttackFX, GetActorLocation());
+	}
+	else if (OtherActor->IsA(ACharacter_Soondae::StaticClass()))
+	{
+		Cast<ACharacter_Soondae>(OtherActor)->OnPlayerHit(5);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BossBodyAttackFX, GetActorLocation());
+
 	}
 }
 
@@ -123,10 +133,11 @@ void AAssaultBoss::OnBossStunned()
 	float GravityTime = 3;
 
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), StunnedVFX, GetActorLocation());
-
+	AIControllerClass = nullptr;
 	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
 		{
 			// 코드 구현
+		
 			AutoPossessAI = EAutoPossessAI::Disabled;
 			// TimerHandle 초기화
 			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
@@ -154,5 +165,6 @@ void AAssaultBoss::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* Overlappe
 	{
 		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
 		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+		
 	}
 }
