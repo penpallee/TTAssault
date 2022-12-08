@@ -37,7 +37,8 @@ void ABullet_BeamRifle::BeginPlay()
 	Super::BeginPlay();
 
 	FTimerHandle handle;
-	GetWorldTimerManager().SetTimer(handle, this, &ABullet_BeamRifle::Expolosion, 1, false);
+	//GetWorldTimerManager().SetTimer(handle, this, &ABullet_BeamRifle::Expolosion, 0.2, false);
+	SetLifeSpan(1);
 }
 
 // Called every frame
@@ -55,7 +56,7 @@ void ABullet_BeamRifle::Expolosion()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionVFXFactory, GetActorLocation());
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
-	this->Destroy();
+	//this->Destroy();
 }
 
 void ABullet_BeamRifle::OnSphereComponentBeginOverlap(

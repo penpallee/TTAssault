@@ -6,6 +6,8 @@
 #include <Components/StaticMeshComponent.h>
 #include <Kismet/GameplayStatics.h>
 
+#include "AssaultBoss.h"
+
 // Sets default values
 ABullet_MachineGun::ABullet_MachineGun()
 {
@@ -52,5 +54,9 @@ void ABullet_MachineGun::Expolosion()
 
 void ABullet_MachineGun::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	Expolosion();
+	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
+	{
+		Cast<AAssaultBoss>(OtherActor)->OnBossHit(1);
+	}
+		Expolosion();
 }
