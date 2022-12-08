@@ -83,18 +83,19 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float speed;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float boosterMax = 1000;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float booster = boosterMax;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float boosterLose=100;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int HPMax = 100;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int HP = HPMax;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isBooster = false;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Defense;
 
 	float mouseX;

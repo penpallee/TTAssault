@@ -24,11 +24,11 @@ AWeapon_BeamRifle::AWeapon_BeamRifle()
 void AWeapon_BeamRifle::BeginPlay()
 {
 	Super::BeginPlay();
-	damage = 10;
+	damage = 30;
 	coolTime = 1;
-	ammo = 20;
+	ammo = 1;
 	remain = ammo;
-	reloadingTime = 3;
+	reloadingTime = 5;
 	isCoolDown = false;
 	myName = TEXT("BeamRifle");
 
