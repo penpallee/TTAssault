@@ -25,7 +25,7 @@ void AWeapon_BeamRifle::BeginPlay()
 {
 	Super::BeginPlay();
 	damage = 10;
-	coolTime = 1.5f;
+	coolTime = 1;
 	ammo = 20;
 	remain = ammo;
 	reloadingTime = 3;

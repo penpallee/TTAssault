@@ -24,11 +24,11 @@ AWeapon_MachineGun::AWeapon_MachineGun()
 void AWeapon_MachineGun::BeginPlay()
 {
 	Super::BeginPlay();
-	damage = 2;
+	damage = 1;
 	coolTime = 0.03f;
 	ammo = 30;
 	remain = ammo;
-	reloadingTime = 5;
+	reloadingTime = 3;
 	isCoolDown = false;
 	myName = TEXT("MachineGun");
 }
