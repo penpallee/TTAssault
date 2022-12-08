@@ -7,6 +7,7 @@
 #include <Kismet/GameplayStatics.h>
 #include <Blueprint/WidgetLayoutLibrary.h>
 #include <Kismet/KismetMathLibrary.h>
+#include <Runtime/Engine/Public/Net/UnrealNetwork.h>
 
 // Sets default values
 AAssaultCharacter::AAssaultCharacter()
@@ -34,6 +35,13 @@ AAssaultCharacter::AAssaultCharacter()
 
 	//	weaponComponent = CreateDefaultSubobject <UPlayerFireComponent>("fireComp");//¸ðµâÈ­
 	//	weaponComponent->SetupAttachment(this->GetMesh());
+
+	bReplicates = true;
+}
+
+void AAssaultCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty> &OutLifetimeProps) const
+{
+	DOREPLIFETIME(AAssaultCharacter, myOwner);
 }
 
 // Called when the game starts or when spawned
@@ -129,7 +137,7 @@ void AAssaultCharacter::Stop()
 
 void AAssaultCharacter::onSelPrimary()
 {
-
+	
 }
 void AAssaultCharacter::onSelSecondary()
 {

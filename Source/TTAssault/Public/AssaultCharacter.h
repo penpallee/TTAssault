@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include <Kismet/GameplayStatics.h>
+#include <Runtime/Engine/Public/Net/UnrealNetwork.h>
 #include "AssaultCharacter.generated.h"
 
 UENUM(BlueprintType)
@@ -50,7 +51,9 @@ class TTASSAULT_API AAssaultCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AAssaultCharacter();
-
+	UPROPERTY(replicated)
+		AAssaultCharacter* myOwner;
+	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty> &OutLifetimeProps) const;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -112,6 +115,7 @@ public:
 
 	virtual void OnPlayerHit(int damage);
 	virtual void Stop();
+	//UFUNCTION(NetMulticast, reliable)
 	virtual void onSelPrimary();
 	virtual void onSelSecondary();
 	virtual void onSelTetertiary();

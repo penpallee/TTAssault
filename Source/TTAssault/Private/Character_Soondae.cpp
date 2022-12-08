@@ -36,6 +36,14 @@ ACharacter_Soondae::ACharacter_Soondae()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACharacter_Soondae::OnCapsuleComponentBeginOverlap);
+
+	bReplicates = true;
+}
+
+void ACharacter_Soondae::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ACharacter_Soondae, soondaeOwner);
 }
 
 // Called when the game starts or when spawned
@@ -63,7 +71,7 @@ void ACharacter_Soondae::BeginPlay()
 }
 
 // Called every frame
-void ACharacter_Soondae::Tick(float DeltaTime)
+void ACharacter_Soondae::Tick/*_Implementation*/(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -107,7 +115,7 @@ void ACharacter_Soondae::Tick(float DeltaTime)
 }
 
 // Called to bind functionality to input
-void ACharacter_Soondae::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACharacter_Soondae::SetupPlayerInputComponent_Implementation(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	InputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &AAssaultCharacter::onActionBoost);
@@ -122,7 +130,7 @@ void ACharacter_Soondae::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);
 }
 
-void ACharacter_Soondae::OnActionFire()
+void ACharacter_Soondae::OnActionFire_Implementation()
 {
 	switch (selWeapon)
 	{
@@ -145,24 +153,24 @@ void ACharacter_Soondae::OnActionFire()
 	}
 }
 
-void ACharacter_Soondae::OnActionStop()
+void ACharacter_Soondae::OnActionStop_Implementation()
 {
 	machineGun->FireStop();
 }
 
-void ACharacter_Soondae::OnAxisHorizontal(float value)
+void ACharacter_Soondae::OnAxisHorizontal_Implementation(float value)
 {
 	Super::OnAxisHorizontal(value);
 	direction.Z = value;
 }
 
-void ACharacter_Soondae::OnAxisVertical(float value)
+void ACharacter_Soondae::OnAxisVertical_Implementation(float value)
 {
 	Super::OnAxisVertical(value);
 	direction.Y = value;
 }
 
-void ACharacter_Soondae::onActionBoost()
+void ACharacter_Soondae::onActionBoost_Implementation()
 {
 	Super::onActionBoost();
 }
@@ -177,14 +185,14 @@ void ACharacter_Soondae::Stop()
 	Super::Stop();
 }
 
-void ACharacter_Soondae::onAxisMouseX(float value)
+void ACharacter_Soondae::onAxisMouseX_Implementation(float value)
 {
 	Super::onAxisMouseX(value);
 	//AddControllerYawInput(-value);
 	//mouseX -= value;
 }
 
-void ACharacter_Soondae::onAxisMouseY(float value)
+void ACharacter_Soondae::onAxisMouseY_Implementation(float value)
 {
 	Super::onAxisMouseY(value);
 	//AddControllerRollInput(value);
@@ -192,7 +200,7 @@ void ACharacter_Soondae::onAxisMouseY(float value)
 	//AddControllerYawInput(value);
 }
 
-void ACharacter_Soondae::onSelPrimary()
+void ACharacter_Soondae::onSelPrimary_Implementation()
 {
 	selWeapon = WeaponSel::Primary;
 
@@ -201,7 +209,7 @@ void ACharacter_Soondae::onSelPrimary()
 	beamRifle->OnSleep();
 }
 
-void ACharacter_Soondae::onSelSecondary()
+void ACharacter_Soondae::onSelSecondary_Implementation()
 {
 	selWeapon = WeaponSel::Secondary;
 
@@ -210,7 +218,7 @@ void ACharacter_Soondae::onSelSecondary()
 	beamRifle->OnSleep();
 }
 
-void ACharacter_Soondae::onSelTetertiary()
+void ACharacter_Soondae::onSelTetertiary_Implementation()
 {
 	selWeapon = WeaponSel::Tertiary;
 
