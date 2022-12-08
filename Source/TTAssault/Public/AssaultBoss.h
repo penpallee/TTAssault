@@ -46,6 +46,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnBossHit(int damage);
 
+	UFUNCTION(BlueprintCallable)
+	void OnBossStunned();
+
 	UPROPERTY(EditAnywhere)
 	float booster = 1000;
 	
@@ -66,6 +69,9 @@ public:
 	class UParticleSystemComponent* particleComp1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UParticleSystemComponent* particleComp2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystem* StunnedVFX;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UProjectileMovementComponent* BossMoveComp;

@@ -117,6 +117,22 @@ void AAssaultBoss::OnBossHit(int damage)
 	}
 }
 
+void AAssaultBoss::OnBossStunned()
+{
+	FTimerHandle GravityTimerHandle;
+	float GravityTime = 3;
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), StunnedVFX, GetActorLocation());
+
+	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			// 코드 구현
+			AutoPossessAI = EAutoPossessAI::Disabled;
+			// TimerHandle 초기화
+			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+		}), GravityTime, false);	// 반복하려면 false를 true로 변경
+}
+
 void AAssaultBoss::OnAxisVertical(float value)
 {
 	AddMovementInput(UKismetMathLibrary::GetUpVector(FRotator(0, 0, 0)), value);
