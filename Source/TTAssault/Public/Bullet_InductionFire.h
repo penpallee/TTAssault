@@ -60,5 +60,5 @@ public:
 	class USoundBase* fireDestroySound;
 
 	UPROPERTY(EditAnywhere)
-	class UCapsuleComponent* inductionFireCollisionComp;
+	class UCapsuleComponent* BulletCollisionComp;
 };

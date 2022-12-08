@@ -33,7 +33,7 @@ ABullet_DirectFire::ABullet_DirectFire()
 	bulletMovementComp->MaxSpeed = 1200;
 	bulletMovementComp->ProjectileGravityScale = 0;
 
-	BulletCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnSphereComponentBeginOverlap);
+	BulletCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_DirectFire::OnCapsuleComponentBeginOverlap);
 	
 	
 }
@@ -67,12 +67,12 @@ void ABullet_DirectFire::Tick(float DeltaTime)
 
 }
 
-void ABullet_DirectFire::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ABullet_DirectFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
 	{
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("123123"));
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("123112312312312312323"));
 		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
 		this->Destroy();
 		
