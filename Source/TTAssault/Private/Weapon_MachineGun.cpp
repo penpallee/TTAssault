@@ -5,6 +5,8 @@
 #include "Bullet_MachineGun.h"
 #include <Kismet/GameplayStatics.h>
 
+#include "Kismet/KismetMathLibrary.h"
+
 AWeapon_MachineGun::AWeapon_MachineGun()
 {
 	gunMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("gunMeshComp"));
@@ -102,8 +104,23 @@ void AWeapon_MachineGun::AutoFire()
 	}
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 
-	FTransform t = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
-	GetWorld()->SpawnActor<ABullet_MachineGun>(bulletFactory, t);
+	//마우스 트레이스를 위한 플레이어 컨트롤러
+	APlayerController* AimController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	//마우스가 AimLayer에 충돌한 위치
+	FHitResult result;
+	AimController->GetHitResultUnderCursorForObjects(objTypes, true, result);
+
+	//총구 Location
+	FTransform temp = gunMeshComp->GetSocketTransform(TEXT("FirePosition"));
+	//총구의 맵 평면상의 Location
+	FVector temp2 = FVector(0, temp.GetLocation().Y, temp.GetLocation().Z);
+	//AimLayer = 플레이어 X 위치 반영 안돼서 0 하드코딩, Y, Z는 마우스 방향
+	FVector dir = FVector(0, result.Location.Y, result.Location.Z);
+
+	//위에서 구한 location값들로 트랜스폼 생성
+	FTransform aim = UKismetMathLibrary::MakeTransform(temp2, FRotator(UKismetMathLibrary::FindLookAtRotation(temp2, dir)), FVector(1));
+
+	GetWorld()->SpawnActor<ABullet_MachineGun>(bulletFactory, aim);
 	remain--;
 	//PlayAttackAnim();
 }
