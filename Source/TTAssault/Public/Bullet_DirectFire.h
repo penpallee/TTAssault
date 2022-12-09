@@ -35,10 +35,10 @@ public:
 	UFUNCTION()
 	void Destroying();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UParticleSystem* explosionFX;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UParticleSystemComponent* bulletTrailFX;
 
 	UPROPERTY(EditAnywhere)
@@ -54,6 +54,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* BulletCollisionComp;;
 
-	// UPROPERTY(EditAnywhere)
-	// TArray<class UParticleSystem> RandomFireFX;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<class UParticleSystem*> RandomFireFX;
 };

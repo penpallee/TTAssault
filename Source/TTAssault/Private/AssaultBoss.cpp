@@ -120,7 +120,10 @@ void AAssaultBoss::OnCapsuleComponentHit(UPrimitiveComponent* HitComponent, AAct
 
 void AAssaultBoss::OnBossHit(int damage)
 {
-
+	if (damage < Defense)
+	{
+		return;
+	}
 	HP = FMath::Clamp(HP -= (damage - Defense), 0, MaxHP);
 	if (HP <= 0)
 	{
@@ -133,14 +136,18 @@ void AAssaultBoss::OnBossStunned()
 {
 	FTimerHandle GravityTimerHandle;
 	float GravityTime = 3;
-	BossMoveComp->MaxSpeed = 1.0f;
+	BossMoveComp->HomingAccelerationMagnitude = 0;
+	BossMoveComp->MaxSpeed = 1;
+	BossMoveComp->InitialSpeed = 0;
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), StunnedVFX, GetActorLocation());
 	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
 		{
 			// 코드 구현
 		
-			BossMoveComp->MaxSpeed = 2000.0f;
+			BossMoveComp->HomingAccelerationMagnitude = 2000;
 			// TimerHandle 초기화
+			BossMoveComp->InitialSpeed = 2000;
+			BossMoveComp->MaxSpeed = 2000;
 			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
 		}), GravityTime, false);	// 반복하려면 false를 true로 변경
 
