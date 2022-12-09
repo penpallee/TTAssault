@@ -82,6 +82,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	FVector direction;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	FRotator rotation;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)

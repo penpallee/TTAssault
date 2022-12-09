@@ -26,28 +26,61 @@ public:
 
 	UFUNCTION(NetMulticast, reliable)
 	void OnAxisHorizontal(float value);
+	UFUNCTION(Server, reliable)
+	void OnAxisHorizontalMulticast(float value);
+
 	UFUNCTION(NetMulticast, reliable)
 	void OnAxisVertical(float value);
-	UFUNCTION(NetMulticast, reliable)
+	UFUNCTION(Server, reliable)
+	void OnAxisVerticalMulticast(float value);
+
+	UFUNCTION(NetMulticast, reliable,WithValidation)
 	void onAxisMouseX(float value);
-	UFUNCTION(NetMulticast, reliable)
+	UFUNCTION(Server, reliable)
+	void onAxisMouseXMulticast(float value);
+
+	UFUNCTION(NetMulticast, reliable, WithValidation)
 	void onAxisMouseY(float value);
+	UFUNCTION(Server, reliable)
+	void onAxisMouseYMulticast(float value);
+
 	UFUNCTION(NetMulticast, reliable)
 	void onActionBoost();
+	UFUNCTION(Server, reliable)
+	void onActionBoostMulticast();
+
 	UFUNCTION(NetMulticast, reliable)
 	void OnActionFire();
+	UFUNCTION(Server, reliable)
+	void OnActionFireMultiCast();
+
 	UFUNCTION(NetMulticast, reliable)
 	void OnActionStop();
+	UFUNCTION(Server, reliable)
+	void OnActionStopMulticast();
+
 	UFUNCTION(NetMulticast, reliable)
 	void OnPlayerHit(int damage);
-	//UFUNCTION(NetMulticast, reliable)
+	UFUNCTION(Server, reliable)
+	void OnPlayerHitMulticast(int damage);
+
 	void Stop();
+
 	UFUNCTION(NetMulticast, reliable)
 	void onSelPrimary();
+	UFUNCTION(Server, reliable)
+	void onSelPrimaryMulticast();
+
 	UFUNCTION(NetMulticast, reliable)
 	void onSelSecondary();
+	UFUNCTION(Server, reliable)
+	void onSelSecondaryMulticast();
+
 	UFUNCTION(NetMulticast, reliable)
 	void onSelTetertiary();
+	UFUNCTION(Server, reliable)
+	void onSelTetertiaryMulticast();
+
 	virtual void boosterCharge() override;
 	UFUNCTION(BlueprintCallable)
 		FPlayerStatus returnStatus();

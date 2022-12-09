@@ -42,6 +42,9 @@ AAssaultCharacter::AAssaultCharacter()
 void AAssaultCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty> &OutLifetimeProps) const
 {
 	DOREPLIFETIME(AAssaultCharacter, myOwner);
+	DOREPLIFETIME(AAssaultCharacter, direction);
+	DOREPLIFETIME(AAssaultCharacter, rotation);
+
 }
 
 // Called when the game starts or when spawned
