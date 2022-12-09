@@ -115,17 +115,19 @@ void ACharacter_Soondae::Tick/*_Implementation*/(float DeltaTime)
 void ACharacter_Soondae::SetupPlayerInputComponent/*_Implementation*/(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	InputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &AAssaultCharacter::onActionBoost);
-	InputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &AAssaultCharacter::OnAxisHorizontal);
-	InputComponent->BindAxis(TEXT("Move Right / Left"), this, &AAssaultCharacter::OnAxisVertical);
-	InputComponent->BindAxis("Look Up / Down Mouse", this, &AAssaultCharacter::onAxisMouseY);
-	InputComponent->BindAxis("Turn Right / Left", this, &AAssaultCharacter::onAxisMouseX);
-	InputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AAssaultCharacter::OnActionFire);
-	InputComponent->BindAction(TEXT("Fire"), IE_Released, this, &AAssaultCharacter::OnActionStop);
-	InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &AAssaultCharacter::onSelPrimary);
-	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &AAssaultCharacter::onSelSecondary);
-	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &AAssaultCharacter::onSelTetertiary);
+	InputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &ACharacter_Soondae::onActionBoostMulticast);
+	InputComponent->BindAxis(TEXT("Move Forward / Backward"), this, &ACharacter_Soondae::OnAxisHorizontalMulticast);
+	InputComponent->BindAxis(TEXT("Move Right / Left"), this, &ACharacter_Soondae::OnAxisVerticalMulticast);
+	InputComponent->BindAxis("Look Up / Down Mouse", this, &ACharacter_Soondae::onAxisMouseYMulticast);
+	InputComponent->BindAxis("Turn Right / Left", this, &ACharacter_Soondae::onAxisMouseXMulticast);
+	InputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &ACharacter_Soondae::OnActionFireMultiCast);
+	InputComponent->BindAction(TEXT("Fire"), IE_Released, this, &ACharacter_Soondae::OnActionStopMulticast);
+	InputComponent->BindAction(TEXT("WeaponPrimary"), IE_Pressed, this, &ACharacter_Soondae::onSelPrimaryMulticast);
+	InputComponent->BindAction(TEXT("WeaponSecondary"), IE_Pressed, this, &ACharacter_Soondae::onSelSecondaryMulticast);
+	InputComponent->BindAction(TEXT("WeaponTertiary"), IE_Pressed, this, &ACharacter_Soondae::onSelTetertiaryMulticast);
 }
+
+////////////////////////////////////////////////////////////////////////////////////
 
 void ACharacter_Soondae::OnActionFire_Implementation()
 {
@@ -150,10 +152,24 @@ void ACharacter_Soondae::OnActionFire_Implementation()
 	}
 }
 
+void ACharacter_Soondae::OnActionFireMultiCast_Implementation()
+{
+	OnActionFire();
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
 void ACharacter_Soondae::OnActionStop_Implementation()
 {
 	machineGun->FireStop();
 }
+
+void ACharacter_Soondae::OnActionStopMulticast_Implementation()
+{
+	OnActionStop();
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 
 void ACharacter_Soondae::OnAxisHorizontal_Implementation(float value)
 {
@@ -161,26 +177,56 @@ void ACharacter_Soondae::OnAxisHorizontal_Implementation(float value)
 	direction.Z = value;
 }
 
+void ACharacter_Soondae::OnAxisHorizontalMulticast_Implementation(float value)
+{
+	OnAxisHorizontal(value);	
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
 void ACharacter_Soondae::OnAxisVertical_Implementation(float value)
 {
 	Super::OnAxisVertical(value);
 	direction.Y = value;
 }
 
+void ACharacter_Soondae::OnAxisVerticalMulticast_Implementation(float value)
+{
+	OnAxisVertical(value);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
 void ACharacter_Soondae::onActionBoost_Implementation()
 {
 	Super::onActionBoost();
 }
+
+void ACharacter_Soondae::onActionBoostMulticast_Implementation()
+{
+	onActionBoost();
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 
 void ACharacter_Soondae::OnPlayerHit_Implementation(int damage)
 {
 	Super::OnPlayerHit(damage);
 }
 
+void ACharacter_Soondae::OnPlayerHitMulticast_Implementation(int damage)
+{
+	OnPlayerHit(damage);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
 void ACharacter_Soondae::Stop/*_Implementation*/()
 {
 	Super::Stop();
 }
+
+////////////////////////////////////////////////////////////////////////////////////
 
 void ACharacter_Soondae::onAxisMouseX_Implementation(float value)
 {
@@ -189,6 +235,18 @@ void ACharacter_Soondae::onAxisMouseX_Implementation(float value)
 	//mouseX -= value;
 }
 
+void ACharacter_Soondae::onAxisMouseXMulticast_Implementation(float value)
+{
+	onAxisMouseX(value);
+}
+
+bool ACharacter_Soondae::onAxisMouseX_Validate(float value)
+{
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
 void ACharacter_Soondae::onAxisMouseY_Implementation(float value)
 {
 	Super::onAxisMouseY(value);
@@ -196,6 +254,18 @@ void ACharacter_Soondae::onAxisMouseY_Implementation(float value)
 	//mouseY += value;
 	//AddControllerYawInput(value);
 }
+
+void ACharacter_Soondae::onAxisMouseYMulticast_Implementation(float value)
+{
+	onAxisMouseY(value);
+}
+
+bool ACharacter_Soondae::onAxisMouseY_Validate(float value)
+{
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 
 void ACharacter_Soondae::onSelPrimary_Implementation()
 {
@@ -206,6 +276,13 @@ void ACharacter_Soondae::onSelPrimary_Implementation()
 	beamRifle->OnSleep();
 }
 
+void ACharacter_Soondae::onSelPrimaryMulticast_Implementation()
+{
+	onSelPrimary();
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
 void ACharacter_Soondae::onSelSecondary_Implementation()
 {
 	selWeapon = WeaponSel::Secondary;
@@ -215,6 +292,13 @@ void ACharacter_Soondae::onSelSecondary_Implementation()
 	beamRifle->OnSleep();
 }
 
+void ACharacter_Soondae::onSelSecondaryMulticast_Implementation()
+{
+	onSelSecondary();
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+
 void ACharacter_Soondae::onSelTetertiary_Implementation()
 {
 	selWeapon = WeaponSel::Tertiary;
@@ -223,6 +307,13 @@ void ACharacter_Soondae::onSelTetertiary_Implementation()
 	machineGun->OnSleep();
 	beamRifle->OnAwake();
 }
+
+void ACharacter_Soondae::onSelTetertiaryMulticast_Implementation()
+{
+	onSelTetertiary();
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 
 FPlayerStatus ACharacter_Soondae::returnStatus()
 {
