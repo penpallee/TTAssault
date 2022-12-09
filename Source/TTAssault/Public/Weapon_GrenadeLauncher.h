@@ -13,13 +13,18 @@ UCLASS()
 class TTASSAULT_API AWeapon_GrenadeLauncher : public ABasicWeapon
 {
 	GENERATED_BODY()
+	UPROPERTY(replicated)
+		AWeapon_GrenadeLauncher* grenadeOwner;
 public:
 	AWeapon_GrenadeLauncher();
 	void Tick(float DeltaTime) override;
 	void BeginPlay();
-	bool FireArm();
-	void OnSleep();
-	void OnAwake();
+	//UFUNCTION(NetMulticast, reliable)
+		bool FireArm();
+	UFUNCTION(NetMulticast, reliable)
+		void OnSleep();
+	UFUNCTION(NetMulticast, reliable)
+		void OnAwake();
 	int returnAmmo();
 	FString returnName();
 

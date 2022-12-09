@@ -30,6 +30,14 @@ AWeapon_Pipe::AWeapon_Pipe()
 	boxComp->SetGenerateOverlapEvents(false);
 	boxComp->SetCollisionProfileName(TEXT("Bullet"));
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AWeapon_Pipe::OnBoxComponentBeginOverlap);
+
+	bReplicates = true;
+}
+
+void AWeapon_Pipe::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWeapon_Pipe, pipeOwner);
 }
 
 // Called when the game starts
@@ -51,7 +59,7 @@ void AWeapon_Pipe::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-bool AWeapon_Pipe::FireArm()
+bool AWeapon_Pipe::FireArm/*_Implementation*/()
 {
 	if (isCoolDown)
 		return false;
@@ -65,11 +73,11 @@ bool AWeapon_Pipe::FireArm()
 	return true;
 }
 
-void AWeapon_Pipe::OnSleep()
+void AWeapon_Pipe::OnSleep_Implementation()
 {
 	meleeMeshComp->SetVisibility(false);
 }
-void AWeapon_Pipe::OnAwake()
+void AWeapon_Pipe::OnAwake_Implementation()
 {
 	meleeMeshComp->SetVisibility(true);
 }
@@ -84,7 +92,7 @@ FString AWeapon_Pipe::returnName()
 	return myName;
 }
 
-void AWeapon_Pipe::OnBoxComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AWeapon_Pipe::OnBoxComponentBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
@@ -107,13 +115,13 @@ void AWeapon_Pipe::CoolComplete()
 	}
 }
 
-void AWeapon_Pipe::Explosion(FVector ImpactPoint)
+void AWeapon_Pipe::Explosion_Implementation(FVector ImpactPoint)
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionVFXFactory, ImpactPoint);
 	UGameplayStatics::PlaySound2D(GetWorld(), hitSound);
 }
 
-void AWeapon_Pipe::NotifyActorBeginOverlap(AActor* OtherActor)
+void AWeapon_Pipe::NotifyActorBeginOverlap_Implementation(AActor* OtherActor)
 {
 	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
 	{

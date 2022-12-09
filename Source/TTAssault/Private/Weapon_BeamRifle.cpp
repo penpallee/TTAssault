@@ -19,6 +19,14 @@ AWeapon_BeamRifle::AWeapon_BeamRifle()
 		sniperMeshComp->SetVisibility(false);
 	}
 	//this->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
+
+	bReplicates = true;
+}
+
+void AWeapon_BeamRifle::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWeapon_BeamRifle, beamOwner);
 }
 
 void AWeapon_BeamRifle::BeginPlay()
@@ -41,7 +49,7 @@ void AWeapon_BeamRifle::Tick(float DeltaTime)
 
 }
 
-bool AWeapon_BeamRifle::FireArm()
+bool AWeapon_BeamRifle::FireArm/*_Implementation*/()
 {
 	//잔탄이 없거나 쿨타임 상태면 발사 실패
 	if (remain <= 0 || isCoolDown)
@@ -79,13 +87,13 @@ bool AWeapon_BeamRifle::FireArm()
 	return true;
 }
 
-void AWeapon_BeamRifle::OnSleep()
+void AWeapon_BeamRifle::OnSleep_Implementation()
 {
 	sniperMeshComp->SetVisibility(false);
 	sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void AWeapon_BeamRifle::OnAwake()
+void AWeapon_BeamRifle::OnAwake_Implementation()
 {
 	sniperMeshComp->SetVisibility(true);
 	sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);

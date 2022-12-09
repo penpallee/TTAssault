@@ -44,6 +44,8 @@ void ACharacter_Soondae::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& 
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ACharacter_Soondae, soondaeOwner);
+	DOREPLIFETIME(ACharacter_Soondae, HP);
+	DOREPLIFETIME(ACharacter_Soondae, bodyMeshComp);
 }
 
 // Called when the game starts or when spawned
@@ -72,7 +74,7 @@ void ACharacter_Soondae::BeginPlay()
 
 // Called every frame
 void ACharacter_Soondae::Tick/*_Implementation*/(float DeltaTime)
-{
+{ 
 	Super::Tick(DeltaTime);
 
 	FVector t = this->GetActorLocation();
@@ -103,11 +105,6 @@ void ACharacter_Soondae::Tick/*_Implementation*/(float DeltaTime)
 
 			tingCurrentTime = tingTime;
 			bTing = true;
-
-			if (hitActor)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("%s"), *hitActor->GetName());
-			}
 		}
 	}
 	cameraComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(cameraComp->GetRelativeLocation(), this->GetActorLocation()));
@@ -115,7 +112,7 @@ void ACharacter_Soondae::Tick/*_Implementation*/(float DeltaTime)
 }
 
 // Called to bind functionality to input
-void ACharacter_Soondae::SetupPlayerInputComponent_Implementation(UInputComponent* PlayerInputComponent)
+void ACharacter_Soondae::SetupPlayerInputComponent/*_Implementation*/(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	InputComponent->BindAction(TEXT("Dash"), IE_Pressed, this, &AAssaultCharacter::onActionBoost);
@@ -175,12 +172,12 @@ void ACharacter_Soondae::onActionBoost_Implementation()
 	Super::onActionBoost();
 }
 
-void ACharacter_Soondae::OnPlayerHit(int damage)
+void ACharacter_Soondae::OnPlayerHit_Implementation(int damage)
 {
 	Super::OnPlayerHit(damage);
 }
 
-void ACharacter_Soondae::Stop()
+void ACharacter_Soondae::Stop/*_Implementation*/()
 {
 	Super::Stop();
 }

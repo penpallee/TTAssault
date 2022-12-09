@@ -13,19 +13,23 @@ UCLASS()
 class TTASSAULT_API AWeapon_MachineGun : public ABasicWeapon
 {
 	GENERATED_BODY()
+	UPROPERTY(replicated)
+		AWeapon_MachineGun* machineOwner;
 public:
 	AWeapon_MachineGun();
 	void Tick(float DeltaTime) override;
 	void BeginPlay();
-	bool FireArm();
-	void FireStop();
-	void OnSleep();
-	void OnAwake();
+	//UFUNCTION(NetMulticast, reliable)
+		bool FireArm();
+	UFUNCTION(NetMulticast, reliable)
+		void FireStop();
+	UFUNCTION(NetMulticast, reliable)
+		void OnSleep();
+	UFUNCTION(NetMulticast, reliable)
+		void OnAwake();
 	int returnAmmo();
 	FString returnName();
-
-	//UPROPERTY(EditAnywhere)
-	//USoundBase* fireSound;
+	
 	UPROPERTY(EditAnywhere)
 	class USkeletalMeshComponent* gunMeshComp;
 	UPROPERTY(EditAnywhere)
@@ -33,5 +37,6 @@ public:
 
 	void MagazineReloadComplete() override;
 	void CoolComplete() override;
-	void AutoFire() override;
+	UFUNCTION(NetMulticast, reliable)
+		void AutoFire() override;
 };

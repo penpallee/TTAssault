@@ -18,6 +18,14 @@ AWeapon_GrenadeLauncher::AWeapon_GrenadeLauncher()
 		gunMeshComp->SetVisibility(false);
 	}
 	//this->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
+
+	bReplicates = true;
+}
+
+void AWeapon_GrenadeLauncher::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWeapon_GrenadeLauncher, grenadeOwner);
 }
 
 void AWeapon_GrenadeLauncher::BeginPlay()
@@ -40,7 +48,7 @@ void AWeapon_GrenadeLauncher::Tick(float DeltaTime)
 
 }
 
-bool AWeapon_GrenadeLauncher::FireArm()
+bool AWeapon_GrenadeLauncher::FireArm/*_Implementation*/()
 {
 	//잔탄이 없거나 쿨타임 상태면 발사 실패
 	if (remain <= 0 || isCoolDown)
@@ -78,13 +86,13 @@ bool AWeapon_GrenadeLauncher::FireArm()
 	return true;
 }
 
-void AWeapon_GrenadeLauncher::OnSleep()
+void AWeapon_GrenadeLauncher::OnSleep_Implementation()
 {
 	gunMeshComp->SetVisibility(false);
 	gunMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void AWeapon_GrenadeLauncher::OnAwake()
+void AWeapon_GrenadeLauncher::OnAwake_Implementation()
 {
 	gunMeshComp->SetVisibility(true);
 	gunMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);

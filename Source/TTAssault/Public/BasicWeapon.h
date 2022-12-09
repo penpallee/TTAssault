@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <Runtime/Engine/Public/Net/UnrealNetwork.h>
 #include "GameFramework/Actor.h"
 #include "BasicWeapon.generated.h"
 
