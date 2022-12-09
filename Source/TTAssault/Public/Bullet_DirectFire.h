@@ -32,6 +32,9 @@ public:
 		bool bFromSweep,
 		const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void Destroying();
+
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* explosionFX;
 
@@ -51,5 +54,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* BulletCollisionComp;;
 
-
+	// UPROPERTY(EditAnywhere)
+	// TArray<class UParticleSystem> RandomFireFX;
 };

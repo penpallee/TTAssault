@@ -48,15 +48,12 @@ void ABullet_InductionFire::BeginPlay()
 
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireTrailSound, GetActorLocation());
 	FTimerHandle GravityTimerHandle;
-	float GravityTime = 2.1;
+	float GravityTime = 3.2;
 
 	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
 		{
 			// 코드 구현
-			this->Destroy();
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
-	
+			Destroying();
 			// TimerHandle 초기화
 			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
 		}), GravityTime, false);
@@ -76,24 +73,16 @@ void ABullet_InductionFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* 
 	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
 	{
 		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(2);
-		this->Destroy();
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
-
+		Destroying();
 	}
 	else if (OtherActor->IsA(ACharacter_Soondae::StaticClass()))
 	{
-		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(2);
-		this->Destroy();
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
-
+		Cast<ACharacter_Soondae>(OtherActor)->OnPlayerHit(2);
+		Destroying();
 	}
 	else
 	{
-		this->Destroy();
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+		Destroying();
 	}
 }
 
@@ -115,5 +104,13 @@ void ABullet_InductionFire::SetInductionFireTarget(TargetSel target)
 
 	
 	
+}
+
+void ABullet_InductionFire::Destroying()
+{
+	this->Destroy();
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+
 }
 

@@ -34,12 +34,12 @@ public:
 		FVector NormalImpulse,
 		const FHitResult& Hit);
 
-	UFUNCTION()
-	void OnCapsuleComponentBeginOverlap(
-		UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,
-		bool bFromSweep,const FHitResult& SweepResult);
+	// UFUNCTION()
+	// void OnCapsuleComponentBeginOverlap(
+	// 	UPrimitiveComponent* OverlappedComponent,
+	// 	AActor* OtherActor,
+	// 	UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,
+	// 	bool bFromSweep,const FHitResult& SweepResult);
 	
 public:
 
@@ -79,6 +79,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UParticleSystem* BossBodyAttackFX;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystem* DestroyingFX;
 
+	UPROPERTY(EditAnywhere)
+	class USoundBase* DestroyingSound;
 	
 };

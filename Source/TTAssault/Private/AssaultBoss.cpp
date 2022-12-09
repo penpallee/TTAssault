@@ -80,7 +80,7 @@ AAssaultBoss::AAssaultBoss()
 void AAssaultBoss::BeginPlay()
 {
 	Super::BeginPlay();
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
+	// GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentBeginOverlap);
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AAssaultBoss::OnCapsuleComponentHit);
 
 }
@@ -120,9 +120,11 @@ void AAssaultBoss::OnCapsuleComponentHit(UPrimitiveComponent* HitComponent, AAct
 
 void AAssaultBoss::OnBossHit(int damage)
 {
-	HP -= (damage - Defense);
+
+	HP = FMath::Clamp(HP -= (damage - Defense), 0, MaxHP);
 	if (HP <= 0)
 	{
+		HP = 0;
 		Destroy();
 	}
 }
@@ -141,6 +143,8 @@ void AAssaultBoss::OnBossStunned()
 			// TimerHandle 초기화
 			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
 		}), GravityTime, false);	// 반복하려면 false를 true로 변경
+
+	// BossMoveComp->MaxSpeed = 2000.0f;
 }
 
 void AAssaultBoss::OnAxisVertical(float value)
@@ -158,12 +162,12 @@ void AAssaultBoss::OnAxisHorizontalView(float value)
 	SetActorRotation(FRotator(0, (-90) * value, 0));
 }
 
-void AAssaultBoss::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
-	{
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
-		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
-		
-	}
-}
+// void AAssaultBoss::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+// {
+// 	// if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
+// 	// {
+// 	// 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Boss Damage to Player By Physical 5"));
+// 	// 	Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(5);
+// 	// 	
+// 	// }
+// }

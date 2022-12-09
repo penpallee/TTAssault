@@ -52,9 +52,7 @@ void ABullet_DirectFire::BeginPlay()
 	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
 		{
 			// 코드 구현
-			this->Destroy();
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+			Destroying();
 
 			// TimerHandle 초기화
 			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
@@ -74,23 +72,23 @@ void ABullet_DirectFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* Ove
 	if (OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
 	{
 		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(8);
-		this->Destroy();
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
-		
+		Destroying();
 	}
 	else if (OtherActor->IsA(ACharacter_Soondae::StaticClass()))
 	{
-		Cast<ACharacter_Danmoozi>(OtherActor)->OnPlayerHit(8);
-		this->Destroy();
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+		Cast<ACharacter_Soondae>(OtherActor)->OnPlayerHit(8);
+		Destroying();
 	}
 	else
 	{
-		this->Destroy();
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
+		Destroying();
 	}
+}
+
+void ABullet_DirectFire::Destroying()
+{
+	this->Destroy();
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
 }
 

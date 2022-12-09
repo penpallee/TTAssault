@@ -40,6 +40,8 @@ public:
 		const FHitResult& SweepResult);
 
 	void SetInductionFireTarget(TargetSel target);
+	UFUNCTION()
+	void Destroying();
 	
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* explosionFX;
@@ -61,4 +63,5 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UCapsuleComponent* BulletCollisionComp;
+
 };

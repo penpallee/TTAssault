@@ -13,7 +13,7 @@ AAIBossController::AAIBossController()
 	{
 		BBAsset = BBObject.Object;
 	}
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT("BehaviorTree'/Game/TJ/AI/BT_BossTest1.BT_BossTest1'"));
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT("BehaviorTree'/Game/TJ/AI/BT_AssaultBoss.BT_AssaultBoss'"));
 	if (BTObject.Succeeded())
 	{
 		BTAsset = BTObject.Object;
