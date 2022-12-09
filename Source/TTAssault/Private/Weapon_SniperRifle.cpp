@@ -21,6 +21,14 @@ AWeapon_SniperRifle::AWeapon_SniperRifle()
 	}
 
 	//this->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
+
+	bReplicates = true;
+}
+
+void AWeapon_SniperRifle::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWeapon_SniperRifle, sniperOwner);
 }
 
 void AWeapon_SniperRifle::BeginPlay()
@@ -40,7 +48,7 @@ void AWeapon_SniperRifle::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-bool AWeapon_SniperRifle::FireArm()
+bool AWeapon_SniperRifle::FireArm/*_Implementation*/()
 {
 	//Super::FireArm();
 
@@ -94,13 +102,13 @@ bool AWeapon_SniperRifle::FireArm()
 	return true;
 }
 
-void AWeapon_SniperRifle::OnSleep()
+void AWeapon_SniperRifle::OnSleep_Implementation()
 {
 	sniperMeshComp->SetVisibility(false);
 	sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 }
-void AWeapon_SniperRifle::OnAwake()
+void AWeapon_SniperRifle::OnAwake_Implementation()
 {
 	sniperMeshComp->SetVisibility(true);
 	sniperMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -140,7 +148,7 @@ void AWeapon_SniperRifle::CoolComplete()
 	}
 }
 
-void AWeapon_SniperRifle::Explosion(FVector ImpactPoint)
+void AWeapon_SniperRifle::Explosion_Implementation(FVector ImpactPoint)
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), bulletImpactFactory, ImpactPoint);
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);

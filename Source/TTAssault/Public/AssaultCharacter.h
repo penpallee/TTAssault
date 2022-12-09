@@ -80,7 +80,7 @@ public:
 	virtual void onAxisMouseX(float value);
 	virtual void onAxisMouseY(float value);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	FVector direction;
 	FRotator rotation;
 
@@ -94,17 +94,19 @@ public:
 	float boosterLose=100;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int HPMax = 100;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	int HP = HPMax;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isBooster = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Defense;
 
+	//UPROPERTY(ReplicatedUsing = Tick)
 	float mouseX;
+	//UPROPERTY(ReplicatedUsing = Tick)
 	float mouseY;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Replicated)
 	class USkeletalMeshComponent* bodyMeshComp;
 
 	UPROPERTY(EditAnywhere)

@@ -19,6 +19,14 @@ AWeapon_MachineGun::AWeapon_MachineGun()
 		gunMeshComp->SetVisibility(false);
 	}
 	//this->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
+
+	bReplicates = true;
+}
+
+void AWeapon_MachineGun::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWeapon_MachineGun, machineOwner);
 }
 
 void AWeapon_MachineGun::BeginPlay()
@@ -38,7 +46,7 @@ void AWeapon_MachineGun::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-bool AWeapon_MachineGun::FireArm()
+bool AWeapon_MachineGun::FireArm/*_Implementation*/()
 {
 	//Super::FireArm();
 	if (isCoolDown || remain <= 0)
@@ -49,19 +57,19 @@ bool AWeapon_MachineGun::FireArm()
 	return true;
 }
 
-void AWeapon_MachineGun::FireStop()
+void AWeapon_MachineGun::FireStop_Implementation()
 {
 	GetWorldTimerManager().ClearTimer(autoFireTimerHandle);
 }
 
-void AWeapon_MachineGun::OnSleep()
+void AWeapon_MachineGun::OnSleep_Implementation()
 {
 	gunMeshComp->SetVisibility(false);
 	gunMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 }
 
-void AWeapon_MachineGun::OnAwake()
+void AWeapon_MachineGun::OnAwake_Implementation()
 {
 	gunMeshComp->SetVisibility(true);
 	gunMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -95,7 +103,7 @@ void AWeapon_MachineGun::MagazineReloadComplete()
 	}
 }
 
-void AWeapon_MachineGun::AutoFire()
+void AWeapon_MachineGun::AutoFire_Implementation()
 {
 	if (remain < 0)
 	{

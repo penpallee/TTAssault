@@ -29,6 +29,14 @@ ABullet_Grenade::ABullet_Grenade()
 	sphereComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	sphereComp->SetCollisionProfileName(TEXT("Bullet"));
 	sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet_Grenade::OnSphereComponentBeginOverlap);
+
+	bReplicates = true;
+}
+
+void ABullet_Grenade::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ABullet_Grenade, bulletOwner);
 }
 
 // Called when the game starts or when spawned
@@ -41,7 +49,7 @@ void ABullet_Grenade::BeginPlay()
 }
 
 // Called every frame
-void ABullet_Grenade::Tick(float DeltaTime)
+void ABullet_Grenade::Tick_Implementation(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	FVector direction = GetActorForwardVector();
@@ -51,14 +59,14 @@ void ABullet_Grenade::Tick(float DeltaTime)
 	SetActorLocation(P0 + velocity * DeltaTime, true);
 }
 
-void ABullet_Grenade::Expolosion()
+void ABullet_Grenade::Expolosion_Implementation()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionVFXFactory, GetActorLocation());
 	UGameplayStatics::PlaySound2D(GetWorld(), fireSound);
 	this->Destroy();
 }
 
-void ABullet_Grenade::OnSphereComponentBeginOverlap(
+void ABullet_Grenade::OnSphereComponentBeginOverlap_Implementation(
 	UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
@@ -67,8 +75,8 @@ void ABullet_Grenade::OnSphereComponentBeginOverlap(
 	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
 	{
 		Cast<AAssaultBoss>(OtherActor)->OnBossHit(10);
-		Expolosion();
+		Expolosion_Implementation();
 	}
 	if (!OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
-		Expolosion();
+		Expolosion_Implementation();
 }

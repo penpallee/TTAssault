@@ -13,13 +13,18 @@ UCLASS()
 class TTASSAULT_API AWeapon_Pipe : public ABasicWeapon
 {
 	GENERATED_BODY()
+		UPROPERTY(replicated)
+		AWeapon_Pipe* pipeOwner;
 public:
 	AWeapon_Pipe();
 	void Tick(float DeltaTime) override;
 	void BeginPlay();
-	bool FireArm();
-	void OnSleep();
-	void OnAwake();
+	//UFUNCTION(NetMulticast, reliable)
+		bool FireArm();
+	UFUNCTION(NetMulticast, reliable)
+		void OnSleep();
+	UFUNCTION(NetMulticast, reliable)
+		void OnAwake();
 	int returnAmmo();
 	FString returnName();
 
@@ -30,12 +35,14 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* boxComp;
-	UFUNCTION()
+	UFUNCTION(NetMulticast, reliable)
 		void OnBoxComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	void CoolComplete();
-	void Explosion(FVector ImpactPoint) override;
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	UFUNCTION(NetMulticast, reliable)
+		void Explosion(FVector ImpactPoint) override;
+	UFUNCTION(NetMulticast, reliable)
+		virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 	UPROPERTY(EditAnywhere)
 		class UParticleSystem* explosionVFXFactory;

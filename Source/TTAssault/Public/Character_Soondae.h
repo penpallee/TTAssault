@@ -18,7 +18,8 @@ protected:
 	virtual void BeginPlay() override;
 public:
 	// Called to bind functionality to input
-	UFUNCTION(NetMulticast, reliable)
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	//UFUNCTION(NetMulticast, reliable)
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	//UFUNCTION(NetMulticast, reliable)
 	virtual void Tick(float DeltaTime) override;
@@ -37,7 +38,9 @@ public:
 	void OnActionFire();
 	UFUNCTION(NetMulticast, reliable)
 	void OnActionStop();
+	UFUNCTION(NetMulticast, reliable)
 	void OnPlayerHit(int damage);
+	//UFUNCTION(NetMulticast, reliable)
 	void Stop();
 	UFUNCTION(NetMulticast, reliable)
 	void onSelPrimary();

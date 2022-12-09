@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include <Particles/ParticleSystem.h>
+#include <Runtime/Engine/Public/Net/UnrealNetwork.h>
 #include <Engine/EngineTypes.h>
 #include "Bullet_Grenade.generated.h"
 
@@ -12,6 +13,8 @@ UCLASS()
 class TTASSAULT_API ABullet_Grenade : public AActor
 {
 	GENERATED_BODY()
+		UPROPERTY(replicated)
+		ABullet_Grenade* bulletOwner;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -23,9 +26,10 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(NetMulticast, reliable)
+		virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION()
+	UFUNCTION(NetMulticast, reliable)
 		void OnSphereComponentBeginOverlap(
 			UPrimitiveComponent* OverlappedComponent,
 			AActor* OtherActor,
@@ -43,7 +47,8 @@ public:
 	float radius;
 	float speed = 1000;
 
-	void Expolosion();
+	UFUNCTION(NetMulticast, reliable)
+		void Expolosion();
 	/*void OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);*/
 
 	UPROPERTY(EditAnywhere)

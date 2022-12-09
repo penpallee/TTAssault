@@ -10,13 +10,18 @@ UCLASS()
 class TTASSAULT_API AWeapon_SniperRifle : public ABasicWeapon
 {
 	GENERATED_BODY()
+		UPROPERTY(replicated)
+		AWeapon_SniperRifle* sniperOwner;
 public:
 	AWeapon_SniperRifle();
 	void Tick(float DeltaTime) override;
 	void BeginPlay();
-	bool FireArm();
-	void OnSleep();
-	void OnAwake();
+	//UFUNCTION(NetMulticast, reliable)
+		bool FireArm();
+	UFUNCTION(NetMulticast, reliable)
+		void OnSleep();
+	UFUNCTION(NetMulticast, reliable)
+		void OnAwake();
 	int returnAmmo();
 
 	UFUNCTION(BlueprintCallable)
@@ -29,5 +34,6 @@ public:
 
 	virtual void MagazineReloadComplete() override;
 	virtual void CoolComplete() override;
-	virtual void Explosion(FVector ImpactPoint) override;
+	UFUNCTION(NetMulticast, reliable)
+		virtual void Explosion(FVector ImpactPoint) override;
 };
