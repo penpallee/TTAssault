@@ -68,6 +68,7 @@ void ABullet_BeamRifle::OnSphereComponentBeginOverlap(
 	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
 	{
 		Cast<AAssaultBoss>(OtherActor)->OnBossHit(10);
+		Cast<AAssaultBoss>(OtherActor)->OnBossStunned();
 		Expolosion();
 	}
 	if (!OtherActor->IsA(ACharacter_Danmoozi::StaticClass()))
