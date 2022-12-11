@@ -84,5 +84,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class USoundBase* DestroyingSound;
+
+	UPROPERTY(EditAnywhere)
+	bool isStunned = false;
 	
 };
