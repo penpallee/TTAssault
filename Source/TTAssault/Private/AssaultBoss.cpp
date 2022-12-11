@@ -134,23 +134,35 @@ void AAssaultBoss::OnBossHit(int damage)
 
 void AAssaultBoss::OnBossStunned()
 {
-	FTimerHandle GravityTimerHandle;
-	float GravityTime = 3;
-	BossMoveComp->HomingAccelerationMagnitude = 0;
-	BossMoveComp->MaxSpeed = 1;
-	BossMoveComp->InitialSpeed = 0;
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), StunnedVFX, GetActorLocation());
-	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
-		{
-			// 코드 구현
-		
-			BossMoveComp->HomingAccelerationMagnitude = 2000;
-			// TimerHandle 초기화
-			BossMoveComp->InitialSpeed = 2000;
-			BossMoveComp->MaxSpeed = 2000;
-			GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
-		}), GravityTime, false);	// 반복하려면 false를 true로 변경
+	if (!isStunned)
+	{
+		//UKismetSystemLibrary::PrintString(GetWorld(), TEXT("123"));
+		isStunned = true;
+		FTimerHandle GravityTimerHandle;
+		float GravityTime = 3;
+		BossMoveComp->HomingAccelerationMagnitude = 0;
+		BossMoveComp->InitialSpeed = 0;
+		BossMoveComp->MaxSpeed = 1;
+		//BossMoveComp->Velocity = FVector(0, 0, 0);
+		BossMoveComp->UpdateComponentVelocity();
 
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), StunnedVFX, GetActorLocation());
+		GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+			{
+				// 코드 구현
+
+				BossMoveComp->HomingAccelerationMagnitude = 2000;
+				BossMoveComp->InitialSpeed = 2000;
+				BossMoveComp->MaxSpeed = 2000;
+				BossMoveComp->Velocity = FVector(0, -10, 0);
+				BossMoveComp->UpdateComponentVelocity();
+				// TimerHandle 초기화
+				GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+				isStunned = false;
+			}), GravityTime, false);	// 반복하려면 false를 true로 변경
+		
+	}
+	
 	// BossMoveComp->MaxSpeed = 2000.0f;
 }
 
