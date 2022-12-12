@@ -144,11 +144,13 @@ void ACharacter_Soondae::OnActionFire_Implementation()
 		break;
 	case WeaponSel::Secondary:
 		if (machineGun->FireArm())
-			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_GUn"));
+			//PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Gun"));
+			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
+
 		break;
 	case WeaponSel::Tertiary:
 		if (beamRifle->FireArm())
-			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
+			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Rifle"));
 		break;
 	}
 }
