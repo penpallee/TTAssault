@@ -11,7 +11,10 @@ UCLASS()
 class TTASSAULT_API ACharacter_Danmoozi : public AAssaultCharacter
 {
 	GENERATED_BODY()
+
+public:
 		ACharacter_Danmoozi();
+
 protected:
 	virtual void BeginPlay() override;
 

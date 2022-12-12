@@ -56,4 +56,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<class UParticleSystem*> RandomFireFX;
+
+	UPROPERTY()
+	class UAudioComponent* audio;
+
 };

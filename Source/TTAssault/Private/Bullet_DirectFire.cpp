@@ -5,6 +5,7 @@
 
 #include "Character_Danmoozi.h"
 #include "Character_Soondae.h"
+#include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -14,7 +15,7 @@
 // Sets default values
 ABullet_DirectFire::ABullet_DirectFire()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	BulletCollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("directionFireCollisionComp"));
@@ -23,7 +24,7 @@ ABullet_DirectFire::ABullet_DirectFire()
 
 	bulletTrailFX->SetupAttachment(BulletCollisionComp);
 	bulletMovementComp->SetUpdatedComponent(BulletCollisionComp);
-	
+
 	// SetRootComponent(directionFireCollisionComp);
 	BulletCollisionComp->SetGenerateOverlapEvents(true);
 	BulletCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -34,7 +35,7 @@ ABullet_DirectFire::ABullet_DirectFire()
 	bulletMovementComp->MaxSpeed = 1200;
 	bulletMovementComp->ProjectileGravityScale = 0;
 
-	
+
 }
 
 // Called when the game starts or when spawned
@@ -48,7 +49,7 @@ void ABullet_DirectFire::BeginPlay()
 
 	FTimerHandle GravityTimerHandle;
 	float GravityTime = 4;
-	
+
 	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
 		{
 			// 코드 구현
@@ -87,14 +88,13 @@ void ABullet_DirectFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* Ove
 
 void ABullet_DirectFire::Destroying()
 {
-	this->Destroy();
-	if (explosionFX)
-		if (!explosionFX->IsLooping() &&  !fireDestroySound->IsLooping())
-		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
-
+	if (IsValid(explosionFX))
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+		if (audio == nullptr || false == audio->IsPlaying()) {
+			audio = UGameplayStatics::SpawnSound2D(GetWorld(), fireDestroySound);
 		}
-	
+	}
+	this->Destroy();
 }
 

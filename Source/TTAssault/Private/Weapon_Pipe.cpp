@@ -123,7 +123,7 @@ void AWeapon_Pipe::Explosion_Implementation(FVector ImpactPoint)
 
 void AWeapon_Pipe::NotifyActorBeginOverlap_Implementation(AActor* OtherActor)
 {
-	if (OtherActor->IsA(AAssaultBoss::StaticClass()))
+	if (OtherActor && OtherActor->IsA(AAssaultBoss::StaticClass()))
 	{
 		Cast<AAssaultBoss>(OtherActor)->OnBossHit(damage);
 		Explosion(OtherActor->GetActorLocation());
