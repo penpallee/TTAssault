@@ -56,18 +56,18 @@ void ACharacter_Soondae::BeginPlay()
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	pipe->SetActorRelativeLocation(FVector(0, 0, -30));
-	pipe->SetActorRelativeRotation(FRotator(30, 50, 0));
+	pipe->SetActorRelativeLocation(FVector(-22, -10, 7));
+	pipe->SetActorRelativeRotation(FRotator(70, 20, -160));
 
 	machineGun = GetWorld()->SpawnActor<AWeapon_MachineGun>(machineGunFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	machineGun->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
 	machineGun->SetActorRelativeLocation(FVector(0, 0, 0));
-	machineGun->SetActorRelativeRotation(FRotator(-10, 105, 0));
+	machineGun->SetActorRelativeRotation(FRotator(64, 85, -86));
 
 	beamRifle = GetWorld()->SpawnActor<AWeapon_BeamRifle>(beamRifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	beamRifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
-	beamRifle->SetActorRelativeLocation(FVector(-30, 0, 0));
-	beamRifle->SetActorRelativeRotation(FRotator(-10, 105, 0));
+	beamRifle->SetActorRelativeLocation(FVector(-2.6f, -42, 13));
+	beamRifle->SetActorRelativeRotation(FRotator(73, 80, -88));
 
 	GetWorldTimerManager().SetTimer(autoBoosterTimerHandle, this, &ACharacter_Soondae::boosterCharge, 0.1f, true, 0);
 }
@@ -136,18 +136,19 @@ void ACharacter_Soondae::OnActionFire_Implementation()
 	case WeaponSel::Primary:
 		if (pipe->FireArm())
 		{
+			UE_LOG(LogTemp,Warning,TEXT("%d"),pipe->GetCombo());
 			FString sectionName = FString::Printf(TEXT("Attack_Melee%d"), pipe->GetCombo());
-			PlayAnimMontage(attackAnimMontage, 2, FName(*sectionName));
+			PlayAnimMontage(attackAnimMontage, 1.5f, FName(*sectionName));
 			pipe->SetCombo();
 		}
 		break;
 	case WeaponSel::Secondary:
 		if (machineGun->FireArm())
-			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
+			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_GUn"));
 		break;
 	case WeaponSel::Tertiary:
 		if (beamRifle->FireArm())
-			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Rifle"));
+			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
 		break;
 	}
 }

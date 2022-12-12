@@ -16,9 +16,9 @@ AWeapon_Pipe::AWeapon_Pipe()
 	if (tempMelee.Succeeded())
 	{
 		meleeMeshComp->SetStaticMesh(tempMelee.Object);
-		meleeMeshComp->SetRelativeLocation(FVector(-60, 0, 0));
+		//meleeMeshComp->SetRelativeLocation(FVector(-60, 0, 0));
 		meleeMeshComp->SetRelativeScale3D(FVector(.5f));
-		meleeMeshComp->SetRelativeRotation(FRotator(90, 90, 90));
+		//meleeMeshComp->SetRelativeRotation(FRotator(90, 90, 90));
 	}
 
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("boxComp"));
