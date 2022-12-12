@@ -28,7 +28,7 @@ public:
 	int returnAmmo();
 	FString returnName();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* meleeMeshComp;
 	UPROPERTY(EditAnywhere)
 	USoundBase* hitSound;

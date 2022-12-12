@@ -56,25 +56,27 @@ void ACharacter_Soondae::BeginPlay()
 
 	pipe = GetWorld()->SpawnActor<AWeapon_Pipe>(pipeFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	pipe->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));//TEXT("rHand"));
-	pipe->SetActorRelativeLocation(FVector(-22, -10, 7));
-	pipe->SetActorRelativeRotation(FRotator(70, 20, -160));
+	//pipe->SetActorRelativeLocation(FVector(-22, -10, 7));
+	//pipe->SetActorRelativeRotation(FRotator(70, 20, -160));
+	pipe->SetActorRelativeLocation(FVector(-815, -2350, -404));
+	pipe->SetActorRelativeRotation(FRotator(60, 170, -82));
 
 	machineGun = GetWorld()->SpawnActor<AWeapon_MachineGun>(machineGunFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	machineGun->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
-	machineGun->SetActorRelativeLocation(FVector(0, 0, 0));
-	machineGun->SetActorRelativeRotation(FRotator(64, 85, -86));
+	machineGun->SetActorRelativeLocation(FVector(-534, -22, -734));
+	machineGun->SetActorRelativeRotation(FRotator(-44, 20, 21));
 
 	beamRifle = GetWorld()->SpawnActor<AWeapon_BeamRifle>(beamRifleFactory, FTransform(GetRootComponent()->GetRelativeTransform()));
 	beamRifle->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_rSocket"));
-	beamRifle->SetActorRelativeLocation(FVector(-2.6f, -42, 13));
-	beamRifle->SetActorRelativeRotation(FRotator(73, 80, -88));
+	beamRifle->SetActorRelativeLocation(FVector(-3210, 6400, -1550));
+	beamRifle->SetActorRelativeRotation(FRotator(-83, -100, -230));
 
 	GetWorldTimerManager().SetTimer(autoBoosterTimerHandle, this, &ACharacter_Soondae::boosterCharge, 0.1f, true, 0);
 }
 
 // Called every frame
 void ACharacter_Soondae::Tick/*_Implementation*/(float DeltaTime)
-{ 
+{
 	Super::Tick(DeltaTime);
 
 	FVector t = this->GetActorLocation();
@@ -136,9 +138,8 @@ void ACharacter_Soondae::OnActionFire_Implementation()
 	case WeaponSel::Primary:
 		if (pipe->FireArm())
 		{
-			UE_LOG(LogTemp,Warning,TEXT("%d"),pipe->GetCombo());
 			FString sectionName = FString::Printf(TEXT("Attack_Melee%d"), pipe->GetCombo());
-			PlayAnimMontage(attackAnimMontage, 1.5f, FName(*sectionName));
+			PlayAnimMontage(attackAnimMontage, 1.7f, FName(*sectionName));
 			pipe->SetCombo();
 		}
 		break;
@@ -146,11 +147,10 @@ void ACharacter_Soondae::OnActionFire_Implementation()
 		if (machineGun->FireArm())
 			//PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Gun"));
 			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire"));
-
 		break;
 	case WeaponSel::Tertiary:
 		if (beamRifle->FireArm())
-			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Rifle"));
+			PlayAnimMontage(attackAnimMontage, 1, TEXT("Fire_Beam"));
 		break;
 	}
 }
@@ -165,7 +165,9 @@ void ACharacter_Soondae::OnActionFireMultiCast_Implementation()
 void ACharacter_Soondae::OnActionStop_Implementation()
 {
 	machineGun->FireStop();
-}
+	if(selWeapon == WeaponSel::Secondary)
+		StopAnimMontage(attackAnimMontage);
+}	
 
 void ACharacter_Soondae::OnActionStopMulticast_Implementation()
 {
@@ -182,7 +184,7 @@ void ACharacter_Soondae::OnAxisHorizontal_Implementation(float value)
 
 void ACharacter_Soondae::OnAxisHorizontalMulticast_Implementation(float value)
 {
-	OnAxisHorizontal(value);	
+	OnAxisHorizontal(value);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////

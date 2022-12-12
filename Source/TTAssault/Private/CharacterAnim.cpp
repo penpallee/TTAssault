@@ -24,9 +24,11 @@ void UCharacterAnim::NativeUpdateAnimation(float DeltaSeconds)
 		else
 			isDash = true;
 
-		if (player->selWeapon == WeaponSel::Primary)
-			melee = true;
-		else
-			melee = false;
+		switch (player->selWeapon)
+		{
+		case WeaponSel::Primary: SelNum = 1; break;
+		case WeaponSel::Secondary:  SelNum = 2; break;
+		case WeaponSel::Tertiary:  SelNum = 3; break;
+		}
 	}
 }
