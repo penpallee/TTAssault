@@ -113,10 +113,20 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UAnimMontage* attackAnimMontage;
 
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* dieExplosionFactory;
+
+	UPROPERTY(EditAnywhere)
+	class UUserWidget* GameOverUI;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> GameOverUIFactory;
+
 	WeaponSel selWeapon;
 	FTimerHandle autoBoosterTimerHandle;	//부스터 타이머 핸들
 
 	virtual void OnPlayerHit(int damage);
+	virtual void OnPlayerDie();
 	virtual void Stop();
 	//UFUNCTION(NetMulticast, reliable)
 	virtual void onSelPrimary();
