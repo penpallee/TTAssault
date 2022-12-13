@@ -110,7 +110,7 @@ void ACharacter_Soondae::Tick/*_Implementation*/(float DeltaTime)
 		}
 	}
 	cameraComp->SetRelativeRotation(UKismetMathLibrary::FindLookAtRotation(cameraComp->GetRelativeLocation(), this->GetActorLocation()));
-	cameraComp->SetRelativeLocation(FVector(-1000, t.Y * 0.95f, t.Z * 0.95f));
+	cameraComp->SetRelativeLocation(FVector(-850, t.Y * 0.95f, t.Z * 0.95f));
 }
 
 // Called to bind functionality to input

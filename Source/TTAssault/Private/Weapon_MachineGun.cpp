@@ -105,7 +105,7 @@ void AWeapon_MachineGun::MagazineReloadComplete()
 
 void AWeapon_MachineGun::AutoFire_Implementation()
 {
-	if (remain < 0)
+	if (remain <= 0)
 	{
 		GetWorldTimerManager().SetTimer(autoReloadTimerHandle, this, &AWeapon_MachineGun::MagazineReloadComplete, 0.1f, true, 0);
 		return;
