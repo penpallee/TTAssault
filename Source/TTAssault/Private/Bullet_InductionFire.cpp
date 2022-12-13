@@ -112,9 +112,9 @@ void ABullet_InductionFire::Destroying()
 	if (!explosionFX->IsLooping())
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-		if (audio == nullptr || false == audio->IsPlaying()) {
-			audio = UGameplayStatics::SpawnSound2D(GetWorld(), fireDestroySound);
-		}
+		// if (audio == nullptr || false == audio->IsPlaying()) {
+		// 	audio = UGameplayStatics::SpawnSound2D(GetWorld(), fireDestroySound);
+		// }
 	}
 	this->Destroy();
 }
