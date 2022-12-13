@@ -118,7 +118,6 @@ void AAssaultBoss::OnCapsuleComponentHit(UPrimitiveComponent* HitComponent, AAct
 	{
 		Cast<ACharacter_Soondae>(OtherActor)->OnPlayerHit(5);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BossBodyAttackFX, GetActorLocation());
-
 	}
 }
 
@@ -171,6 +170,7 @@ void AAssaultBoss::OnBossHit(int damage)
 	{
 		HP = 0;
 		Destroy();
+
 	}
 }
 
@@ -188,7 +188,7 @@ void AAssaultBoss::OnBossStunned()
 		//BossMoveComp->Velocity = FVector(0, 0, 0);
 		BossMoveComp->UpdateComponentVelocity();
 
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), StunnedVFX, GetActorLocation());
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), StunnedVFX, GetActorLocation(), FRotator::ZeroRotator, FVector(3, 3, 3));
 		GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
 			{
 				// 코드 구현
