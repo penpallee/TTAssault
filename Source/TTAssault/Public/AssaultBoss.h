@@ -6,6 +6,14 @@
 #include "GameFramework/Character.h"
 #include "AssaultBoss.generated.h"
 
+
+UENUM(BlueprintType)
+enum class BossDifficultyState : uint8 {
+	Hard UMETA(displayname = HARD),
+	Normal UMETA(displayname = NORMAL),
+	Easy UMETA(displayname = EASY)
+};
+
 UCLASS()
 class TTASSAULT_API AAssaultBoss : public ACharacter
 {
@@ -34,6 +42,9 @@ public:
 		FVector NormalImpulse,
 		const FHitResult& Hit);
 
+	UFUNCTION(BlueprintCallable)
+	void SetDifficulty(BossDifficultyState next);
+
 	// UFUNCTION()
 	// void OnCapsuleComponentBeginOverlap(
 	// 	UPrimitiveComponent* OverlappedComponent,
@@ -42,6 +53,9 @@ public:
 	// 	bool bFromSweep,const FHitResult& SweepResult);
 	
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	BossDifficultyState Difstate;
 
 	UFUNCTION(BlueprintCallable)
 	void OnBossHit(int damage);
@@ -87,5 +101,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	bool isStunned = false;
-	
+
+	UPROPERTY(EditAnywhere)
+	class AWeapon_DirectFire* ForSetDirectFire;
+
+	UPROPERTY(EditAnywhere)
+	class AWeapon_InductionFireArm* ForSetInductionFire;
 };

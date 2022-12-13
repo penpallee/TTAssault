@@ -12,6 +12,8 @@
 #include "AIController.h"
 #include "Character_Danmoozi.h"
 #include "Character_Soondae.h"
+#include "Weapon_DirectFire.h"
+#include "Weapon_InductionFireArm.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -37,7 +39,7 @@ AAssaultBoss::AAssaultBoss()
 		GetCharacterMovement()->bUseSeparateBrakingFriction = true;
 		GetCharacterMovement()->BrakingFriction = 1.0f;
 
-	
+
 
 		particleComp1 = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("LeftFootBoostFire"));
 		particleComp2 = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("RightFootBoostFire"));
@@ -69,10 +71,12 @@ AAssaultBoss::AAssaultBoss()
 		GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		GetCapsuleComponent()->SetCollisionProfileName(TEXT("Boss"));
-	
-	}
 
-	Defense = 0;
+		ForSetInductionFire = CreateDefaultSubobject<AWeapon_InductionFireArm>(TEXT("Weapon_Direct"));
+		ForSetDirectFire = CreateDefaultSubobject<AWeapon_DirectFire>(TEXT("Weappon_Induction"));
+
+	}
+		Defense = 0;
 
 }
 
@@ -115,6 +119,44 @@ void AAssaultBoss::OnCapsuleComponentHit(UPrimitiveComponent* HitComponent, AAct
 		Cast<ACharacter_Soondae>(OtherActor)->OnPlayerHit(5);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BossBodyAttackFX, GetActorLocation());
 
+	}
+}
+
+void AAssaultBoss::SetDifficulty(BossDifficultyState next)
+{
+	Difstate = next;
+	switch (next)
+	{
+	case BossDifficultyState::Hard:
+
+		// generate function
+		
+		Defense = 5;
+		MaxHP = HP = 300;
+		ForSetDirectFire->damage = 12;
+		ForSetInductionFire->damage = 20;
+		BossMoveComp->MaxSpeed = 2000;
+		break;
+
+	case BossDifficultyState::Normal:
+		
+		Defense = 3;
+		MaxHP = HP = 280;
+		ForSetDirectFire->damage = 10;
+		ForSetInductionFire->damage = 18;
+		BossMoveComp->MaxSpeed = 1500;
+		break;
+
+	case BossDifficultyState::Easy:
+		
+		Defense = 0;
+		MaxHP = HP = 250;
+		ForSetDirectFire->damage = 8;
+		ForSetInductionFire->damage = 16;
+		BossMoveComp->MaxSpeed = 1000;
+		break;
+
+	default:;
 	}
 }
 
