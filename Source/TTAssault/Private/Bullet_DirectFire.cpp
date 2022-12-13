@@ -88,7 +88,7 @@ void ABullet_DirectFire::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* Ove
 
 void ABullet_DirectFire::Destroying()
 {
-	if (IsValid(explosionFX))
+	if (!explosionFX->IsLooping())
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
 		if (audio == nullptr || false == audio->IsPlaying()) {
