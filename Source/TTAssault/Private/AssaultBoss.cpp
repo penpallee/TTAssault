@@ -171,7 +171,21 @@ void AAssaultBoss::OnBossHit(int damage)
 	{
 		HP = 0;
 		Destroy();
-		// GameOverUI->CreateWidgetInstance(this, BulletCollisionComp);
+		GameOverUI = CreateWidget<UUserWidget>(GetWorld(), GameOverUIFactory);
+
+		FTimerHandle GravityTimerHandle;
+		float GravityTime = 2;
+	
+
+		
+		GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+			{
+				// 코드 구현
+				UGameplayStatics::SetGamePaused(GetWorld(), true);
+				GameOverUI->AddToViewport();
+				// TimerHandle 초기화
+				GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+			}), GravityTime, false);	// 반복하려면 false를 true로 변경
 	}
 }
 

@@ -26,7 +26,7 @@ ABullet_InductionFire::ABullet_InductionFire()
 	bulletTrailFX->SetupAttachment(BulletCollisionComp);
 	bulletMovementComp->SetUpdatedComponent(BulletCollisionComp);
 
-	// SetRootComponent(inductionFireCollisionComp);
+	SetRootComponent(BulletCollisionComp);
 	BulletCollisionComp->SetGenerateOverlapEvents(true);
 	BulletCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	BulletCollisionComp->SetCollisionProfileName(TEXT("BossBullet"));

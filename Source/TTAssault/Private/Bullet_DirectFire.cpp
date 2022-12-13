@@ -25,7 +25,7 @@ ABullet_DirectFire::ABullet_DirectFire()
 	bulletTrailFX->SetupAttachment(BulletCollisionComp);
 	bulletMovementComp->SetUpdatedComponent(BulletCollisionComp);
 
-	// SetRootComponent(directionFireCollisionComp);
+	SetRootComponent(BulletCollisionComp);
 	BulletCollisionComp->SetGenerateOverlapEvents(true);
 	BulletCollisionComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	BulletCollisionComp->SetCollisionProfileName(TEXT("BossBullet"));
