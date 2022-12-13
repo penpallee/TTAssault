@@ -64,4 +64,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UCapsuleComponent* BulletCollisionComp;
 
+	UPROPERTY()
+	class UAudioComponent* audio;
+
 };

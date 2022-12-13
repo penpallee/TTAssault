@@ -6,6 +6,7 @@
 #include "AssaultBoss.h"
 #include "Character_Danmoozi.h"
 #include "Character_Soondae.h"
+#include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -108,9 +109,13 @@ void ABullet_InductionFire::SetInductionFireTarget(TargetSel target)
 
 void ABullet_InductionFire::Destroying()
 {
+	if (!explosionFX->IsLooping())
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
+		if (audio == nullptr || false == audio->IsPlaying()) {
+			audio = UGameplayStatics::SpawnSound2D(GetWorld(), fireDestroySound);
+		}
+	}
 	this->Destroy();
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorLocation());
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), fireDestroySound, GetActorLocation());
-
 }
 

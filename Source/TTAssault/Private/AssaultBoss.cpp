@@ -14,6 +14,7 @@
 #include "Character_Soondae.h"
 #include "Weapon_DirectFire.h"
 #include "Weapon_InductionFireArm.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -170,7 +171,7 @@ void AAssaultBoss::OnBossHit(int damage)
 	{
 		HP = 0;
 		Destroy();
-
+		// GameOverUI->CreateWidgetInstance(this, BulletCollisionComp);
 	}
 }
 

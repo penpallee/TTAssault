@@ -107,4 +107,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class AWeapon_InductionFireArm* ForSetInductionFire;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> GameOverUIFactory;
+
+	UPROPERTY(EditAnywhere)
+	class UUserWidget* GameOverUI;
 };
