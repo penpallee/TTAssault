@@ -9,6 +9,8 @@
 #include <Kismet/KismetMathLibrary.h>
 #include <Runtime/Engine/Public/Net/UnrealNetwork.h>
 
+#include "Blueprint/UserWidget.h"
+
 // Sets default values
 AAssaultCharacter::AAssaultCharacter()
 {
@@ -39,7 +41,7 @@ AAssaultCharacter::AAssaultCharacter()
 	bReplicates = true;
 }
 
-void AAssaultCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty> &OutLifetimeProps) const
+void AAssaultCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLifetimeProps) const
 {
 	DOREPLIFETIME(AAssaultCharacter, myOwner);
 	DOREPLIFETIME(AAssaultCharacter, direction);
@@ -78,7 +80,7 @@ void AAssaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 void AAssaultCharacter::OnCapsuleComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+
 }
 
 void AAssaultCharacter::OnAxisHorizontal(float value)
@@ -128,9 +130,30 @@ void AAssaultCharacter::OnPlayerHit(int damage)
 	HP -= (damage - Defense);
 	if (HP <= 0)
 	{
-		Destroy();
+		OnPlayerDie();
 	}
 }
+
+void AAssaultCharacter::OnPlayerDie()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), dieExplosionFactory, this->GetActorLocation());
+	Destroy();
+
+	GameOverUI = CreateWidget<UUserWidget>(GetWorld(), GameOverUIFactory);
+
+	FTimerHandle GravityTimerHandle;
+	float GravityTime = 2;
+
+	GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			// 코드 구현
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+			GameOverUI->AddToViewport();
+			// TimerHandle 초기화
+			//GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+		}), GravityTime, false);	// 반복하려면 false를 true로 변경
+}
+
 
 void AAssaultCharacter::Stop()
 {
@@ -140,7 +163,7 @@ void AAssaultCharacter::Stop()
 
 void AAssaultCharacter::onSelPrimary()
 {
-	
+
 }
 void AAssaultCharacter::onSelSecondary()
 {
@@ -158,5 +181,5 @@ void AAssaultCharacter::PlayAttackAnim()
 
 void AAssaultCharacter::boosterCharge()
 {
-	
+
 }
