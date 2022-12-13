@@ -44,7 +44,7 @@ void AWeapon_Pipe::GetLifetimeReplicatedProps(TArray< FLifetimeProperty>& OutLif
 void AWeapon_Pipe::BeginPlay()
 {
 	Super::BeginPlay();
-	damage = 30;
+	damage = 20;
 	ammo = 2147483646;
 	coolTime = 0.6f;
 	comboMax = 3;
